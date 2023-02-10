@@ -1,0 +1,4 @@
+- source: project
+  netlify:
+    - id: e62c1d1e-d6b6-4074-89c0-5b03caf21a03
+      url: 'https://h-notes-on-dsa.netlify.app'
