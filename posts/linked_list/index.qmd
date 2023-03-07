@@ -1,0 +1,195 @@
+---
+title: "Linked List"
+description: "Linke List"
+author: "Pham Nguyen Hung"
+date: "03/07/2023"
+draft: false
+toc: true
+---
+Firstly, See [About](https://h-notes-on-dsa.netlify.app/about.html) page.
+
+# Linked List:
+
+## Definitions:
+
+- A nonlinear data structure consists of nodes with pointers to the next nodes.
+- A linked list can be singly-linked, or doubly-linked, with just head pointer or together with tail pointer.
+- For LeetCode, a singly-linked list with head pointer is usually given.
+```python
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+```
+- May fall under many patterns, such as fast and slow pointers.
+
+## General trick:
+
+### 1. Sentinel head (also tail):
+
+We create a dummy head first, modify everything after, and then return the actual head with `dummy.next`
+```python
+dummy = ListNode(None)
+head = dummy
+# Do a lot of stuff with head
+return dummy.next
+```
+This is useful as we can use the `head` as a pointer to traverse the linked list while still need to return the head of the linked list in result. 
+
+## Problems:
+
+### 1. Reverse Linked List
+
+The introductory problem to using the three pointers - `pre`, `cur`, and `nex` to keep track of the node in the list. Can be used to solve a sub-problem in the future.
+```python
+class Solution:
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        # Edge case:
+        if head is None or head.next is None:
+            return head
+        
+        # General case:
+        pre, cur, nex = None, head, head.next
+        while nex:
+            cur.next = pre
+            pre = cur
+            cur = nex
+            nex = nex.next
+        cur.next = pre
+        return cur
+```
+
+### 2. Merge Two Sorted Lists
+
+Choose a new linked list. Move the two head pointers down the two lists, compare the nodes, and splice them accordingly.
+```python
+class Solution:
+    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+        # Edge case
+        if list1 is None:
+            return list2
+        if list2 is None:
+            return list1
+        
+        # General case
+        # Most straightforward way is to create a new linked list
+        # Utilize the sentinel head trick here
+        dummy = ListNode()
+        head = dummy
+
+        # One list will reach the end before the other, so it is divided into 2 steps:
+        # 1. Compare and splice the nodes in the two list
+        # 2. Add the rest of one list to the end of the result.
+        while list1 and list2:
+            if list1.val <= list2.val:
+                head.next = list1
+                list1 = list1.next
+            else:
+                head.next = list2
+                list2 = list2.next
+            head = head.next
+        
+        if list1:
+            head.next = list1
+        elif list2:
+            head.next = list2
+        
+        return dummy.next
+```
+
+### 3. Linked List Cycle
+
+The introductory fast and slow pointers problem. Because there is a loop, the fast and slow pointers are bound to meet with each other somewhere.
+```python
+class Solution:
+    def hasCycle(self, head: Optional[ListNode]) -> bool:
+        # Edge case
+        if head is None or head.next is None:
+            return False
+        
+        # General case
+        fast = slow = head
+        while fast.next and fast.next.next:
+            fast = fast.next.next
+            slow = slow.next
+            if fast == slow:
+                return True
+        return False
+```
+
+### 4. Remove Nth Node From End of List
+
+The idea is to initialize two fast and slow pointers, but started at different positions while moving at the same speed. We want that when the fast pointer hits the end, the slow pointer is at the node before the to-be-removed node to rearrange the connection.
+```python
+class Solution:
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+        # Edge case
+        if head.next is None:
+            return
+        
+        # General case
+        # Fast and slow pointer
+        slow = fast = head
+        for _ in range(n+1):
+            if fast:
+                fast = fast.next
+            else:
+            # If fast pointer is already None before the end, there is just one
+            # case and it is the head needs removing, so we return the next element
+                return head.next
+        # If not, we start to move the slow and fast pointers to the end.
+        while fast:
+            slow, fast = slow.next, fast.next
+        
+        slow.next = slow.next.next
+        
+        return head
+```
+
+### 5. Reorder List
+
+The task can be divided into 3 parts:
+
+1. Divide the original list into 2.
+2. Reverse the second half.
+3. Merge the two halves.
+
+Here we saw for the first time all the problems above come together into one problem. Here you see that I turned the second part into another hidden method within the `Solution` class. This is one way to do it. Another is to define the function *within* the function (nested function), which you will see many Python LeetCoders do. These two methods are equivalent in solving LeetCode problems. For outside world, I think that my current method is more appreciated, as of [here](https://realpython.com/inner-functions-what-are-they-good-for/).
+```python
+class Solution:
+    def _reverseList(self, head: ListNode):
+        pre, cur, nex = None, head, head.next
+        while nex:
+            cur.next = pre
+            pre = cur
+            cur = nex
+            nex = nex.next
+        cur.next = pre
+        return cur
+    def reorderList(self, head: Optional[ListNode]) -> None:
+        """
+        Do not return anything, modify head in-place instead.
+        """
+        # Edge case:
+        if head.next is None or head.next.next is None:
+            return
+        
+        # General case:
+        fast = slow = temp1 = temp2 = head
+        while fast.next and fast.next.next:
+            fast = fast.next.next
+            slow = slow.next
+        temp2 = slow.next
+        slow.next = None
+        del slow, fast
+        temp2 = self._reverseList(temp2)
+        nex1, nex2 = temp1.next, temp2.next
+        while nex2:
+            temp1.next = temp2
+            temp2.next = nex1
+            temp1, temp2 = nex1, nex2
+            nex1, nex2 = nex1.next, nex2.next
+        temp1.next = temp2
+        if nex1:
+            temp2.next = nex1
+```

@@ -1,12 +1,13 @@
 ---
 title: "Graph"
 description: "Graph"
-author: "Alan Smithee"
+author: "Pham Nguyen Hung"
 date: "2/10/2023"
 draft: false
 toc: true
 ---
 Firstly, See [About](https://h-notes-on-dsa.netlify.app/about.html) page.
+
 # Graph:
 
 ## Definitions:
