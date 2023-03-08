@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/tree/index.html",
       "/posts/linked_list/index.html",
       "/posts/graph/index.html"
     ]

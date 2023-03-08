@@ -1,0 +1,30 @@
+---
+title: "Tree"
+description: "Mostly binary tree"
+author: "Pham Nguyen Hung"
+date: "03/08/2023"
+draft: false
+toc: true
+---
+Firstly, See [About](https://h-notes-on-dsa.netlify.app/about.html) page.
+
+# Tree
+
+## Definitions
+
+The upgraded version of a linked list.
+
+- It is acyclic (doesn't contain any cycles);
+- There exists a path from the root to any node;
+- Has $N - 1$ edges, where $N$ is the number of nodes in the tree; and
+- Each node has exactly one parent node with the exception of the root node.
+```python
+# Definition for a binary tree node.
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+```
+
+## Categories

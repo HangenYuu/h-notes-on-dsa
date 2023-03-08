@@ -44,7 +44,7 @@ The introductory problem to using the three pointers - `pre`, `cur`, and `nex` t
 ```python
 class Solution:
     def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        # Edge case:
+        # Easy case:
         if head is None or head.next is None:
             return head
         
@@ -65,7 +65,7 @@ Choose a new linked list. Move the two head pointers down the two lists, compare
 ```python
 class Solution:
     def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
-        # Edge case
+        # Easy case
         if list1 is None:
             return list2
         if list2 is None:
@@ -103,7 +103,7 @@ The introductory fast and slow pointers problem. Because there is a loop, the fa
 ```python
 class Solution:
     def hasCycle(self, head: Optional[ListNode]) -> bool:
-        # Edge case
+        # Easy case
         if head is None or head.next is None:
             return False
         
@@ -123,7 +123,7 @@ The idea is to initialize two fast and slow pointers, but started at different p
 ```python
 class Solution:
     def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
-        # Edge case
+        # Easy case
         if head.next is None:
             return
         
@@ -170,7 +170,7 @@ class Solution:
         """
         Do not return anything, modify head in-place instead.
         """
-        # Edge case:
+        # Easy case:
         if head.next is None or head.next.next is None:
             return
         
@@ -192,4 +192,106 @@ class Solution:
         temp1.next = temp2
         if nex1:
             temp2.next = nex1
+```
+
+### 6. Find the Duplicate Number
+
+This is not a Linked List question, but it utilizes the fast and slow pointers to turn it into a linked list question in the subtlest way possible. As noted in the editorial, this is similar to [Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/description/). In the original one, fast and slow pointer is used to detect the cycle. Now the objective is to return the cycle entrance. Fast and slow pointers can be proved mathematically to work for that problem, by having the fast pointer starts at the intersection and the slow pointer starts at the start, they will meet each other at the entrance!
+```python
+class Solution:
+    def findDuplicate(self, nums: List[int]) -> int:
+        # Phase 1: Intersection point
+        fast = slow = nums[0]
+        while True:
+            fast = nums[nums[fast]]
+            slow = nums[slow]
+            if fast == slow:
+                break
+        
+        # Phase 2: Find the cycle entrance
+        slow = nums[0]
+        while slow != fast:
+            fast = nums[fast]
+            slow = nums[slow]
+        
+        return slow
+```
+
+### 7. Copy List with Random Pointer
+
+Sometimes overthinking is a big problem. This question is super hard - if you try to do it in one go. The secret is to not do so. You do it in 2 passes. And use a HashMap to keep track of the copy.
+```python
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, x: int, next: 'Node' = None, random: 'Node' = None):
+        self.val = int(x)
+        self.next = next
+        self.random = random
+"""
+
+class Solution:
+    def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
+        # The first key in the dictionary to deal with the pointer to 
+        # None of a node.
+        oldToCopy = {None: None}
+
+        # 1st pass: Create all the nodes only
+        cur = head
+        while cur:
+            oldToCopy[cur] = Node(cur.val)
+            cur = cur.next
+        
+        # 2nd pass: Create the links within the list
+        cur = head
+        while cur:
+            copy = oldToCopy[cur]
+            copy.next = oldToCopy[cur.next]
+            copy.random = oldToCopy[cur.random]
+            cur = cur.next
+        
+        return oldToCopy[head]
+```
+
+### 8. Palindrome Linked List
+
+Here we see the reverse linked list sub-problem becomes relevant again. The algorithm is:
+
+1. Go to the middle of the linked list and divide it in 2 halves.
+2. Reverse the second half.
+3. Check each pair of nodes of two halves and return result.
+```python
+class Solution:
+    def _reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        pre, cur, nex = None, head, head.next
+        while nex:
+            cur.next = pre
+            pre = cur
+            cur = nex
+            nex = nex.next
+        cur.next = pre
+        return cur
+
+    def isPalindrome(self, head: Optional[ListNode]) -> bool:
+        # Easy case:
+        if head is None or head.next is None:
+            return True
+        
+        # General case:
+        slow, fast = head, head.next
+        while fast.next and fast.next.next:
+            slow = slow.next
+            fast = fast.next.next
+        if not fast.next:
+            temp = slow.next
+            slow.next = None
+        else:
+            temp = slow.next.next
+            slow.next.next = None
+        temp = self._reverseList(temp)
+        while temp:
+            if temp.val != head.val:
+                return False
+            temp, head = temp.next, head.next
+        return True
 ```
