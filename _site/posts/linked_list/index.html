@@ -224,6 +224,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#find-the-duplicate-number" id="toc-find-the-duplicate-number" class="nav-link" data-scroll-target="#find-the-duplicate-number">6. Find the Duplicate Number</a></li>
   <li><a href="#copy-list-with-random-pointer" id="toc-copy-list-with-random-pointer" class="nav-link" data-scroll-target="#copy-list-with-random-pointer">7. Copy List with Random Pointer</a></li>
   <li><a href="#palindrome-linked-list" id="toc-palindrome-linked-list" class="nav-link" data-scroll-target="#palindrome-linked-list">8. Palindrome Linked List</a></li>
+  <li><a href="#add-two-numbers" id="toc-add-two-numbers" class="nav-link" data-scroll-target="#add-two-numbers">9. Add Two Numbers</a></li>
   </ul></li>
   </ul></li>
   </ul>
@@ -509,6 +510,56 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> <span class="va">False</span></span>
 <span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>            temp, head <span class="op">=</span> temp.<span class="bu">next</span>, head.<span class="bu">next</span></span>
 <span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">True</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="add-two-numbers" class="level3">
+<h3 class="anchored" data-anchor-id="add-two-numbers">9. Add Two Numbers</h3>
+<p>The second problem added to LeetCode, after <a href="https://leetcode.com/problems/two-sum/">Two Sum</a>. The digits are arranged in reverse order, which makes it easier to add them. The algorithm can be represented as:</p>
+<ol type="1">
+<li>While both heads not yet hit the end, traverse and add each pair of digit (remember to log the remaining).</li>
+<li>When a head hits the end, check if the remaining list has any node left and add them to the result.</li>
+</ol>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Definition for singly-linked list.</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># class ListNode:</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">#     def __init__(self, val=0, next=None):</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#         self.val = val</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">#         self.next = next</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> addTwoNumbers(<span class="va">self</span>, l1: Optional[ListNode], l2: Optional[ListNode]) <span class="op">-&gt;</span> Optional[ListNode]:</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>        dummy <span class="op">=</span> ListNode()</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>        head <span class="op">=</span> dummy</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>        remain <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> l1 <span class="kw">and</span> l2:</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>            raw_sum <span class="op">=</span> l1.val <span class="op">+</span> l2.val <span class="op">+</span> remain</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>            remain <span class="op">=</span> raw_sum <span class="op">//</span> <span class="dv">10</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>            temp_sum <span class="op">=</span> raw_sum <span class="op">%</span> <span class="dv">10</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>            head.<span class="bu">next</span> <span class="op">=</span> ListNode(temp_sum)</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>            head <span class="op">=</span> head.<span class="bu">next</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>            l1, l2 <span class="op">=</span> l1.<span class="bu">next</span>, l2.<span class="bu">next</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> l1:</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> remain <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>                head.<span class="bu">next</span> <span class="op">=</span> l1</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>                <span class="cf">break</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>            raw_sum <span class="op">=</span> l1.val <span class="op">+</span> remain</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>            remain <span class="op">=</span> raw_sum <span class="op">//</span> <span class="dv">10</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>            temp_sum <span class="op">=</span> raw_sum <span class="op">%</span> <span class="dv">10</span></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>            head.<span class="bu">next</span> <span class="op">=</span> ListNode(temp_sum)</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>            head <span class="op">=</span> head.<span class="bu">next</span></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>            l1 <span class="op">=</span> l1.<span class="bu">next</span></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> l2:</span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> remain <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>                head.<span class="bu">next</span> <span class="op">=</span> l2</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>                <span class="cf">break</span></span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>            raw_sum <span class="op">=</span> l2.val <span class="op">+</span> remain</span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>            remain <span class="op">=</span> raw_sum <span class="op">//</span> <span class="dv">10</span></span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>            temp_sum <span class="op">=</span> raw_sum <span class="op">%</span> <span class="dv">10</span></span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>            head.<span class="bu">next</span> <span class="op">=</span> ListNode(temp_sum)</span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>            head <span class="op">=</span> head.<span class="bu">next</span></span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>            l2 <span class="op">=</span> l2.<span class="bu">next</span></span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> remain <span class="op">!=</span> <span class="dv">0</span>:</span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>            head.<span class="bu">next</span> <span class="op">=</span> ListNode(remain)</span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> dummy.<span class="bu">next</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>

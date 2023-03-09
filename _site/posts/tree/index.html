@@ -212,6 +212,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul class="collapse">
   <li><a href="#definitions" id="toc-definitions" class="nav-link" data-scroll-target="#definitions">Definitions</a></li>
   <li><a href="#categories" id="toc-categories" class="nav-link" data-scroll-target="#categories">Categories</a></li>
+  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes">Notes:</a>
+  <ul class="collapse">
+  <li><a href="#depth-first-search" id="toc-depth-first-search" class="nav-link" data-scroll-target="#depth-first-search">1. Depth-first search</a></li>
+  </ul></li>
+  <li><a href="#problems" id="toc-problems" class="nav-link" data-scroll-target="#problems">Problems</a>
+  <ul class="collapse">
+  <li><a href="#same-tree" id="toc-same-tree" class="nav-link" data-scroll-target="#same-tree">1. Same Tree</a></li>
+  <li><a href="#flip-equivalent-binary-trees" id="toc-flip-equivalent-binary-trees" class="nav-link" data-scroll-target="#flip-equivalent-binary-trees">2. Flip Equivalent Binary Trees</a></li>
+  <li><a href="#path-sum" id="toc-path-sum" class="nav-link" data-scroll-target="#path-sum">3. Path Sum</a></li>
+  </ul></li>
   </ul></li>
   </ul>
 </nav>
@@ -234,17 +244,184 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Has <span class="math inline">\(N - 1\)</span> edges, where <span class="math inline">\(N\)</span> is the number of nodes in the tree; and</li>
 <li>Each node has exactly one parent node with the exception of the root node.</li>
 </ul>
+<p>For binary tree, all nodes have at most 2 children.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Definition for a binary tree node.</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TreeNode:</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, val<span class="op">=</span><span class="dv">0</span>, left<span class="op">=</span><span class="va">None</span>, right<span class="op">=</span><span class="va">None</span>):</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.val <span class="op">=</span> val</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.left <span class="op">=</span> left</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.right <span class="op">=</span> right</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<table class="table">
+<colgroup>
+<col style="width: 41%">
+<col style="width: 58%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Terms</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Node &amp; Edges</td>
+<td>Trivia</td>
+</tr>
+<tr class="even">
+<td>Root</td>
+<td>The first node</td>
+</tr>
+<tr class="odd">
+<td>Leaf node</td>
+<td>Node with no child</td>
+</tr>
+<tr class="even">
+<td>Internal node</td>
+<td>Node with at least one child</td>
+</tr>
+<tr class="odd">
+<td>Ancestor</td>
+<td>Nodes that are between the path<br>from the root to the current root.<br> Including the node itself</td>
+</tr>
+<tr class="even">
+<td>Descendent</td>
+<td>Nodes that are between the path<br>from the root to the current root.<br> Including the node itself</td>
+</tr>
+<tr class="odd">
+<td>Level</td>
+<td>Number of ancestors from that node<br>until the root node. Start at 0 or 1, go down.</td>
+</tr>
+<tr class="even">
+<td>Height</td>
+<td>Number of edges on the longest path from<br>that node to a leaf. Start at 0, go up.</td>
+</tr>
+<tr class="odd">
+<td>Depth</td>
+<td>Number of edges on the path from root<br>to that node. Start at 0, go down.</td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="categories" class="level2">
 <h2 class="anchored" data-anchor-id="categories">Categories</h2>
+<dl>
+<dt><strong>Full binary tree</strong></dt>
+<dd>
+Every node has 0 or 2 children.
+</dd>
+<dt><strong>Complete binary tree</strong></dt>
+<dd>
+All levels are completely filled except possibly the last level. All nodes are as far left as possible.
+</dd>
+<dt><strong>Perfect binary tree</strong></dt>
+<dd>
+All internal nodes have two children and all leaf nodes have the same level
+</dd>
+<dt><strong>Balanced binary tree</strong></dt>
+<dd>
+Every node fulfil the condition: height difference of the left and right subtree of the node is not more than than 1. Searching, insertion, and deletion in a balanced binary tree takes <span class="math inline">\(O(logn)\)</span> instead of <span class="math inline">\(O(n)\)</span> in an unbalanced binary tree.
+</dd>
+</dl>
+</section>
+<section id="notes" class="level2">
+<h2 class="anchored" data-anchor-id="notes">Notes:</h2>
+<section id="depth-first-search" class="level3">
+<h3 class="anchored" data-anchor-id="depth-first-search">1. Depth-first search</h3>
+<p><strong>Depth-first search</strong> is the first heavily used technique. It is essentially <em>pre-order traversal</em> of a tree. All traversal types are given here:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TreeNode:</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, val<span class="op">=</span><span class="dv">0</span>, left<span class="op">=</span><span class="va">None</span>, right<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.val <span class="op">=</span> val</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.left <span class="op">=</span> left</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.right <span class="op">=</span> right</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> pre_order_traversal(<span class="va">self</span>, root: TreeNode):</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> root <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(root.val)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>            pre_order_traversal(root.left)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>            pre_order_traversal(root.right)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> in_order_traversal(<span class="va">self</span>, root: TreeNode):</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> root <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>            in_order_traversal(root.left)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(root.val)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>            in_order_traversal(root.right)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> post_order_traversal(<span class="va">self</span>, root: TreeNode):</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> root <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>            post_order_traversal(root.left)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>            post_order_traversal(root.right)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(root.val)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Depth-first search is often implemented in recursion. In thinking in recursion, the most important thing is visualization of the call stack.</p>
+<p>In thinking in recursion, one must forget the whole picture and start thinking about each node. For each node, decide how the information there should be processed, then recurse on the children. When you are a node, the only thing you know are 1. node value and 2. how to get to children. The recursive function should manipulate these things.</p>
+<p>In defining the recursive functions, there are two things to decide when we define:</p>
+<ol type="1">
+<li><code>return</code> value - the value the child passes to the parent. For example, for the max depth problem this is the max depth for the current node’s subtree.</li>
+<li>state - the value the parent passes to the child. For example, to know if the current node’s value is larger than its parent we have to maintain the parent’s value as a state.</li>
+</ol>
+<p>Another way to solve the problem is to replace <code>return</code> value with a global variable.</p>
+</section>
+</section>
+<section id="problems" class="level2">
+<h2 class="anchored" data-anchor-id="problems">Problems</h2>
+<section id="same-tree" class="level3">
+<h3 class="anchored" data-anchor-id="same-tree">1. Same Tree</h3>
+<p>The first application of recursion. Thinking in node, the two are the same if each pair of nodes has the same value. Therefore, the recursive function should 1. check the current pair then 2. check the two child pairs. This problem is simple enough so that we don’t need to write another helper function to deal with the situation.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> isSameTree(<span class="va">self</span>, p: Optional[TreeNode], q: Optional[TreeNode]) <span class="op">-&gt;</span> <span class="bu">bool</span>:</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> p <span class="kw">and</span> <span class="kw">not</span> q:</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">True</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> p <span class="kw">and</span> q:</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> (p.val<span class="op">==</span>q.val <span class="kw">and</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>                    <span class="va">self</span>.isSameTree(p.left, q.left) <span class="kw">and</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>                    <span class="va">self</span>.isSameTree(p.right, q.right))</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">False</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>However</strong>, this problem is not just depth-first search. Breadth-first search can be used as well, as in the iterative solution.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> deque</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> isSameTree(<span class="va">self</span>, p, q):</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        <span class="kw">def</span> check(p, q):</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>            <span class="co"># if both are None</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="kw">not</span> p <span class="kw">and</span> <span class="kw">not</span> q:</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> <span class="va">True</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>            <span class="co"># one of p and q is None</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="kw">not</span> q <span class="kw">or</span> <span class="kw">not</span> p:</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> p.val <span class="op">!=</span> q.val:</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">True</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        deq <span class="op">=</span> deque([(p, q),])</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> deq:</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>            p, q <span class="op">=</span> deq.popleft()</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="kw">not</span> check(p, q):</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> p:</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>                deq.append((p.left, q.left))</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>                deq.append((p.right, q.right))</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>                    </span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">True</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="flip-equivalent-binary-trees" class="level3">
+<h3 class="anchored" data-anchor-id="flip-equivalent-binary-trees">2. Flip Equivalent Binary Trees</h3>
+<p>The tweaked problem of above. The trees now are the same if each pair of nodes are the same and each pair of corresponding children are the sae <em>or</em> each pair of flipped children are the same. This means adding a case in the return.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> flipEquiv(<span class="va">self</span>, root1: Optional[TreeNode], root2: Optional[TreeNode]) <span class="op">-&gt;</span> <span class="bu">bool</span>:</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> root1 <span class="kw">and</span> <span class="kw">not</span> root2:</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">True</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> root1 <span class="kw">and</span> root2:</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> (root1.val<span class="op">==</span>root2.val <span class="kw">and</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>                    ((<span class="va">self</span>.flipEquiv(root1.left, root2.left) <span class="kw">and</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>                    <span class="va">self</span>.flipEquiv(root1.right, root2.right)) <span class="kw">or</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>                    (<span class="va">self</span>.flipEquiv(root1.left, root2.right) <span class="kw">and</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>                    <span class="va">self</span>.flipEquiv(root1.right, root2.left))))</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">False</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="path-sum" class="level3">
+<h3 class="anchored" data-anchor-id="path-sum">3. Path Sum</h3>
 
 
+</section>
 </section>
 </section>
 

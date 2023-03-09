@@ -18,6 +18,8 @@ The upgraded version of a linked list.
 - There exists a path from the root to any node;
 - Has $N - 1$ edges, where $N$ is the number of nodes in the tree; and
 - Each node has exactly one parent node with the exception of the root node.
+
+For binary tree, all nodes have at most 2 children.
 ```python
 # Definition for a binary tree node.
 class TreeNode:
@@ -26,5 +28,137 @@ class TreeNode:
         self.left = left
         self.right = right
 ```
+| Terms | Meaning |
+| ----- | ------- |
+| Node & Edges  | Trivia |
+| Root          | The first node |
+| Leaf node     | Node with no child |
+| Internal node | Node with at least one child |
+| Ancestor      | Nodes that are between the path<br/>from the root to the current root.<br/> Including the node itself |
+| Descendent    | Nodes that are between the path<br/>from the root to the current root.<br/> Including the node itself |
+| Level         | Number of ancestors from that node<br/>until the root node. Start at 0 or 1, go down. |
+| Height        | Number of edges on the longest path from<br/>that node to a leaf. Start at 0, go up. |
+| Depth         | Number of edges on the path from root<br/>to that node. Start at 0, go down. |
+
 
 ## Categories
+
+**Full binary tree**
+: Every node has 0 or 2 children.
+
+**Complete binary tree**
+: All levels are completely filled except possibly the last level. All nodes are as far left as possible.
+
+**Perfect binary tree**
+: All internal nodes have two children and all leaf nodes have the same level
+
+**Balanced binary tree**
+: Every node fulfil the condition: height difference of the left and right subtree of the node is not more than than 1. Searching, insertion, and deletion in a balanced binary tree takes $O(logn)$ instead of $O(n)$ in an unbalanced binary tree.
+
+
+
+## Notes:
+
+### 1. Depth-first search
+
+**Depth-first search** is the first heavily used technique. It is essentially *pre-order traversal* of a tree. All traversal types are given here:
+```python
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+    def pre_order_traversal(self, root: TreeNode):
+        if root is not None:
+            print(root.val)
+            pre_order_traversal(root.left)
+            pre_order_traversal(root.right)
+
+    def in_order_traversal(self, root: TreeNode):
+        if root is not None:
+            in_order_traversal(root.left)
+            print(root.val)
+            in_order_traversal(root.right)
+    
+    def post_order_traversal(self, root: TreeNode):
+        if root is not None:
+            post_order_traversal(root.left)
+            post_order_traversal(root.right)
+            print(root.val)
+```
+Depth-first search is often implemented in recursion. In thinking in recursion, the most important thing is visualization of the call stack. 
+
+In thinking in recursion, one must forget the whole picture and start thinking about each node. For each node, decide how the information there should be processed, then recurse on the children. When you are a node, the only thing you know are 1. node value and 2. how to get to children. The recursive function should manipulate these things.
+
+In defining the recursive functions, there are two things to decide when we define:
+
+1. `return` value - the value the child passes to the parent. For example, for the max depth problem this is the max depth for the current node's subtree.
+2. state - the value the parent passes to the child. For example, to know if the current node's value is larger than its parent we have to maintain the parent's value as a state.
+
+Another way to solve the problem is to replace `return` value with a global variable.
+
+## Problems
+
+### 1. Same Tree
+
+The first application of recursion. Thinking in node, the two are the same if each pair of nodes has the same value. Therefore, the recursive function should 1. check the current pair then 2. check the two child pairs. This problem is simple enough so that we don't need to write another helper function to deal with the situation.
+```python
+class Solution:
+    def isSameTree(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
+        if not p and not q:
+            return True
+        if p and q:
+            return (p.val==q.val and
+                    self.isSameTree(p.left, q.left) and
+                    self.isSameTree(p.right, q.right))
+        return False
+```
+**However**, this problem is not just depth-first search. Breadth-first search can be used as well, as in the iterative solution.
+```python
+from collections import deque
+class Solution:
+    def isSameTree(self, p, q):
+        def check(p, q):
+            # if both are None
+            if not p and not q:
+                return True
+            # one of p and q is None
+            if not q or not p:
+                return False
+            if p.val != q.val:
+                return False
+            return True
+        
+        deq = deque([(p, q),])
+        while deq:
+            p, q = deq.popleft()
+            if not check(p, q):
+                return False
+            
+            if p:
+                deq.append((p.left, q.left))
+                deq.append((p.right, q.right))
+                    
+        return True
+```
+
+### 2. Flip Equivalent Binary Trees
+
+The tweaked problem of above. The trees now are the same if each pair of nodes are the same and each pair of corresponding children are the sae *or* each pair of flipped children are the same. This means adding a case in the return.
+```python
+class Solution:
+    def flipEquiv(self, root1: Optional[TreeNode], root2: Optional[TreeNode]) -> bool:
+        if not root1 and not root2:
+            return True
+        if root1 and root2:
+            return (root1.val==root2.val and
+                    ((self.flipEquiv(root1.left, root2.left) and
+                    self.flipEquiv(root1.right, root2.right)) or
+                    (self.flipEquiv(root1.left, root2.right) and
+                    self.flipEquiv(root1.right, root2.left))))
+        return False
+```
+
+### 3. Path Sum
+
