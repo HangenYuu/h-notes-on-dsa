@@ -2,22 +2,26 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://h-notes-on-dsa.netlify.app/about.html</loc>
-    <lastmod>2023-03-09T13:00:13.698Z</lastmod>
+    <lastmod>2023-03-14T02:03:07.639Z</lastmod>
   </url>
   <url>
     <loc>https://h-notes-on-dsa.netlify.app/index.html</loc>
-    <lastmod>2023-03-09T13:00:14.269Z</lastmod>
+    <lastmod>2023-03-14T02:03:08.243Z</lastmod>
+  </url>
+  <url>
+    <loc>https://h-notes-on-dsa.netlify.app/posts/array/index.html</loc>
+    <lastmod>2023-03-14T02:03:08.820Z</lastmod>
   </url>
   <url>
     <loc>https://h-notes-on-dsa.netlify.app/posts/graph/index.html</loc>
-    <lastmod>2023-03-09T13:00:15.712Z</lastmod>
+    <lastmod>2023-03-14T02:03:10.236Z</lastmod>
   </url>
   <url>
     <loc>https://h-notes-on-dsa.netlify.app/posts/linked_list/index.html</loc>
-    <lastmod>2023-03-09T13:00:16.316Z</lastmod>
+    <lastmod>2023-03-14T02:03:10.877Z</lastmod>
   </url>
   <url>
     <loc>https://h-notes-on-dsa.netlify.app/posts/tree/index.html</loc>
-    <lastmod>2023-03-09T13:00:16.846Z</lastmod>
+    <lastmod>2023-03-14T02:03:11.446Z</lastmod>
   </url>
 </urlset>

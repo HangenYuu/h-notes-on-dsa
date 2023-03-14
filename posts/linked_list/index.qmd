@@ -40,7 +40,22 @@ This is useful as we can use the `head` as a pointer to traverse the linked list
 
 ### 1. Reverse Linked List
 
-The introductory problem to using the three pointers - `pre`, `cur`, and `nex` to keep track of the node in the list. Can be used to solve a sub-problem in the future.
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+This is what I call a **basic problem** - a problem that can be become a sub-problem for a bigger task in the future LeetCode problems. This is like a formula that you have no choice but to remember (coding interview is still closed-book at the moment, year 2023), and then exploit it over and over again.
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+When dealing with Linked List, the king is pointer - ~~something as dangerous as pointing gun to your head~~an object that points to the particular position of a node in the list. The number of pointers a problem requires depend on the amount of information we need at when processing each node in the list. Here, we need to know 3 pieces: the current node (obviously), the previous node to point the current node to, and the next node to move the pointer. Hence, we will use three pointers - `pre`, `cur`, and `nex` to keep track while traversing the list.
+
+#### Complexity
+- Time complexity: $O(n)$: Traversing the whole list once.
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+
+- Space complexity: $O(1)$: Pointers are essentially integers, taking constant memory
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+
+#### Code
 ```python
 class Solution:
     def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
@@ -62,6 +77,23 @@ class Solution:
 ### 2. Merge Two Sorted Lists
 
 Choose a new linked list. Move the two head pointers down the two lists, compare the nodes, and splice them accordingly.
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+
+#### Code
 ```python
 class Solution:
     def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
@@ -100,6 +132,23 @@ class Solution:
 ### 3. Linked List Cycle
 
 The introductory fast and slow pointers problem. Because there is a loop, the fast and slow pointers are bound to meet with each other somewhere.
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+
+#### Code
 ```python
 class Solution:
     def hasCycle(self, head: Optional[ListNode]) -> bool:
@@ -120,6 +169,23 @@ class Solution:
 ### 4. Remove Nth Node From End of List
 
 The idea is to initialize two fast and slow pointers, but started at different positions while moving at the same speed. We want that when the fast pointer hits the end, the slow pointer is at the node before the to-be-removed node to rearrange the connection.
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+
+#### Code
 ```python
 class Solution:
     def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
@@ -155,6 +221,23 @@ The task can be divided into 3 parts:
 3. Merge the two halves.
 
 Here we saw for the first time all the problems above come together into one problem. Here you see that I turned the second part into another hidden method within the `Solution` class. This is one way to do it. Another is to define the function *within* the function (nested function), which you will see many Python LeetCoders do. These two methods are equivalent in solving LeetCode problems. For outside world, I think that my current method is more appreciated, as of [here](https://realpython.com/inner-functions-what-are-they-good-for/).
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+
+#### Code
 ```python
 class Solution:
     def _reverseList(self, head: ListNode):
@@ -197,6 +280,23 @@ class Solution:
 ### 6. Find the Duplicate Number
 
 This is not a Linked List question, but it utilizes the fast and slow pointers to turn it into a linked list question in the subtlest way possible. As noted in the editorial, this is similar to [Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/description/). In the original one, fast and slow pointer is used to detect the cycle. Now the objective is to return the cycle entrance. Fast and slow pointers can be proved mathematically to work for that problem, by having the fast pointer starts at the intersection and the slow pointer starts at the start, they will meet each other at the entrance!
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+
+#### Code
 ```python
 class Solution:
     def findDuplicate(self, nums: List[int]) -> int:
@@ -220,6 +320,23 @@ class Solution:
 ### 7. Copy List with Random Pointer
 
 Sometimes overthinking is a big problem. This question is super hard - if you try to do it in one go. The secret is to not do so. You do it in 2 passes. And use a HashMap to keep track of the copy.
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+
+#### Code
 ```python
 """
 # Definition for a Node.
@@ -260,6 +377,23 @@ Here we see the reverse linked list sub-problem becomes relevant again. The algo
 1. Go to the middle of the linked list and divide it in 2 halves.
 2. Reverse the second half.
 3. Check each pair of nodes of two halves and return result.
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+
+#### Code
 ```python
 class Solution:
     def _reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
@@ -302,6 +436,23 @@ The second problem added to LeetCode, after [Two Sum](https://leetcode.com/probl
 
 1. While both heads not yet hit the end, traverse and add each pair of digit (remember to log the remaining).
 2. When a head hits the end, check if the remaining list has any node left and add them to the result.
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+
+#### Code
 ```python
 # Definition for singly-linked list.
 # class ListNode:
@@ -347,3 +498,21 @@ class Solution:
         return dummy.next
 ```
 
+### 10. LRU Cache
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+
+#### Code

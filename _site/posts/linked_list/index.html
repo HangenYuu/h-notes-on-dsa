@@ -101,10 +101,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -125,6 +125,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   }
 }</script>
 
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -225,6 +226,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#copy-list-with-random-pointer" id="toc-copy-list-with-random-pointer" class="nav-link" data-scroll-target="#copy-list-with-random-pointer">7. Copy List with Random Pointer</a></li>
   <li><a href="#palindrome-linked-list" id="toc-palindrome-linked-list" class="nav-link" data-scroll-target="#palindrome-linked-list">8. Palindrome Linked List</a></li>
   <li><a href="#add-two-numbers" id="toc-add-two-numbers" class="nav-link" data-scroll-target="#add-two-numbers">9. Add Two Numbers</a></li>
+  <li><a href="#lru-cache" id="toc-lru-cache" class="nav-link" data-scroll-target="#lru-cache">10. LRU Cache</a></li>
   </ul></li>
   </ul></li>
   </ul>
@@ -270,7 +272,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 class="anchored" data-anchor-id="problems">Problems:</h2>
 <section id="reverse-linked-list" class="level3">
 <h3 class="anchored" data-anchor-id="reverse-linked-list">1. Reverse Linked List</h3>
-<p>The introductory problem to using the three pointers - <code>pre</code>, <code>cur</code>, and <code>nex</code> to keep track of the node in the list. Can be used to solve a sub-problem in the future.</p>
+<section id="intuition" class="level4">
+<h4 class="anchored" data-anchor-id="intuition">Intuition</h4>
+<!-- Describe your first thoughts on how to solve this problem. -->
+<p>This is what I call a <strong>basic problem</strong> - a problem that can be become a sub-problem for a bigger task in the future LeetCode problems. This is like a formula that you have no choice but to remember (coding interview is still closed-book at the moment, year 2023), and then exploit it over and over again.</p>
+</section>
+<section id="approach" class="level4">
+<h4 class="anchored" data-anchor-id="approach">Approach</h4>
+<!-- Describe your approach to solving the problem. -->
+<p>When dealing with Linked List, the king is pointer - <del>something as dangerous as pointing gun to your head</del>an object that points to the particular position of a node in the list. The number of pointers a problem requires depend on the amount of information we need at when processing each node in the list. Here, we need to know 3 pieces: the current node (obviously), the previous node to point the current node to, and the next node to move the pointer. Hence, we will use three pointers - <code>pre</code>, <code>cur</code>, and <code>nex</code> to keep track while traversing the list.</p>
+</section>
+<section id="complexity" class="level4">
+<h4 class="anchored" data-anchor-id="complexity">Complexity</h4>
+<ul>
+<li><p>Time complexity: <span class="math inline">\(O(n)\)</span>: Traversing the whole list once. <!-- Add your time complexity here, e.g. $$O(n)$$ --></p></li>
+<li><p>Space complexity: <span class="math inline">\(O(1)\)</span>: Pointers are essentially integers, taking constant memory <!-- Add your space complexity here, e.g. $$O(n)$$ --></p></li>
+</ul>
+</section>
+<section id="code" class="level4">
+<h4 class="anchored" data-anchor-id="code">Code</h4>
 <div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> reverseList(<span class="va">self</span>, head: Optional[ListNode]) <span class="op">-&gt;</span> Optional[ListNode]:</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Easy case:</span></span>
@@ -287,9 +307,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>        cur.<span class="bu">next</span> <span class="op">=</span> pre</span>
 <span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> cur</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
+</section>
 <section id="merge-two-sorted-lists" class="level3">
 <h3 class="anchored" data-anchor-id="merge-two-sorted-lists">2. Merge Two Sorted Lists</h3>
 <p>Choose a new linked list. Move the two head pointers down the two lists, compare the nodes, and splice them accordingly.</p>
+<section id="intuition-1" class="level4">
+<h4 class="anchored" data-anchor-id="intuition-1">Intuition</h4>
+<!-- Describe your first thoughts on how to solve this problem. -->
+</section>
+<section id="approach-1" class="level4">
+<h4 class="anchored" data-anchor-id="approach-1">Approach</h4>
+<!-- Describe your approach to solving the problem. -->
+</section>
+<section id="complexity-1" class="level4">
+<h4 class="anchored" data-anchor-id="complexity-1">Complexity</h4>
+<ul>
+<li><p>Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --></p></li>
+<li><p>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --></p></li>
+</ul>
+</section>
+<section id="code-1" class="level4">
+<h4 class="anchored" data-anchor-id="code-1">Code</h4>
 <div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> mergeTwoLists(<span class="va">self</span>, list1: Optional[ListNode], list2: Optional[ListNode]) <span class="op">-&gt;</span> Optional[ListNode]:</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Easy case</span></span>
@@ -323,9 +361,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>        </span>
 <span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> dummy.<span class="bu">next</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
+</section>
 <section id="linked-list-cycle" class="level3">
 <h3 class="anchored" data-anchor-id="linked-list-cycle">3. Linked List Cycle</h3>
 <p>The introductory fast and slow pointers problem. Because there is a loop, the fast and slow pointers are bound to meet with each other somewhere.</p>
+<section id="intuition-2" class="level4">
+<h4 class="anchored" data-anchor-id="intuition-2">Intuition</h4>
+<!-- Describe your first thoughts on how to solve this problem. -->
+</section>
+<section id="approach-2" class="level4">
+<h4 class="anchored" data-anchor-id="approach-2">Approach</h4>
+<!-- Describe your approach to solving the problem. -->
+</section>
+<section id="complexity-2" class="level4">
+<h4 class="anchored" data-anchor-id="complexity-2">Complexity</h4>
+<ul>
+<li><p>Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --></p></li>
+<li><p>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --></p></li>
+</ul>
+</section>
+<section id="code-2" class="level4">
+<h4 class="anchored" data-anchor-id="code-2">Code</h4>
 <div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> hasCycle(<span class="va">self</span>, head: Optional[ListNode]) <span class="op">-&gt;</span> <span class="bu">bool</span>:</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Easy case</span></span>
@@ -341,9 +397,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> <span class="va">True</span></span>
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">False</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
+</section>
 <section id="remove-nth-node-from-end-of-list" class="level3">
 <h3 class="anchored" data-anchor-id="remove-nth-node-from-end-of-list">4. Remove Nth Node From End of List</h3>
 <p>The idea is to initialize two fast and slow pointers, but started at different positions while moving at the same speed. We want that when the fast pointer hits the end, the slow pointer is at the node before the to-be-removed node to rearrange the connection.</p>
+<section id="intuition-3" class="level4">
+<h4 class="anchored" data-anchor-id="intuition-3">Intuition</h4>
+<!-- Describe your first thoughts on how to solve this problem. -->
+</section>
+<section id="approach-3" class="level4">
+<h4 class="anchored" data-anchor-id="approach-3">Approach</h4>
+<!-- Describe your approach to solving the problem. -->
+</section>
+<section id="complexity-3" class="level4">
+<h4 class="anchored" data-anchor-id="complexity-3">Complexity</h4>
+<ul>
+<li><p>Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --></p></li>
+<li><p>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --></p></li>
+</ul>
+</section>
+<section id="code-3" class="level4">
+<h4 class="anchored" data-anchor-id="code-3">Code</h4>
 <div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> removeNthFromEnd(<span class="va">self</span>, head: Optional[ListNode], n: <span class="bu">int</span>) <span class="op">-&gt;</span> Optional[ListNode]:</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Easy case</span></span>
@@ -368,6 +442,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>        </span>
 <span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> head</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
+</section>
 <section id="reorder-list" class="level3">
 <h3 class="anchored" data-anchor-id="reorder-list">5. Reorder List</h3>
 <p>The task can be divided into 3 parts:</p>
@@ -377,6 +452,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Merge the two halves.</li>
 </ol>
 <p>Here we saw for the first time all the problems above come together into one problem. Here you see that I turned the second part into another hidden method within the <code>Solution</code> class. This is one way to do it. Another is to define the function <em>within</em> the function (nested function), which you will see many Python LeetCoders do. These two methods are equivalent in solving LeetCode problems. For outside world, I think that my current method is more appreciated, as of <a href="https://realpython.com/inner-functions-what-are-they-good-for/">here</a>.</p>
+<section id="intuition-4" class="level4">
+<h4 class="anchored" data-anchor-id="intuition-4">Intuition</h4>
+<!-- Describe your first thoughts on how to solve this problem. -->
+</section>
+<section id="approach-4" class="level4">
+<h4 class="anchored" data-anchor-id="approach-4">Approach</h4>
+<!-- Describe your approach to solving the problem. -->
+</section>
+<section id="complexity-4" class="level4">
+<h4 class="anchored" data-anchor-id="complexity-4">Complexity</h4>
+<ul>
+<li><p>Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --></p></li>
+<li><p>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --></p></li>
+</ul>
+</section>
+<section id="code-4" class="level4">
+<h4 class="anchored" data-anchor-id="code-4">Code</h4>
 <div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> _reverseList(<span class="va">self</span>, head: ListNode):</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        pre, cur, nex <span class="op">=</span> <span class="va">None</span>, head, head.<span class="bu">next</span></span>
@@ -414,9 +506,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> nex1:</span>
 <span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>            temp2.<span class="bu">next</span> <span class="op">=</span> nex1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
+</section>
 <section id="find-the-duplicate-number" class="level3">
 <h3 class="anchored" data-anchor-id="find-the-duplicate-number">6. Find the Duplicate Number</h3>
 <p>This is not a Linked List question, but it utilizes the fast and slow pointers to turn it into a linked list question in the subtlest way possible. As noted in the editorial, this is similar to <a href="https://leetcode.com/problems/linked-list-cycle-ii/description/">Linked List Cycle II</a>. In the original one, fast and slow pointer is used to detect the cycle. Now the objective is to return the cycle entrance. Fast and slow pointers can be proved mathematically to work for that problem, by having the fast pointer starts at the intersection and the slow pointer starts at the start, they will meet each other at the entrance!</p>
+<section id="intuition-5" class="level4">
+<h4 class="anchored" data-anchor-id="intuition-5">Intuition</h4>
+<!-- Describe your first thoughts on how to solve this problem. -->
+</section>
+<section id="approach-5" class="level4">
+<h4 class="anchored" data-anchor-id="approach-5">Approach</h4>
+<!-- Describe your approach to solving the problem. -->
+</section>
+<section id="complexity-5" class="level4">
+<h4 class="anchored" data-anchor-id="complexity-5">Complexity</h4>
+<ul>
+<li><p>Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --></p></li>
+<li><p>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --></p></li>
+</ul>
+</section>
+<section id="code-5" class="level4">
+<h4 class="anchored" data-anchor-id="code-5">Code</h4>
 <div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> findDuplicate(<span class="va">self</span>, nums: List[<span class="bu">int</span>]) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Phase 1: Intersection point</span></span>
@@ -435,9 +545,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>        </span>
 <span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> slow</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
+</section>
 <section id="copy-list-with-random-pointer" class="level3">
 <h3 class="anchored" data-anchor-id="copy-list-with-random-pointer">7. Copy List with Random Pointer</h3>
 <p>Sometimes overthinking is a big problem. This question is super hard - if you try to do it in one go. The secret is to not do so. You do it in 2 passes. And use a HashMap to keep track of the copy.</p>
+<section id="intuition-6" class="level4">
+<h4 class="anchored" data-anchor-id="intuition-6">Intuition</h4>
+<!-- Describe your first thoughts on how to solve this problem. -->
+</section>
+<section id="approach-6" class="level4">
+<h4 class="anchored" data-anchor-id="approach-6">Approach</h4>
+<!-- Describe your approach to solving the problem. -->
+</section>
+<section id="complexity-6" class="level4">
+<h4 class="anchored" data-anchor-id="complexity-6">Complexity</h4>
+<ul>
+<li><p>Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --></p></li>
+<li><p>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --></p></li>
+</ul>
+</section>
+<section id="code-6" class="level4">
+<h4 class="anchored" data-anchor-id="code-6">Code</h4>
 <div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Definition for a Node.</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">class Node:</span></span>
@@ -469,6 +597,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>        </span>
 <span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> oldToCopy[head]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
+</section>
 <section id="palindrome-linked-list" class="level3">
 <h3 class="anchored" data-anchor-id="palindrome-linked-list">8. Palindrome Linked List</h3>
 <p>Here we see the reverse linked list sub-problem becomes relevant again. The algorithm is:</p>
@@ -477,6 +606,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Reverse the second half.</li>
 <li>Check each pair of nodes of two halves and return result.</li>
 </ol>
+<section id="intuition-7" class="level4">
+<h4 class="anchored" data-anchor-id="intuition-7">Intuition</h4>
+<!-- Describe your first thoughts on how to solve this problem. -->
+</section>
+<section id="approach-7" class="level4">
+<h4 class="anchored" data-anchor-id="approach-7">Approach</h4>
+<!-- Describe your approach to solving the problem. -->
+</section>
+<section id="complexity-7" class="level4">
+<h4 class="anchored" data-anchor-id="complexity-7">Complexity</h4>
+<ul>
+<li><p>Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --></p></li>
+<li><p>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --></p></li>
+</ul>
+</section>
+<section id="code-7" class="level4">
+<h4 class="anchored" data-anchor-id="code-7">Code</h4>
 <div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> _reverseList(<span class="va">self</span>, head: Optional[ListNode]) <span class="op">-&gt;</span> Optional[ListNode]:</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>        pre, cur, nex <span class="op">=</span> <span class="va">None</span>, head, head.<span class="bu">next</span></span>
@@ -511,6 +657,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>            temp, head <span class="op">=</span> temp.<span class="bu">next</span>, head.<span class="bu">next</span></span>
 <span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">True</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
+</section>
 <section id="add-two-numbers" class="level3">
 <h3 class="anchored" data-anchor-id="add-two-numbers">9. Add Two Numbers</h3>
 <p>The second problem added to LeetCode, after <a href="https://leetcode.com/problems/two-sum/">Two Sum</a>. The digits are arranged in reverse order, which makes it easier to add them. The algorithm can be represented as:</p>
@@ -518,6 +665,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>While both heads not yet hit the end, traverse and add each pair of digit (remember to log the remaining).</li>
 <li>When a head hits the end, check if the remaining list has any node left and add them to the result.</li>
 </ol>
+<section id="intuition-8" class="level4">
+<h4 class="anchored" data-anchor-id="intuition-8">Intuition</h4>
+<!-- Describe your first thoughts on how to solve this problem. -->
+</section>
+<section id="approach-8" class="level4">
+<h4 class="anchored" data-anchor-id="approach-8">Approach</h4>
+<!-- Describe your approach to solving the problem. -->
+</section>
+<section id="complexity-8" class="level4">
+<h4 class="anchored" data-anchor-id="complexity-8">Complexity</h4>
+<ul>
+<li><p>Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --></p></li>
+<li><p>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --></p></li>
+</ul>
+</section>
+<section id="code-8" class="level4">
+<h4 class="anchored" data-anchor-id="code-8">Code</h4>
 <div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Definition for singly-linked list.</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># class ListNode:</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">#     def __init__(self, val=0, next=None):</span></span>
@@ -560,8 +724,30 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> remain <span class="op">!=</span> <span class="dv">0</span>:</span>
 <span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>            head.<span class="bu">next</span> <span class="op">=</span> ListNode(remain)</span>
 <span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> dummy.<span class="bu">next</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="lru-cache" class="level3">
+<h3 class="anchored" data-anchor-id="lru-cache">10. LRU Cache</h3>
+<section id="intuition-9" class="level4">
+<h4 class="anchored" data-anchor-id="intuition-9">Intuition</h4>
+<!-- Describe your first thoughts on how to solve this problem. -->
+</section>
+<section id="approach-9" class="level4">
+<h4 class="anchored" data-anchor-id="approach-9">Approach</h4>
+<!-- Describe your approach to solving the problem. -->
+</section>
+<section id="complexity-9" class="level4">
+<h4 class="anchored" data-anchor-id="complexity-9">Complexity</h4>
+<ul>
+<li><p>Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --></p></li>
+<li><p>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --></p></li>
+</ul>
+</section>
+<section id="code-9" class="level4">
+<h4 class="anchored" data-anchor-id="code-9">Code</h4>
 
 
+</section>
 </section>
 </section>
 </section>

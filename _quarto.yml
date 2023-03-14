@@ -12,8 +12,6 @@ website:
         href: https://twitter.com
 format:
   html:
-    theme: cyborg
+    theme: zephyr
     css: styles.css
-
-
-
+    highlight-style: solarized

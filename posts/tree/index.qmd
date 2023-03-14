@@ -103,6 +103,23 @@ Another way to solve the problem is to replace `return` value with a global vari
 ### 1. Same Tree
 
 The first application of recursion. Thinking in node, the two are the same if each pair of nodes has the same value. Therefore, the recursive function should 1. check the current pair then 2. check the two child pairs. This problem is simple enough so that we don't need to write another helper function to deal with the situation.
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+
+#### Code
 ```python
 class Solution:
     def isSameTree(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
@@ -146,6 +163,23 @@ class Solution:
 ### 2. Flip Equivalent Binary Trees
 
 The tweaked problem of above. The trees now are the same if each pair of nodes are the same and each pair of corresponding children are the sae *or* each pair of flipped children are the same. This means adding a case in the return.
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+
+#### Code
 ```python
 class Solution:
     def flipEquiv(self, root1: Optional[TreeNode], root2: Optional[TreeNode]) -> bool:
@@ -162,3 +196,19 @@ class Solution:
 
 ### 3. Path Sum
 
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+
+#### Code

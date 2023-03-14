@@ -1,0 +1,123 @@
+---
+title: "Array"
+description: "Array"
+author: "Pham Nguyen Hung"
+date: "3/14/2023"
+draft: false
+toc: true
+---
+Firstly, See [About](https://h-notes-on-dsa.netlify.app/about.html) page.
+
+# Array:
+
+## Definition:
+
+The easiest, linear data structure, consisting of elements stored in contiguous memory slots. Elements are access by index, usually a number. The dictionary, or HashMap is a related data structure, consisting of key-value pairs that will be used in dealing array question.
+
+## Problem:
+
+### 1. Two Sum:
+
+The **basic of basic problem**, the first problem everybody encounters when he/she starts LeetCoding.
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+Traversing the list seems like the most logical thing to do. The brute-force way is to check every pair of numbers. The time complexity is O(n^2). To optimize this, it is better to store the information we have already encountered when we traverse the list. We need to use a data structure that supports fast searching - HashMap. Either way works, but the HashMap can be used for storing the index of the element as well. If we store an element as the key and the index as the value, we can quickly search and return the indices.
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+The algorithm can be described as:
+
+1. Traverse the array from the beginning.
+2. Store the element encountered in a set/dictionary.
+3. Check if the sum - element is in the dictionary.
+4. Return the indices.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: Traversing the whole list once.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$: In the worst case, we will have a dictionary with a size equal to the array.
+
+#### Code
+```python
+from collections import defaultdict
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        numsDict = defaultdict(int)
+        for ind, num in enumerate(nums):
+            if target-num in numsDict:
+                return [ind, numsDict[target-num]]
+            numsDict[num] = ind
+```
+
+### 2. Contains Duplicate
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+Again, traverse the array, storing information about what we have encountered. This time, we only need to store the element itself, so a HashSet suffices.
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+1. Traverse the array.
+2. Check if the current element is in the HashSet. If it is, return True for duplicate.
+3. If we reach the end of the array, return False for no duplicate.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: Traversing the whole list once.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$: In the worst case, we will have a set with a size equal to the array.
+
+#### Code
+```python
+class Solution:
+    def containsDuplicate(self, nums: List[int]) -> bool:
+        numSet = set()
+        for num in nums:
+            if num in numSet:
+                return True
+            numSet.add(num)
+        return False
+```
+
+### 3. Valid Anagram:
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+Again, traverse the array, storing information about what we have encountered. This time, we only need to store the element itself, so a HashSet suffices.
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+1. Traverse the array.
+2. Check if the current element is in the HashSet. If it is, return True for duplicate.
+3. If we reach the end of the array, return False for no duplicate.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: Traversing the whole list once.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$: In the worst case, we will have a set with a size equal to the array.
+
+#### Code
+```python
+from collections import defaultdict
+class Solution:
+    def isAnagram(self, s: str, t: str) -> bool:
+        if len(s) != len(t):
+            return False
+        hashS, hashT = defaultdict(int), defaultdict(int)
+        for index in range(len(s)):
+            hashS[s[index]] += 1
+            hashT[t[index]] += 1
+        return hashS == hashT
+```
