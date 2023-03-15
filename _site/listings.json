@@ -2,6 +2,8 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/stack/index.html",
+      "/posts/two_pointers/index.html",
       "/posts/array/index.html",
       "/posts/tree/index.html",
       "/posts/linked_list/index.html",

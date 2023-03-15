@@ -2,26 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://h-notes-on-dsa.netlify.app/about.html</loc>
-    <lastmod>2023-03-14T02:03:07.639Z</lastmod>
+    <lastmod>2023-03-15T15:16:38.084Z</lastmod>
   </url>
   <url>
     <loc>https://h-notes-on-dsa.netlify.app/index.html</loc>
-    <lastmod>2023-03-14T02:03:08.243Z</lastmod>
+    <lastmod>2023-03-15T15:16:38.638Z</lastmod>
   </url>
   <url>
     <loc>https://h-notes-on-dsa.netlify.app/posts/array/index.html</loc>
-    <lastmod>2023-03-14T02:03:08.820Z</lastmod>
+    <lastmod>2023-03-15T15:16:39.083Z</lastmod>
   </url>
   <url>
     <loc>https://h-notes-on-dsa.netlify.app/posts/graph/index.html</loc>
-    <lastmod>2023-03-14T02:03:10.236Z</lastmod>
+    <lastmod>2023-03-15T15:16:41.568Z</lastmod>
   </url>
   <url>
     <loc>https://h-notes-on-dsa.netlify.app/posts/linked_list/index.html</loc>
-    <lastmod>2023-03-14T02:03:10.877Z</lastmod>
+    <lastmod>2023-03-15T15:16:42.088Z</lastmod>
+  </url>
+  <url>
+    <loc>https://h-notes-on-dsa.netlify.app/posts/stack/index.html</loc>
+    <lastmod>2023-03-15T15:16:42.469Z</lastmod>
   </url>
   <url>
     <loc>https://h-notes-on-dsa.netlify.app/posts/tree/index.html</loc>
-    <lastmod>2023-03-14T02:03:11.446Z</lastmod>
+    <lastmod>2023-03-15T15:16:42.943Z</lastmod>
+  </url>
+  <url>
+    <loc>https://h-notes-on-dsa.netlify.app/posts/two_pointers/index.html</loc>
+    <lastmod>2023-03-15T15:16:43.333Z</lastmod>
   </url>
 </urlset>

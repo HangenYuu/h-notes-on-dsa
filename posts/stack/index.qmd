@@ -1,0 +1,103 @@
+---
+title: "Stack"
+description: "Stack"
+author: "Pham Nguyen Hung"
+date: "03/15/2023"
+draft: false
+toc: true
+---
+Firstly, See [About](https://h-notes-on-dsa.netlify.app/about.html) page.
+
+# Stack:
+
+## Definitions:
+
+A data structure with the trademark of LIFO (last in, first out). It has direct analogy to the list in Python, and we actually will use the built-in list as the stack. There are alternatives to have a stack (such as `queue.LifoQueue`), but normally, a python list suffices.
+
+## Problems:
+
+### 1. Valid Parentheses
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+This is the [Two Sum](https://leetcode.com/problems/two-sum/) of stack. The problem requirements can be translated into the intuition that if we push the left parenthesis into a stack and pop them out whenever we encounter a right parenthesis, the correct parenthesis sequence will generate all matching pairs.
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+1. Initialize, including a HashMap for right and left parenthesis, and check that the array has an even number of elements.
+2. Traverse the array of parentheses.
+3. If we encounter a left parenthesis, push it to a stack.
+4. If we encounter a right parenthesis, compare it to the one we pop from the stack. If they do not match, return False immediately.
+5. At the end, return True if the stack is empty, else False.
+
+#### Complexity
+- Time complexity: 
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: Traversing the whole array once.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$: At the worst case, we will need to store half of the array inside the stack.
+
+#### Code
+```python
+class Solution:
+    def isValid(self, s: str) -> bool:
+        if len(s) % 2:
+            return False
+        stack = []
+        parenthesisDict = {'{':'}', '[':']', '(':')'}
+        for parenthesis in s:
+            if parenthesis in parenthesisDict:
+                stack.append(parenthesis)
+            else:
+                if len(stack) == 0 or parenthesis != parenthesisDict[stack.pop()]:
+                    return False
+        return len(stack) == 0
+```
+
+### 2. Valid Palindrome
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+1. Initialize, including a HashMap for right and left parenthesis, and check that the array has an even number of elements.
+2. Traverse the array of parentheses.
+3. If we encounter a left parenthesis, push it to a stack.
+4. If we encounter a right parenthesis, compare it to the one we pop from the stack. If they do not match, return False immediately.
+5. At the end, return True if the stack is empty, else False.
+
+#### Complexity
+- Time complexity: 
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: Traversing the whole array once.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$: Pointers are essentially integers.
+
+#### Code
+```python
+class Solution:
+    def isPalindrome(self, s: str) -> bool:
+        # Edge case
+        if len(s) < 2:
+            return True
+
+        # General case
+        leftPointer, rightPointer = 0, len(s) - 1
+        while leftPointer <= rightPointer:
+            while (leftPointer < rightPointer) and (not s[leftPointer].isalnum()):
+                leftPointer += 1
+            while (leftPointer < rightPointer) and (not s[rightPointer].isalnum()):
+                rightPointer -= 1
+            
+            if s[leftPointer].lower() != s[rightPointer].lower():
+                return False
+            leftPointer += 1
+            rightPointer -= 1
+        
+        return rightPointer < len(s) - 1
+```

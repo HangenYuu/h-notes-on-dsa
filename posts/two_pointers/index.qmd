@@ -1,0 +1,64 @@
+---
+title: "Two pointers"
+description: "Two pointers"
+author: "Pham Nguyen Hung"
+date: "03/15/2023"
+draft: false
+toc: true
+---
+Firstly, See [About](https://h-notes-on-dsa.netlify.app/about.html) page.
+
+# Two pointers
+
+## Definitions:
+
+This is not a data structure, but a pattern of coding interview questions. This is something passed down from languages with pointers such as C++ or Java. The idea is that we will traverse the array in both direction. This operation has use in some problems, particularly palindrome checking.
+
+## Problem
+
+### 1. Valid Palindrome
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+The **basic problem** of two pointers. The problem can be solved by many ways (strip the string then reverse, etc.), but the most straightforward way if you know two pointers is using two pointers. You will traverse the string in both directions, bypassing *non-alphanumeric* characters. For each alphanumeric pairs, the lowercase versions of the character must match.
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+1. Initialize two pointers.
+2. Traverse the array from both ends.
+3. For both pointers, if we encounter a non-alphanumeric characters, we increment or decrement further.
+4. If we encounter a differing pair, return False immediately.
+5. At the end, return True if the right end (or the left end, depending on which pointer is moved first) has moved, else False (this is to resolve edge cases suchas `".,"`).
+
+#### Complexity
+- Time complexity: 
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: Traversing the whole array once.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$: Pointers are essentially integers.
+
+#### Code
+```python
+class Solution:
+    def isPalindrome(self, s: str) -> bool:
+        # Edge case
+        if len(s) < 2:
+            return True
+
+        # General case
+        leftPointer, rightPointer = 0, len(s) - 1
+        while leftPointer <= rightPointer:
+            while (leftPointer < rightPointer) and (not s[leftPointer].isalnum()):
+                leftPointer += 1
+            while (leftPointer < rightPointer) and (not s[rightPointer].isalnum()):
+                rightPointer -= 1
+            
+            if s[leftPointer].lower() != s[rightPointer].lower():
+                return False
+            leftPointer += 1
+            rightPointer -= 1
+        
+        return rightPointer < len(s) - 1
+```

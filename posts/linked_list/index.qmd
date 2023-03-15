@@ -1,6 +1,6 @@
 ---
 title: "Linked List"
-description: "Linke List"
+description: "Linked List"
 author: "Pham Nguyen Hung"
 date: "03/07/2023"
 draft: false
