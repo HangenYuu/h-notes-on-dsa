@@ -56,48 +56,4 @@ class Solution:
         return len(stack) == 0
 ```
 
-### 2. Valid Palindrome
-
-#### Intuition
-<!-- Describe your first thoughts on how to solve this problem. -->
-
-#### Approach
-<!-- Describe your approach to solving the problem. -->
-1. Initialize, including a HashMap for right and left parenthesis, and check that the array has an even number of elements.
-2. Traverse the array of parentheses.
-3. If we encounter a left parenthesis, push it to a stack.
-4. If we encounter a right parenthesis, compare it to the one we pop from the stack. If they do not match, return False immediately.
-5. At the end, return True if the stack is empty, else False.
-
-#### Complexity
-- Time complexity: 
-<!-- Add your time complexity here, e.g. $$O(n)$$ -->
-$O(n)$: Traversing the whole array once.
-
-- Space complexity:
-<!-- Add your space complexity here, e.g. $$O(n)$$ -->
-$O(1)$: Pointers are essentially integers.
-
-#### Code
-```python
-class Solution:
-    def isPalindrome(self, s: str) -> bool:
-        # Edge case
-        if len(s) < 2:
-            return True
-
-        # General case
-        leftPointer, rightPointer = 0, len(s) - 1
-        while leftPointer <= rightPointer:
-            while (leftPointer < rightPointer) and (not s[leftPointer].isalnum()):
-                leftPointer += 1
-            while (leftPointer < rightPointer) and (not s[rightPointer].isalnum()):
-                rightPointer -= 1
-            
-            if s[leftPointer].lower() != s[rightPointer].lower():
-                return False
-            leftPointer += 1
-            rightPointer -= 1
-        
-        return rightPointer < len(s) - 1
-```
+### 2.

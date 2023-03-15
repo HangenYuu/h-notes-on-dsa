@@ -214,7 +214,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#problems" id="toc-problems" class="nav-link" data-scroll-target="#problems">Problems:</a>
   <ul class="collapse">
   <li><a href="#valid-parentheses" id="toc-valid-parentheses" class="nav-link" data-scroll-target="#valid-parentheses">1. Valid Parentheses</a></li>
-  <li><a href="#valid-palindrome" id="toc-valid-palindrome" class="nav-link" data-scroll-target="#valid-palindrome">2. Valid Palindrome</a></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section">2.</a></li>
   </ul></li>
   </ul></li>
   </ul>
@@ -277,55 +277,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">len</span>(stack) <span class="op">==</span> <span class="dv">0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
-<section id="valid-palindrome" class="level3">
-<h3 class="anchored" data-anchor-id="valid-palindrome">2. Valid Palindrome</h3>
-<section id="intuition-1" class="level4">
-<h4 class="anchored" data-anchor-id="intuition-1">Intuition</h4>
-<!-- Describe your first thoughts on how to solve this problem. -->
-</section>
-<section id="approach-1" class="level4">
-<h4 class="anchored" data-anchor-id="approach-1">Approach</h4>
-<!-- Describe your approach to solving the problem. -->
-<ol type="1">
-<li>Initialize, including a HashMap for right and left parenthesis, and check that the array has an even number of elements.</li>
-<li>Traverse the array of parentheses.</li>
-<li>If we encounter a left parenthesis, push it to a stack.</li>
-<li>If we encounter a right parenthesis, compare it to the one we pop from the stack. If they do not match, return False immediately.</li>
-<li>At the end, return True if the stack is empty, else False.</li>
-</ol>
-</section>
-<section id="complexity-1" class="level4">
-<h4 class="anchored" data-anchor-id="complexity-1">Complexity</h4>
-<ul>
-<li><p>Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(n)\)</span>: Traversing the whole array once.</p></li>
-<li><p>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(1)\)</span>: Pointers are essentially integers.</p></li>
-</ul>
-</section>
-<section id="code-1" class="level4">
-<h4 class="anchored" data-anchor-id="code-1">Code</h4>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> isPalindrome(<span class="va">self</span>, s: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">bool</span>:</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Edge case</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">len</span>(s) <span class="op">&lt;</span> <span class="dv">2</span>:</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">True</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        <span class="co"># General case</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        leftPointer, rightPointer <span class="op">=</span> <span class="dv">0</span>, <span class="bu">len</span>(s) <span class="op">-</span> <span class="dv">1</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> leftPointer <span class="op">&lt;=</span> rightPointer:</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>            <span class="cf">while</span> (leftPointer <span class="op">&lt;</span> rightPointer) <span class="kw">and</span> (<span class="kw">not</span> s[leftPointer].isalnum()):</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>                leftPointer <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>            <span class="cf">while</span> (leftPointer <span class="op">&lt;</span> rightPointer) <span class="kw">and</span> (<span class="kw">not</span> s[rightPointer].isalnum()):</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>                rightPointer <span class="op">-=</span> <span class="dv">1</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> s[leftPointer].lower() <span class="op">!=</span> s[rightPointer].lower():</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> <span class="va">False</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>            leftPointer <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>            rightPointer <span class="op">-=</span> <span class="dv">1</span></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> rightPointer <span class="op">&lt;</span> <span class="bu">len</span>(s) <span class="op">-</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="section" class="level3">
+<h3 class="anchored" data-anchor-id="section">2.</h3>
 
 
-</section>
 </section>
 </section>
 </section>
