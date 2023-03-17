@@ -220,7 +220,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul class="collapse">
   <li><a href="#same-tree" id="toc-same-tree" class="nav-link" data-scroll-target="#same-tree">1. Same Tree</a></li>
   <li><a href="#flip-equivalent-binary-trees" id="toc-flip-equivalent-binary-trees" class="nav-link" data-scroll-target="#flip-equivalent-binary-trees">2. Flip Equivalent Binary Trees</a></li>
-  <li><a href="#path-sum" id="toc-path-sum" class="nav-link" data-scroll-target="#path-sum">3. Path Sum</a></li>
+  <li><a href="#maximum-depth-of-binary-tree" id="toc-maximum-depth-of-binary-tree" class="nav-link" data-scroll-target="#maximum-depth-of-binary-tree">3. Maximum Depth of Binary Tree</a></li>
   </ul></li>
   </ul></li>
   </ul>
@@ -453,25 +453,31 @@ Every node fulfil the condition: height difference of the left and right subtree
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">False</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
-<section id="path-sum" class="level3">
-<h3 class="anchored" data-anchor-id="path-sum">3. Path Sum</h3>
+<section id="maximum-depth-of-binary-tree" class="level3">
+<h3 class="anchored" data-anchor-id="maximum-depth-of-binary-tree">3. Maximum Depth of Binary Tree</h3>
 <section id="intuition-2" class="level4">
 <h4 class="anchored" data-anchor-id="intuition-2">Intuition</h4>
 <!-- Describe your first thoughts on how to solve this problem. -->
-</section>
-<section id="approach-2" class="level4">
-<h4 class="anchored" data-anchor-id="approach-2">Approach</h4>
-<!-- Describe your approach to solving the problem. -->
+<p>It is easier if we have a picture.</p>
+<p><img src="tmp-tree.jpg" class="img-fluid"></p>
+<p>Let’s think recursively about the problem. Let’s say we start with an empty tree. The height will immediately be 0. If we have a tree with just 1 node, the depth should be 1. Now suppose that node is a child of another node. This node will have two 2 children: the aforementioned node and an empty node. The depth of the empty child should be 0 while the depth of the non-empty child is 1. Ultimately, the depth of the root node will be 2. By imagining this for an increasingly bigger tree, we can see that <em>the depth of a node is the maximum depth of its child node plus 1</em>. In the recursion framework, the <code>return</code> value is the depth a node, which we pass up from the child to the parent. #### Approach <!-- Describe your approach to solving the problem. --> In terms of recursive algorithm, we have to define the base case - return 0 if the root is empty. Afterwards, we just need to call the fuction recursively.</p>
 </section>
 <section id="complexity-2" class="level4">
 <h4 class="anchored" data-anchor-id="complexity-2">Complexity</h4>
+<p>With <span class="math inline">\(n\)</span> the number of tree nodes:</p>
 <ul>
-<li><p>Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --></p></li>
-<li><p>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --></p></li>
+<li>Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(n)\)</span>: We have a traverse every node in the tree.</li>
+<li>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(log(n))\)</span>: This is the average height of the recursive call stack. In the worst case of a total unbalance tree where all nodes are grouped to 1 side, the space complexity is <span class="math inline">\(O(n)\)</span>.</li>
 </ul>
 </section>
 <section id="code-2" class="level4">
 <h4 class="anchored" data-anchor-id="code-2">Code</h4>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> maxDepth(<span class="va">self</span>, root: Optional[TreeNode]) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> root <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="dv">0</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">1</span> <span class="op">+</span> <span class="bu">max</span>(<span class="va">self</span>.maxDepth(root.left), <span class="va">self</span>.maxDepth(root.right))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>

@@ -194,21 +194,35 @@ class Solution:
         return False
 ```
 
-### 3. Path Sum
+### 3. Maximum Depth of Binary Tree
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
+It is easier if we have a picture.
 
+![](tmp-tree.jpg)
 
+Let's think recursively about the problem. Let's say we start with an empty tree. The height will immediately be 0. If we have a tree with just 1 node, the depth should be 1. Now suppose that node is a child of another node. This node will have two 2 children: the aforementioned node and an empty node. The depth of the empty child should be 0 while the depth of the non-empty child is 1. Ultimately, the depth of the root node will be 2. By imagining this for an increasingly bigger tree, we can see that *the depth of a node is the maximum depth of its child node plus 1*. In the recursion framework, the `return` value is the depth a node, which we pass up from the child to the parent.
 #### Approach
 <!-- Describe your approach to solving the problem. -->
-
+In terms of recursive algorithm, we have to define the base case - return 0 if the root is empty. Afterwards, we just need to call the fuction recursively.
 
 #### Complexity
+With $n$ the number of tree nodes:
+
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
-
+$O(n)$: We have a traverse every node in the tree.
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(log(n))$: This is the average height of the recursive call stack. In the worst case of a total unbalance tree where all nodes are grouped to 1 side, the space complexity is $O(n)$.
 
 #### Code
+```python
+class Solution:
+    def maxDepth(self, root: Optional[TreeNode]) -> int:
+        if root is None:
+            return 0
+        
+        return 1 + max(self.maxDepth(root.left), self.maxDepth(root.right))
+```

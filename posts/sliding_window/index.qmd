@@ -1,0 +1,56 @@
+---
+title: "Sliding window"
+description: "A variation of two pointers"
+author: "Pham Nguyen Hung"
+date: "03/17/2023"
+draft: false
+toc: true
+---
+Firstly, See [About](https://h-notes-on-dsa.netlify.app/about.html) page.
+
+# Sliding window
+
+## Definitions
+
+Sliding window at its core is processing the data in an array in chunk, with limits set by 2 pointers at both sides. Sliding window is particularly suitable if we need to performf repeated operations on a sub-array. Instead of going crazy over all of the possible chunks, we can just change the result (e.g. sum of elements in the window) by discarding the leaving and accounting for the entering element(s).
+
+## Problems
+
+### 1. Best Time to Buy and Sell Stock
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+The first problem in sliding window. The brute-force way of doing this is to check every single pair fo number for the largest right-left pair. The time complexity will be $O(n^2)$. How do we modify this solution to be easier?
+
+First, the brute-force algorithm involves keeping track of the maximum number so far. This is a good thing that we can keep.
+
+Second, let's assume this array of `[2, ..., 1]`. Let's say that the maximum of the subarray between 2 and 1 is 6: `[2, ...6..., 1]` (it does not matter where the 6 is as long as it occurs before 1). The max profit we can get so far is $6-2=4$. To increase the profit, there are two ways: shift the buy date to a day with smaller price, or shift the sell date to a day with a larger price. Let's say there is a 7 after 1. We can increase the profit if we shift the sell date from 6 to 7: `[2, ...6..., 1, ...7...]`. However, the best profit is when we shift the buy date from 2 to 1 as well. Now, because we already keep track of the max profit so far, so it cannot be worse if *we shift the buy date every single time we find a better buy date*. 
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+The algorithm:
+1. Initialize the left and right sides of the window + the max profit so far.
+2. Traverse the array with the right side.
+3. If we encounter a better buy date (right < left), update the buy date. If we encounter a potential sell date (right >= left), check and update the profit so far.
+4. Return the max profit at the end.
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: We are traversing the array once.
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$: We are only keeping track of a bunch of integers.
+#### Code
+```python
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        buyDay = maxProfit = 0
+        for sellDay in range(len(prices)):
+            if prices[sellDay] < prices[buyDay]:
+                buyDay = sellDay
+            else:
+                currentProfit = prices[sellDay] - prices[buyDay]
+                if currentProfit > maxProfit:
+                    maxProfit = currentProfit
+        return maxProfit
+```

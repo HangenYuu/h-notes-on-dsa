@@ -1,0 +1,67 @@
+---
+title: "Binary search"
+description: "Binary search"
+author: "Pham Nguyen Hung"
+date: "03/16/2023"
+draft: false
+toc: true
+---
+Firstly, See [About](https://h-notes-on-dsa.netlify.app/about.html) page.
+
+# Binary search
+
+## Definitions:
+
+In a sorted array, there exists a faster way to search for a specific element than visiting each element. The intuition is if we find an element that is smaller than expected, all of the elements before it are also smaller and can be discarded from the search and likewise if it is larger. The optimal way to take advantage of this property is striking in the middle every time, hence the name binary search.
+
+## Problem
+
+### 1. Binary serach
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+The **basic problem** of binary search. It basically asks you to implement it.
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+1. Initialize two pointers - `start` and `end`.
+2. Traverse the array from both ends.
+3. Calculate `middle = (start + end)//2` and compare `array[middle]` with the target.
+4. If we found the target, return `middle`. If we are smaller, move `start` to `middle`. If we are larger, move `end` to `middle`.
+5. If we reach the end, return -1 as we do not find the target.
+
+#### Complexity
+- Time complexity: 
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(logn)$: We are cutting the array in half repeatedly, so it takes just $logn$ to search.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$: Pointers are essentially integers.
+
+#### Code
+```python
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        # Edge case
+        if nums[0] > target or nums[-1] < target:
+            return -1
+        
+        # General case
+        if nums[0] == target:
+            return 0
+        if nums[-1] == target:
+            return len(nums) - 1
+        start, end = 0, len(nums) - 1
+        while start <= end:
+            mid = (start + end)//2
+            if nums[mid] == target:
+                return mid
+            elif nums[mid] < target:
+                start = mid + 1
+            else:
+                end = mid - 1
+        
+        return -1
+```
+
