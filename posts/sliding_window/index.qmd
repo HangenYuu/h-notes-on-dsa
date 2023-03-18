@@ -54,3 +54,40 @@ class Solution:
                     maxProfit = currentProfit
         return maxProfit
 ```
+
+### 2. Maximum Subarray:
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+This is one problem in the class of "if you know, you know", though of course you can discover for yourself from keen observation.
+
+The named algorithm is Kadane's algorithm. I did not know the exact formal definition for it, but its pattern is that of sliding window (though the class will be dynamic programming). The intuition here is that if we keep track of the sum of a subarray, one that sum reaches a negative number, *the whole subarray can be discarded from consideration*, because whatever the value of the next element, the subarray sum will always be worse if we include the negative-sum subarray. Incredible intuition, though I could not see this in the first time I did it.
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+1. Traverse the array, keeping track of the current sum `curSum` and the maximum sum so far `maxSum` of the array.
+2. At each element, if `curSum` becomes negative, we reset it to 0 first. Then we add the element to `curSum`. If `curSum` becomes larger than `maxSum`, we update `maxSum`. 
+3. If we reach the end of the array, return `maxSum`.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: Traversing the whole array once.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$: We just need to keep track of a bunch of integers.
+
+#### Code
+```python
+class Solution:
+    def maxSubArray(self, nums: List[int]) -> int:
+        curSum, maxSum = 0, float('-inf')
+        for num in nums:
+            if curSum < 0:
+                curSum = 0
+            curSum += num
+            if curSum > maxSum:
+                maxSum = curSum
+        return maxSum
+```

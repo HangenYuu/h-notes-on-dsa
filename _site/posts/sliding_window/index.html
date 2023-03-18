@@ -214,6 +214,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#problems" id="toc-problems" class="nav-link" data-scroll-target="#problems">Problems</a>
   <ul class="collapse">
   <li><a href="#best-time-to-buy-and-sell-stock" id="toc-best-time-to-buy-and-sell-stock" class="nav-link" data-scroll-target="#best-time-to-buy-and-sell-stock">1. Best Time to Buy and Sell Stock</a></li>
+  <li><a href="#maximum-subarray" id="toc-maximum-subarray" class="nav-link" data-scroll-target="#maximum-subarray">2. Maximum Subarray:</a></li>
   </ul></li>
   </ul></li>
   </ul>
@@ -258,6 +259,44 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> currentProfit <span class="op">&gt;</span> maxProfit:</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>                    maxProfit <span class="op">=</span> currentProfit</span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> maxProfit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="maximum-subarray" class="level3">
+<h3 class="anchored" data-anchor-id="maximum-subarray">2. Maximum Subarray:</h3>
+<section id="intuition-1" class="level4">
+<h4 class="anchored" data-anchor-id="intuition-1">Intuition</h4>
+<!-- Describe your first thoughts on how to solve this problem. -->
+<p>This is one problem in the class of “if you know, you know”, though of course you can discover for yourself from keen observation.</p>
+<p>The named algorithm is Kadane’s algorithm. I did not know the exact formal definition for it, but its pattern is that of sliding window (though the class will be dynamic programming). The intuition here is that if we keep track of the sum of a subarray, one that sum reaches a negative number, <em>the whole subarray can be discarded from consideration</em>, because whatever the value of the next element, the subarray sum will always be worse if we include the negative-sum subarray. Incredible intuition, though I could not see this in the first time I did it.</p>
+</section>
+<section id="approach-1" class="level4">
+<h4 class="anchored" data-anchor-id="approach-1">Approach</h4>
+<!-- Describe your approach to solving the problem. -->
+<ol type="1">
+<li>Traverse the array, keeping track of the current sum <code>curSum</code> and the maximum sum so far <code>maxSum</code> of the array.</li>
+<li>At each element, if <code>curSum</code> becomes negative, we reset it to 0 first. Then we add the element to <code>curSum</code>. If <code>curSum</code> becomes larger than <code>maxSum</code>, we update <code>maxSum</code>.</li>
+<li>If we reach the end of the array, return <code>maxSum</code>.</li>
+</ol>
+</section>
+<section id="complexity" class="level4">
+<h4 class="anchored" data-anchor-id="complexity">Complexity</h4>
+<ul>
+<li><p>Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(n)\)</span>: Traversing the whole array once.</p></li>
+<li><p>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(1)\)</span>: We just need to keep track of a bunch of integers.</p></li>
+</ul>
+</section>
+<section id="code" class="level4">
+<h4 class="anchored" data-anchor-id="code">Code</h4>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> maxSubArray(<span class="va">self</span>, nums: List[<span class="bu">int</span>]) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>        curSum, maxSum <span class="op">=</span> <span class="dv">0</span>, <span class="bu">float</span>(<span class="st">'-inf'</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> num <span class="kw">in</span> nums:</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> curSum <span class="op">&lt;</span> <span class="dv">0</span>:</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>                curSum <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>            curSum <span class="op">+=</span> num</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> curSum <span class="op">&gt;</span> maxSum:</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>                maxSum <span class="op">=</span> curSum</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> maxSum</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>

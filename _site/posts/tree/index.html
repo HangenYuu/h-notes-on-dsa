@@ -221,6 +221,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#same-tree" id="toc-same-tree" class="nav-link" data-scroll-target="#same-tree">1. Same Tree</a></li>
   <li><a href="#flip-equivalent-binary-trees" id="toc-flip-equivalent-binary-trees" class="nav-link" data-scroll-target="#flip-equivalent-binary-trees">2. Flip Equivalent Binary Trees</a></li>
   <li><a href="#maximum-depth-of-binary-tree" id="toc-maximum-depth-of-binary-tree" class="nav-link" data-scroll-target="#maximum-depth-of-binary-tree">3. Maximum Depth of Binary Tree</a></li>
+  <li><a href="#invert-binary-tree" id="toc-invert-binary-tree" class="nav-link" data-scroll-target="#invert-binary-tree">4. Invert Binary Tree</a></li>
   </ul></li>
   </ul></li>
   </ul>
@@ -365,20 +366,25 @@ Every node fulfil the condition: height difference of the left and right subtree
 <h2 class="anchored" data-anchor-id="problems">Problems</h2>
 <section id="same-tree" class="level3">
 <h3 class="anchored" data-anchor-id="same-tree">1. Same Tree</h3>
-<p>The first application of recursion. Thinking in node, the two are the same if each pair of nodes has the same value. Therefore, the recursive function should 1. check the current pair then 2. check the two child pairs. This problem is simple enough so that we don’t need to write another helper function to deal with the situation.</p>
 <section id="intuition" class="level4">
 <h4 class="anchored" data-anchor-id="intuition">Intuition</h4>
 <!-- Describe your first thoughts on how to solve this problem. -->
+<p>The first application of recursion. Thinking in node, the two are the same if each pair of nodes has the same value. Therefore, the recursive function should 1. check the current pair then 2. check the two child pairs. This problem is simple enough so that we don’t need to write another helper function to deal with the situation.</p>
 </section>
 <section id="approach" class="level4">
 <h4 class="anchored" data-anchor-id="approach">Approach</h4>
 <!-- Describe your approach to solving the problem. -->
+<ol type="1">
+<li>Create the recursive function. The base case is two roots are equal if both are None, else False.</li>
+<li>Call the recursive function for the child before returning the result.</li>
+</ol>
 </section>
 <section id="complexity" class="level4">
 <h4 class="anchored" data-anchor-id="complexity">Complexity</h4>
+<p>With <span class="math inline">\(n\)</span> the number of nodes in the tree.</p>
 <ul>
-<li><p>Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --></p></li>
-<li><p>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --></p></li>
+<li><p>Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(n)\)</span>: We need to visit every node once.</p></li>
+<li><p>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(log(n))\)</span>: This is the average height of the recursive call stack. In the worst case of a total unbalance tree where all nodes are grouped to 1 side, the space complexity is <span class="math inline">\(O(n)\)</span>.</p></li>
 </ul>
 </section>
 <section id="code" class="level4">
@@ -422,20 +428,22 @@ Every node fulfil the condition: height difference of the left and right subtree
 </section>
 <section id="flip-equivalent-binary-trees" class="level3">
 <h3 class="anchored" data-anchor-id="flip-equivalent-binary-trees">2. Flip Equivalent Binary Trees</h3>
-<p>The tweaked problem of above. The trees now are the same if each pair of nodes are the same and each pair of corresponding children are the sae <em>or</em> each pair of flipped children are the same. This means adding a case in the return.</p>
+<p>The tweaked problem of above. The trees now are the same if each pair of nodes are the same and each pair of corresponding children are the sae <em>or</em> each pair of flipped children are the same. This means adding a case in <code>return</code> of the recursive function.</p>
 <section id="intuition-1" class="level4">
 <h4 class="anchored" data-anchor-id="intuition-1">Intuition</h4>
 <!-- Describe your first thoughts on how to solve this problem. -->
+<p>Same as above</p>
 </section>
 <section id="approach-1" class="level4">
 <h4 class="anchored" data-anchor-id="approach-1">Approach</h4>
 <!-- Describe your approach to solving the problem. -->
+<p>Same as above</p>
 </section>
 <section id="complexity-1" class="level4">
 <h4 class="anchored" data-anchor-id="complexity-1">Complexity</h4>
 <ul>
-<li><p>Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --></p></li>
-<li><p>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --></p></li>
+<li><p>Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> Same as above</p></li>
+<li><p>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> Same as above</p></li>
 </ul>
 </section>
 <section id="code-1" class="level4">
@@ -478,6 +486,43 @@ Every node fulfil the condition: height difference of the left and right subtree
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="dv">0</span></span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        </span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">1</span> <span class="op">+</span> <span class="bu">max</span>(<span class="va">self</span>.maxDepth(root.left), <span class="va">self</span>.maxDepth(root.right))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="invert-binary-tree" class="level3">
+<h3 class="anchored" data-anchor-id="invert-binary-tree">4. Invert Binary Tree</h3>
+<section id="intuition-3" class="level4">
+<h4 class="anchored" data-anchor-id="intuition-3">Intuition</h4>
+<!-- Describe your first thoughts on how to solve this problem. -->
+<p>Recursively, the problem can be reduced to switching the left and right children of every node, from the root to the leaves.</p>
+</section>
+<section id="approach-2" class="level4">
+<h4 class="anchored" data-anchor-id="approach-2">Approach</h4>
+<!-- Describe your approach to solving the problem. -->
+<ol type="1">
+<li>Create a recursive function with the only line: <code>root.left, root.right = root.right, root.left</code></li>
+<li>Call the recursive function on the children after switching the left and right children. You can do that after switching as well. It makes no difference in this problem.</li>
+<li>Return the switched root.</li>
+</ol>
+</section>
+<section id="complexity-3" class="level4">
+<h4 class="anchored" data-anchor-id="complexity-3">Complexity</h4>
+<ul>
+<li><p>Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(n)\)</span>: We need to visit every node once.</p></li>
+<li><p>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(log(n))\)</span>: This is the average height of the recursive call stack. In the worst case of a total unbalance tree where all nodes are grouped to 1 side, the space complexity is <span class="math inline">\(O(n)\)</span>.</p></li>
+</ul>
+</section>
+<section id="code-3" class="level4">
+<h4 class="anchored" data-anchor-id="code-3">Code</h4>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Optional</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> invertTree(<span class="va">self</span>, root: Optional[TreeNode]) <span class="op">-&gt;</span> Optional[TreeNode]:</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> root:</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>        root.left, root.right <span class="op">=</span> root.right, root.left</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.invertTree(root.left)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.invertTree(root.right)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> root</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>

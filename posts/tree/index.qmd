@@ -102,22 +102,26 @@ Another way to solve the problem is to replace `return` value with a global vari
 
 ### 1. Same Tree
 
-The first application of recursion. Thinking in node, the two are the same if each pair of nodes has the same value. Therefore, the recursive function should 1. check the current pair then 2. check the two child pairs. This problem is simple enough so that we don't need to write another helper function to deal with the situation.
-
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
-
+The first application of recursion. Thinking in node, the two are the same if each pair of nodes has the same value. Therefore, the recursive function should 1. check the current pair then 2. check the two child pairs. This problem is simple enough so that we don't need to write another helper function to deal with the situation.
 
 #### Approach
 <!-- Describe your approach to solving the problem. -->
-
+1. Create the recursive function. The base case is two roots are equal if both are None, else False.
+2. Call the recursive function for the child before returning the result.
 
 #### Complexity
+
+With $n$ the number of nodes in the tree.
+
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: We need to visit every node once.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(log(n))$: This is the average height of the recursive call stack. In the worst case of a total unbalance tree where all nodes are grouped to 1 side, the space complexity is $O(n)$.
 
 #### Code
 ```python
@@ -162,22 +166,25 @@ class Solution:
 
 ### 2. Flip Equivalent Binary Trees
 
-The tweaked problem of above. The trees now are the same if each pair of nodes are the same and each pair of corresponding children are the sae *or* each pair of flipped children are the same. This means adding a case in the return.
+The tweaked problem of above. The trees now are the same if each pair of nodes are the same and each pair of corresponding children are the sae *or* each pair of flipped children are the same. This means adding a case in `return` of the recursive function.
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
-
+Same as above
 
 #### Approach
 <!-- Describe your approach to solving the problem. -->
-
+Same as above
 
 #### Complexity
+
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
+Same as above
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
+Same as above
 
 #### Code
 ```python
@@ -226,3 +233,40 @@ class Solution:
         
         return 1 + max(self.maxDepth(root.left), self.maxDepth(root.right))
 ```
+
+### 4. Invert Binary Tree
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+Recursively, the problem can be reduced to switching the left and right children of every node, from the root to the leaves.
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+1. Create a recursive function with the only line: `root.left, root.right = root.right, root.left`
+2. Call the recursive function on the children after switching the left and right children. You can do that after switching as well. It makes no difference in this problem.
+3. Return the switched root.
+
+#### Complexity
+
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: We need to visit every node once.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(log(n))$: This is the average height of the recursive call stack. In the worst case of a total unbalance tree where all nodes are grouped to 1 side, the space complexity is $O(n)$.
+
+#### Code
+```python
+from typing import Optional
+class Solution:
+    def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        if not root:
+            return
+        root.left, root.right = root.right, root.left
+        self.invertTree(root.left)
+        self.invertTree(root.right)
+
+        return root
+```
+
