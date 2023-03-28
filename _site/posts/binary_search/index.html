@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Pham Nguyen Hung">
-<meta name="dcterms.date" content="2023-03-16">
+<meta name="dcterms.date" content="2023-03-22">
 <meta name="description" content="Binary search">
 
 <title>H’s notes on Data Structuress and Algorithms - Binary search</title>
@@ -192,7 +192,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">March 16, 2023</p>
+        <p class="date">March 22, 2023</p>
       </div>
     </div>
     
@@ -214,6 +214,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#problem" id="toc-problem" class="nav-link" data-scroll-target="#problem">Problem</a>
   <ul class="collapse">
   <li><a href="#binary-serach" id="toc-binary-serach" class="nav-link" data-scroll-target="#binary-serach">1. Binary serach</a></li>
+  <li><a href="#first-bad-version" id="toc-first-bad-version" class="nav-link" data-scroll-target="#first-bad-version">2. First Bad Version</a></li>
   </ul></li>
   </ul></li>
   </ul>
@@ -283,6 +284,47 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>                end <span class="op">=</span> mid <span class="op">-</span> <span class="dv">1</span></span>
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>        </span>
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="op">-</span><span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="first-bad-version" class="level3">
+<h3 class="anchored" data-anchor-id="first-bad-version">2. First Bad Version</h3>
+<section id="intuition-1" class="level4">
+<h4 class="anchored" data-anchor-id="intuition-1">Intuition</h4>
+<!-- Describe your first thoughts on how to solve this problem. -->
+<p>For any call <code>isBadVersion(version)</code>, if the version is good, it means that the first bad version <em>will be</em> a later version; if the version is bad, it means that the first bad version <em>might be</em> an older version. And given the version comes in non-decreasing order, that sounds exactly like a binary search problem. Notice the italic <em>will be</em> and <em>might be</em> - it will affect the way we implement the algorithm.</p>
+</section>
+<section id="approach-1" class="level4">
+<h4 class="anchored" data-anchor-id="approach-1">Approach</h4>
+<!-- Describe your approach to solving the problem. -->
+<ol type="1">
+<li>Initialize two pointers - <code>first</code> and <code>last</code> or whatever to the first and the last version, denoted by numbers.</li>
+<li>The terminating condition for this specific implementation is <code>first == last</code>, so the loop condition is <code>while first &lt; last</code>.</li>
+<li>We will check the <code>mid</code> version. If it is bad, we will shift <code>last</code> to <code>mid</code>. If it is good, we will shift <code>first</code> to <code>mid + 1</code>.</li>
+<li>Return <code>first</code> (or <code>last</code> - does not matter) when the loop terminates. Cannot return <code>mid</code> here as the variable does not exist outside the loop. You can define it so, but there’s no need to.</li>
+</ol>
+</section>
+<section id="complexity-1" class="level4">
+<h4 class="anchored" data-anchor-id="complexity-1">Complexity</h4>
+<ul>
+<li><p>Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(log(n))\)</span>: The default time complexity of binary search.</p></li>
+<li><p>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(1)\)</span>: Pointers are essentially integers.</p></li>
+</ul>
+</section>
+<section id="code-1" class="level4">
+<h4 class="anchored" data-anchor-id="code-1">Code</h4>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The isBadVersion API is already defined for you.</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># def isBadVersion(version: int) -&gt; bool:</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> firstBadVersion(<span class="va">self</span>, n: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        low, high <span class="op">=</span> <span class="dv">1</span>, n</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> low <span class="op">&lt;</span> high:</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>            mid <span class="op">=</span> (low<span class="op">+</span>high)<span class="op">//</span><span class="dv">2</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> isBadVersion(mid):</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>                high <span class="op">=</span> mid</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>:</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>                low <span class="op">=</span> mid <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> low <span class="co">#high</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Pham Nguyen Hung">
-<meta name="dcterms.date" content="2023-03-14">
+<meta name="dcterms.date" content="2023-03-22">
 <meta name="description" content="Array">
 
 <title>H’s notes on Data Structuress and Algorithms - Array</title>
@@ -192,7 +192,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">March 14, 2023</p>
+        <p class="date">March 22, 2023</p>
       </div>
     </div>
     
@@ -216,6 +216,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#two-sum" id="toc-two-sum" class="nav-link" data-scroll-target="#two-sum">1. Two Sum:</a></li>
   <li><a href="#contains-duplicate" id="toc-contains-duplicate" class="nav-link" data-scroll-target="#contains-duplicate">2. Contains Duplicate</a></li>
   <li><a href="#valid-anagram" id="toc-valid-anagram" class="nav-link" data-scroll-target="#valid-anagram">3. Valid Anagram:</a></li>
+  <li><a href="#majority-element" id="toc-majority-element" class="nav-link" data-scroll-target="#majority-element">4. Majority Element</a></li>
   </ul></li>
   </ul></li>
   </ul>
@@ -344,6 +345,47 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>            hashS[s[index]] <span class="op">+=</span> <span class="dv">1</span></span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>            hashT[t[index]] <span class="op">+=</span> <span class="dv">1</span></span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> hashS <span class="op">==</span> hashT</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="majority-element" class="level3">
+<h3 class="anchored" data-anchor-id="majority-element">4. Majority Element</h3>
+<section id="intuition-3" class="level4">
+<h4 class="anchored" data-anchor-id="intuition-3">Intuition</h4>
+<!-- Describe your first thoughts on how to solve this problem. -->
+<p>There are many approaches to the problem. The simplest way except brute-force the whole thing is to use a HashMap to count the number of occurences of each element (in Python can be done faster with <code>collections.Counter</code>). The solution provided is to deal with the follow-up question of linear time with <span class="math inline">\(O(1)\)</span> memory.</p>
+</section>
+<section id="approach-3" class="level4">
+<h4 class="anchored" data-anchor-id="approach-3">Approach</h4>
+<!-- Describe your approach to solving the problem. -->
+<p>This is a named algorithm: Boyer-Moore Voting Algorithm. The procedure is this: while we traverse the array, if we choose the first element as a candidate and consider three things:</p>
+<ol type="1">
+<li>An encounter with the same element a vote for the candidate</li>
+<li>An encounter with a difference element a vote against the candidate</li>
+<li>Change the candidate to the current element if it is different than the candidate and the vote for the candidate has become 0</li>
+</ol>
+<p>then at the end, we should be left with the candidate.</p>
+<p>This is because the majority element will occur more than <code>n//2</code> times with <code>n</code> the length of the array. Because of this, the majority element will be the only possible candidate with a positive vote at the end.</p>
+</section>
+<section id="complexity-3" class="level4">
+<h4 class="anchored" data-anchor-id="complexity-3">Complexity</h4>
+<ul>
+<li>Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(n)\)</span>: We need to traverse the array once.</li>
+<li>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(1)\)</span>: We only need to keep track of the count and the candidate, which requires constant memory.</li>
+</ul>
+</section>
+<section id="code-3" class="level4">
+<h4 class="anchored" data-anchor-id="code-3">Code</h4>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> majorityElement(<span class="va">self</span>, nums):</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        count <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        candidate <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> num <span class="kw">in</span> nums:</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> count <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>                candidate <span class="op">=</span> num</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>            count <span class="op">+=</span> (<span class="dv">1</span> <span class="cf">if</span> num <span class="op">==</span> candidate <span class="cf">else</span> <span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> candidate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>

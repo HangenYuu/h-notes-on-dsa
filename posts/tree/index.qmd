@@ -2,7 +2,7 @@
 title: "Tree"
 description: "Mostly binary tree"
 author: "Pham Nguyen Hung"
-date: "03/08/2023"
+date: "03/22/2023"
 draft: false
 toc: true
 ---
@@ -269,4 +269,150 @@ class Solution:
 
         return root
 ```
+### 4. Lowest Common Ancestor of a Binary Search Tree
 
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+In a binary search tree, there are five cases when you compare the value of a node to the two values of `p` and `q` (without violating generality, we can assume that `p.val` < `q.val`).
+
+1. `node.val < p.val`
+2. `node.val > q.val`
+3. `p.val < node.val < q.val`
+4. `node.val == p.val`
+5. `node.val == q.val`
+
+Based on the constraint of the binary search tree, the correct result would be *the first node that have the property*`p.val <= node.val <= q.val`. This is an unexpected intuition, but it is correct in a BST. The reason is `p` and `q` will be split at this node into 2 different subtrees afterwards, so no lower common ancestor can exist in the tree.
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+0. Initialized the nodes - `small & large` as the smaller and the larger between `p` and `q`. This is optional as the famous NeetCode did not do it.
+1. Traverse the tree with a `while` loop.
+2. Move to the right child of the node for case 1. above, and move to the left child of the node for case 2. above. If it is neither case, return the current node immediately
+
+#### Complexity
+
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(log(n))$: We need to traverse only one tree node per level.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$: We just need to store two `TreeNode` for every case.
+
+#### Code
+```python
+class Solution:
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        temp = root
+        small = p if p.val < q.val else q
+        large = p if p != small else q
+        while temp:
+            if temp.val > large.val:
+                temp = temp.left
+            elif temp.val < small.val:
+                temp = temp.right
+            else:
+                return temp
+```
+
+### 5. Balanced Binary Tree
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+> Height-Balanced
+> : A **height-balanced** binary tree is a binary tree in which the depth of the two subtrees of every node never differs by more than one.
+
+From the definition, the height-balancedness of a binary tree depends on the height-balancedness of a node. This means that the problem can be solved recursively at the node level. Now, the height-balancedness of a node depends on the height-balancedness of its children, and the height-balancedness of itself. The main problem becomes calculating whether a node is height-balanced or not. We can determine this from the depths of the children, more specifically whether absolute difference in depths of the children is smaller than 2.
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+The recursive function should be defined which `return` 2 values: `whether a node is height-balanced` & `the depth of the node`.
+
+Note that there is a way to define a recursive function to do more work than you need - by defining it top-down. In the example below is my first attempt, where I defined a function to get the depth of a node only. Subsequent calling leads to recomputation of depths of every node for each node in the tree, resulting in an $O(n^2)$ time complexity.
+
+To reduce the time complexity, we will use more memory by returning both the 2 values in the output. The solution will also be constructed in such a way that a depth will only be computed once - by defining it bottom-up.
+
+#### Complexity
+
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: We need to traverse and perform operations on every tree node once.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(log(n))$: The average maximum height of the recursive call stack.
+
+#### Code
+```python
+# Naive recursion - top-down approach
+class Solution:
+    def _getDepth(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        return 1 + max(self._getDepth(root.left), self._getDepth(root.right))
+
+    def isBalanced(self, root: Optional[TreeNode]) -> bool:
+        if not root or (not root.left and not root.right):
+            return True
+        return ((abs(self._getDepth(root.left) - self._getDepth(root.right)) < 2) &
+                (self.isBalanced(root.left)) & (self.isBalanced(root.right)))
+```
+
+```python
+# Optimal recursion - bottom-up approach
+class Solution:
+    def _isBalanced(self, root: Optional[TreeNode]) -> bool:
+        if not root:
+            return [True, 0]
+        left, right = self._isBalanced(root.left), self._isBalanced(root.right)
+        balanced = left[0] and right[0] and abs(left[1]-right[1]) < 2
+        return [balanced, 1 + max(left[1], right[1])]
+    def isBalanced(self, root: Optional[TreeNode]) -> bool:
+        return self._isBalanced(root)[0]
+```
+
+### Digression: Top-down or bottom-up recursion
+In defining the recursive function for a problem, there are two approaches: top-down or bottom-up. That sounds dangerous, but it just means that do we start the problem at the head (root of the tree) or do we start the problem at the foot (leaf of the tree). It really depends on the situation to figure out the best way to enter a problem.
+
+For Balance Binary Tree, it makes more sense to go from the leaf, as a piece of the information that we need (the depth of a node) flows from the leaf to the root. If we choose to go top-down, it will become inefficient, because we are required to reach the bottom first before going back to the top, ending up in the $O(n^2)$ time complexity observed.
+
+If the problem is about the height of a tree, information will flow top-down because of the definition of the height of a node.
+
+But more often than not, a problem is a bottom-up one. This means that we usually need information from the children to perform certain operations at the node.
+
+### 6. Diameter of Binary Tree
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+This is another problem that requires the depth of each node. Math manipulation will make you realize that *the diameter at a node is the sum of the depths of the children.*
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+Bottom-up! Bottom-up! The recursive function will be defined bottom-up-ly! We will nest the helper function inside the main function (is it a closure? I think so). We will keep `diameter` as a seperate `nonlocal` variable storing the largest diameter so far. The return will only be the depth of a node, as the diameter is calculated and updated within the function.
+
+Enclosure, or, to be safe, nested function will look confusing the first time you saw it. It is alright. The best way is to see so much that its weirdness does not bother you any more.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: We will visit every node in the tree once.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(log(n))$: The average maximum height of the call stack.
+
+#### Code
+```python
+class Solution:
+    def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
+        diameter = 0
+        def _diameterOfBinaryTree(root):
+            nonlocal diameter
+            if not root:
+                return 0
+            left, right = _diameterOfBinaryTree(root.left), _diameterOfBinaryTree(root.right)
+            diameter = max(diameter, left+right)
+            return 1 + max(left, right)
+        _diameterOfBinaryTree(root)
+        return diameter
+```

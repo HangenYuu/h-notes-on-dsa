@@ -2,7 +2,7 @@
 title: "Array"
 description: "Array"
 author: "Pham Nguyen Hung"
-date: "3/14/2023"
+date: "3/22/2023"
 draft: false
 toc: true
 ---
@@ -121,3 +121,45 @@ class Solution:
             hashT[t[index]] += 1
         return hashS == hashT
 ```
+
+### 4. Majority Element
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+There are many approaches to the problem. The simplest way except brute-force the whole thing is to use a HashMap to count the number of occurences of each element (in Python can be done faster with `collections.Counter`). The solution provided is to deal with the follow-up question of linear time with $O(1)$ memory.
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+This is a named algorithm: Boyer-Moore Voting Algorithm. The procedure is this: while we traverse the array, if we choose the first element as a candidate and consider three things:
+
+1. An encounter with the same element a vote for the candidate
+2. An encounter with a difference element a vote against the candidate
+3. Change the candidate to the current element if it is different than the candidate and the vote for the candidate has become 0
+
+then at the end, we should be left with the candidate.
+
+This is because the majority element will occur more than `n//2` times with `n` the length of the array. Because of this, the majority element will be the only possible candidate with a positive vote at the end.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: We need to traverse the array once.
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$: We only need to keep track of the count and the candidate, which requires constant memory.
+
+#### Code
+```python
+class Solution:
+    def majorityElement(self, nums):
+        count = 0
+        candidate = None
+
+        for num in nums:
+            if count == 0:
+                candidate = num
+            count += (1 if num == candidate else -1)
+
+        return candidate
+```
+

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Pham Nguyen Hung">
-<meta name="dcterms.date" content="2023-03-08">
+<meta name="dcterms.date" content="2023-03-22">
 <meta name="description" content="Mostly binary tree">
 
 <title>H’s notes on Data Structuress and Algorithms - Tree</title>
@@ -192,7 +192,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">March 8, 2023</p>
+        <p class="date">March 22, 2023</p>
       </div>
     </div>
     
@@ -222,6 +222,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#flip-equivalent-binary-trees" id="toc-flip-equivalent-binary-trees" class="nav-link" data-scroll-target="#flip-equivalent-binary-trees">2. Flip Equivalent Binary Trees</a></li>
   <li><a href="#maximum-depth-of-binary-tree" id="toc-maximum-depth-of-binary-tree" class="nav-link" data-scroll-target="#maximum-depth-of-binary-tree">3. Maximum Depth of Binary Tree</a></li>
   <li><a href="#invert-binary-tree" id="toc-invert-binary-tree" class="nav-link" data-scroll-target="#invert-binary-tree">4. Invert Binary Tree</a></li>
+  <li><a href="#lowest-common-ancestor-of-a-binary-search-tree" id="toc-lowest-common-ancestor-of-a-binary-search-tree" class="nav-link" data-scroll-target="#lowest-common-ancestor-of-a-binary-search-tree">4. Lowest Common Ancestor of a Binary Search Tree</a></li>
+  <li><a href="#balanced-binary-tree" id="toc-balanced-binary-tree" class="nav-link" data-scroll-target="#balanced-binary-tree">5. Balanced Binary Tree</a></li>
+  <li><a href="#digression-top-down-or-bottom-up-recursion" id="toc-digression-top-down-or-bottom-up-recursion" class="nav-link" data-scroll-target="#digression-top-down-or-bottom-up-recursion">Digression: Top-down or bottom-up recursion</a></li>
+  <li><a href="#diameter-of-binary-tree" id="toc-diameter-of-binary-tree" class="nav-link" data-scroll-target="#diameter-of-binary-tree">6. Diameter of Binary Tree</a></li>
   </ul></li>
   </ul></li>
   </ul>
@@ -523,6 +527,151 @@ Every node fulfil the condition: height difference of the left and right subtree
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.invertTree(root.right)</span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> root</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="lowest-common-ancestor-of-a-binary-search-tree" class="level3">
+<h3 class="anchored" data-anchor-id="lowest-common-ancestor-of-a-binary-search-tree">4. Lowest Common Ancestor of a Binary Search Tree</h3>
+<section id="intuition-4" class="level4">
+<h4 class="anchored" data-anchor-id="intuition-4">Intuition</h4>
+<!-- Describe your first thoughts on how to solve this problem. -->
+<p>In a binary search tree, there are five cases when you compare the value of a node to the two values of <code>p</code> and <code>q</code> (without violating generality, we can assume that <code>p.val</code> &lt; <code>q.val</code>).</p>
+<ol type="1">
+<li><code>node.val &lt; p.val</code></li>
+<li><code>node.val &gt; q.val</code></li>
+<li><code>p.val &lt; node.val &lt; q.val</code></li>
+<li><code>node.val == p.val</code></li>
+<li><code>node.val == q.val</code></li>
+</ol>
+<p>Based on the constraint of the binary search tree, the correct result would be <em>the first node that have the property</em><code>p.val &lt;= node.val &lt;= q.val</code>. This is an unexpected intuition, but it is correct in a BST. The reason is <code>p</code> and <code>q</code> will be split at this node into 2 different subtrees afterwards, so no lower common ancestor can exist in the tree.</p>
+</section>
+<section id="approach-3" class="level4">
+<h4 class="anchored" data-anchor-id="approach-3">Approach</h4>
+<!-- Describe your approach to solving the problem. -->
+<ol start="0" type="1">
+<li>Initialized the nodes - <code>small &amp; large</code> as the smaller and the larger between <code>p</code> and <code>q</code>. This is optional as the famous NeetCode did not do it.</li>
+<li>Traverse the tree with a <code>while</code> loop.</li>
+<li>Move to the right child of the node for case 1. above, and move to the left child of the node for case 2. above. If it is neither case, return the current node immediately</li>
+</ol>
+</section>
+<section id="complexity-4" class="level4">
+<h4 class="anchored" data-anchor-id="complexity-4">Complexity</h4>
+<ul>
+<li><p>Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(log(n))\)</span>: We need to traverse only one tree node per level.</p></li>
+<li><p>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(1)\)</span>: We just need to store two <code>TreeNode</code> for every case.</p></li>
+</ul>
+</section>
+<section id="code-4" class="level4">
+<h4 class="anchored" data-anchor-id="code-4">Code</h4>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> lowestCommonAncestor(<span class="va">self</span>, root: <span class="st">'TreeNode'</span>, p: <span class="st">'TreeNode'</span>, q: <span class="st">'TreeNode'</span>) <span class="op">-&gt;</span> <span class="st">'TreeNode'</span>:</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>        temp <span class="op">=</span> root</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>        small <span class="op">=</span> p <span class="cf">if</span> p.val <span class="op">&lt;</span> q.val <span class="cf">else</span> q</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>        large <span class="op">=</span> p <span class="cf">if</span> p <span class="op">!=</span> small <span class="cf">else</span> q</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> temp:</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> temp.val <span class="op">&gt;</span> large.val:</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>                temp <span class="op">=</span> temp.left</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>            <span class="cf">elif</span> temp.val <span class="op">&lt;</span> small.val:</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>                temp <span class="op">=</span> temp.right</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>:</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> temp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="balanced-binary-tree" class="level3">
+<h3 class="anchored" data-anchor-id="balanced-binary-tree">5. Balanced Binary Tree</h3>
+<section id="intuition-5" class="level4">
+<h4 class="anchored" data-anchor-id="intuition-5">Intuition</h4>
+<!-- Describe your first thoughts on how to solve this problem. -->
+<blockquote class="blockquote">
+<dl>
+<dt>Height-Balanced</dt>
+<dd>
+A <strong>height-balanced</strong> binary tree is a binary tree in which the depth of the two subtrees of every node never differs by more than one.
+</dd>
+</dl>
+</blockquote>
+<p>From the definition, the height-balancedness of a binary tree depends on the height-balancedness of a node. This means that the problem can be solved recursively at the node level. Now, the height-balancedness of a node depends on the height-balancedness of its children, and the height-balancedness of itself. The main problem becomes calculating whether a node is height-balanced or not. We can determine this from the depths of the children, more specifically whether absolute difference in depths of the children is smaller than 2.</p>
+</section>
+<section id="approach-4" class="level4">
+<h4 class="anchored" data-anchor-id="approach-4">Approach</h4>
+<!-- Describe your approach to solving the problem. -->
+<p>The recursive function should be defined which <code>return</code> 2 values: <code>whether a node is height-balanced</code> &amp; <code>the depth of the node</code>.</p>
+<p>Note that there is a way to define a recursive function to do more work than you need - by defining it top-down. In the example below is my first attempt, where I defined a function to get the depth of a node only. Subsequent calling leads to recomputation of depths of every node for each node in the tree, resulting in an <span class="math inline">\(O(n^2)\)</span> time complexity.</p>
+<p>To reduce the time complexity, we will use more memory by returning both the 2 values in the output. The solution will also be constructed in such a way that a depth will only be computed once - by defining it bottom-up.</p>
+</section>
+<section id="complexity-5" class="level4">
+<h4 class="anchored" data-anchor-id="complexity-5">Complexity</h4>
+<ul>
+<li><p>Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(n)\)</span>: We need to traverse and perform operations on every tree node once.</p></li>
+<li><p>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(log(n))\)</span>: The average maximum height of the recursive call stack.</p></li>
+</ul>
+</section>
+<section id="code-5" class="level4">
+<h4 class="anchored" data-anchor-id="code-5">Code</h4>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Naive recursion - top-down approach</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> _getDepth(<span class="va">self</span>, root: Optional[TreeNode]) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> root:</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="dv">0</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">1</span> <span class="op">+</span> <span class="bu">max</span>(<span class="va">self</span>._getDepth(root.left), <span class="va">self</span>._getDepth(root.right))</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> isBalanced(<span class="va">self</span>, root: Optional[TreeNode]) <span class="op">-&gt;</span> <span class="bu">bool</span>:</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> root <span class="kw">or</span> (<span class="kw">not</span> root.left <span class="kw">and</span> <span class="kw">not</span> root.right):</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">True</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> ((<span class="bu">abs</span>(<span class="va">self</span>._getDepth(root.left) <span class="op">-</span> <span class="va">self</span>._getDepth(root.right)) <span class="op">&lt;</span> <span class="dv">2</span>) <span class="op">&amp;</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>                (<span class="va">self</span>.isBalanced(root.left)) <span class="op">&amp;</span> (<span class="va">self</span>.isBalanced(root.right)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Optimal recursion - bottom-up approach</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> _isBalanced(<span class="va">self</span>, root: Optional[TreeNode]) <span class="op">-&gt;</span> <span class="bu">bool</span>:</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> root:</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> [<span class="va">True</span>, <span class="dv">0</span>]</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>        left, right <span class="op">=</span> <span class="va">self</span>._isBalanced(root.left), <span class="va">self</span>._isBalanced(root.right)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>        balanced <span class="op">=</span> left[<span class="dv">0</span>] <span class="kw">and</span> right[<span class="dv">0</span>] <span class="kw">and</span> <span class="bu">abs</span>(left[<span class="dv">1</span>]<span class="op">-</span>right[<span class="dv">1</span>]) <span class="op">&lt;</span> <span class="dv">2</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> [balanced, <span class="dv">1</span> <span class="op">+</span> <span class="bu">max</span>(left[<span class="dv">1</span>], right[<span class="dv">1</span>])]</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> isBalanced(<span class="va">self</span>, root: Optional[TreeNode]) <span class="op">-&gt;</span> <span class="bu">bool</span>:</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>._isBalanced(root)[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="digression-top-down-or-bottom-up-recursion" class="level3">
+<h3 class="anchored" data-anchor-id="digression-top-down-or-bottom-up-recursion">Digression: Top-down or bottom-up recursion</h3>
+<p>In defining the recursive function for a problem, there are two approaches: top-down or bottom-up. That sounds dangerous, but it just means that do we start the problem at the head (root of the tree) or do we start the problem at the foot (leaf of the tree). It really depends on the situation to figure out the best way to enter a problem.</p>
+<p>For Balance Binary Tree, it makes more sense to go from the leaf, as a piece of the information that we need (the depth of a node) flows from the leaf to the root. If we choose to go top-down, it will become inefficient, because we are required to reach the bottom first before going back to the top, ending up in the <span class="math inline">\(O(n^2)\)</span> time complexity observed.</p>
+<p>If the problem is about the height of a tree, information will flow top-down because of the definition of the height of a node.</p>
+<p>But more often than not, a problem is a bottom-up one. This means that we usually need information from the children to perform certain operations at the node.</p>
+</section>
+<section id="diameter-of-binary-tree" class="level3">
+<h3 class="anchored" data-anchor-id="diameter-of-binary-tree">6. Diameter of Binary Tree</h3>
+<section id="intuition-6" class="level4">
+<h4 class="anchored" data-anchor-id="intuition-6">Intuition</h4>
+<!-- Describe your first thoughts on how to solve this problem. -->
+<p>This is another problem that requires the depth of each node. Math manipulation will make you realize that <em>the diameter at a node is the sum of the depths of the children.</em></p>
+</section>
+<section id="approach-5" class="level4">
+<h4 class="anchored" data-anchor-id="approach-5">Approach</h4>
+<!-- Describe your approach to solving the problem. -->
+<p>Bottom-up! Bottom-up! The recursive function will be defined bottom-up-ly! We will nest the helper function inside the main function (is it a closure? I think so). We will keep <code>diameter</code> as a seperate <code>nonlocal</code> variable storing the largest diameter so far. The return will only be the depth of a node, as the diameter is calculated and updated within the function.</p>
+<p>Enclosure, or, to be safe, nested function will look confusing the first time you saw it. It is alright. The best way is to see so much that its weirdness does not bother you any more.</p>
+</section>
+<section id="complexity-6" class="level4">
+<h4 class="anchored" data-anchor-id="complexity-6">Complexity</h4>
+<ul>
+<li><p>Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(n)\)</span>: We will visit every node in the tree once.</p></li>
+<li><p>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(log(n))\)</span>: The average maximum height of the call stack.</p></li>
+</ul>
+</section>
+<section id="code-6" class="level4">
+<h4 class="anchored" data-anchor-id="code-6">Code</h4>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> diameterOfBinaryTree(<span class="va">self</span>, root: Optional[TreeNode]) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>        diameter <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>        <span class="kw">def</span> _diameterOfBinaryTree(root):</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>            <span class="kw">nonlocal</span> diameter</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="kw">not</span> root:</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> <span class="dv">0</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>            left, right <span class="op">=</span> _diameterOfBinaryTree(root.left), _diameterOfBinaryTree(root.right)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>            diameter <span class="op">=</span> <span class="bu">max</span>(diameter, left<span class="op">+</span>right)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="dv">1</span> <span class="op">+</span> <span class="bu">max</span>(left, right)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>        _diameterOfBinaryTree(root)</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> diameter</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>

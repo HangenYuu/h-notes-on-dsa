@@ -2,7 +2,7 @@
 title: "Binary search"
 description: "Binary search"
 author: "Pham Nguyen Hung"
-date: "03/16/2023"
+date: "03/22/2023"
 draft: false
 toc: true
 ---
@@ -65,3 +65,41 @@ class Solution:
         return -1
 ```
 
+### 2. First Bad Version
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+For any call `isBadVersion(version)`, if the version is good, it means that the first bad version *will be* a later version; if the version is bad, it means that the first bad version *might be* an older version. And given the version comes in non-decreasing order, that sounds exactly like a binary search problem. Notice the italic *will be* and *might be* - it will affect the way we implement the algorithm.
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+1. Initialize two pointers - `first` and `last` or whatever to the first and the last version, denoted by numbers.
+2. The terminating condition for this specific implementation is `first == last`, so the loop condition is `while first < last`.
+3. We will check the `mid` version. If it is bad, we will shift `last` to `mid`. If it is good, we will shift `first` to `mid + 1`.
+4. Return `first` (or `last` - does not matter) when the loop terminates. Cannot return `mid` here as the variable does not exist outside the loop. You can define it so, but there's no need to.
+
+#### Complexity
+- Time complexity: 
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(log(n))$: The default time complexity of binary search.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$: Pointers are essentially integers.
+
+#### Code
+```python
+# The isBadVersion API is already defined for you.
+# def isBadVersion(version: int) -> bool:
+
+class Solution:
+    def firstBadVersion(self, n: int) -> int:
+        low, high = 1, n
+        while low < high:
+            mid = (low+high)//2
+            if isBadVersion(mid):
+                high = mid
+            else:
+                low = mid + 1
+        return low #high
+```
