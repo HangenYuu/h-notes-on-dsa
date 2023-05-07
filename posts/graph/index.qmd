@@ -2,7 +2,8 @@
 title: "Graph"
 description: "Graph"
 author: "Pham Nguyen Hung"
-date: "2/10/2023"
+date: last-modified
+date-format: long
 draft: false
 toc: true
 ---

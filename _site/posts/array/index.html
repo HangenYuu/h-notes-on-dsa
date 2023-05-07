@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Pham Nguyen Hung">
-<meta name="dcterms.date" content="2023-03-22">
+<meta name="dcterms.date" content="2023-05-04">
 <meta name="description" content="Array">
 
 <title>H’s notes on Data Structuress and Algorithms - Array</title>
@@ -192,7 +192,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">March 22, 2023</p>
+        <p class="date">May 4, 2023</p>
       </div>
     </div>
     
@@ -217,6 +217,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#contains-duplicate" id="toc-contains-duplicate" class="nav-link" data-scroll-target="#contains-duplicate">2. Contains Duplicate</a></li>
   <li><a href="#valid-anagram" id="toc-valid-anagram" class="nav-link" data-scroll-target="#valid-anagram">3. Valid Anagram:</a></li>
   <li><a href="#majority-element" id="toc-majority-element" class="nav-link" data-scroll-target="#majority-element">4. Majority Element</a></li>
+  <li><a href="#group-anagrams" id="toc-group-anagrams" class="nav-link" data-scroll-target="#group-anagrams">5. Group Anagrams</a></li>
+  <li><a href="#top-k-frequent-elements" id="toc-top-k-frequent-elements" class="nav-link" data-scroll-target="#top-k-frequent-elements">6. Top K Frequent Elements</a></li>
   </ul></li>
   </ul></li>
   </ul>
@@ -386,6 +388,88 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>            count <span class="op">+=</span> (<span class="dv">1</span> <span class="cf">if</span> num <span class="op">==</span> candidate <span class="cf">else</span> <span class="op">-</span><span class="dv">1</span>)</span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> candidate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="group-anagrams" class="level3">
+<h3 class="anchored" data-anchor-id="group-anagrams">5. Group Anagrams</h3>
+<section id="intuition-4" class="level4">
+<h4 class="anchored" data-anchor-id="intuition-4">Intuition</h4>
+<p>From <a href="https://leetcode.com/problems/valid-anagram/">Valid Anagram</a>, we know that one word is an anagram of another if character frequencies are the same. We can check everything in one go with a dictionary. The key information is <em>lowercase letter only</em>. This means that character frequency can be capture in a tuple of 26 number, each one the number of character a, b, etc. in the word. We can append each word to the correct key in the dictionary. Afterwards, we simply return the values of the dictionary.</p>
+</section>
+<section id="approach-4" class="level4">
+<h4 class="anchored" data-anchor-id="approach-4">Approach</h4>
+<ol type="1">
+<li>Initialize a dictionary, better with Python <code>defaultdict</code>.</li>
+<li>Iterate the list of words. For each word, initialize an array of 26 0s and increment the correct count for each character. <code>ord()</code> is useful in this case.</li>
+<li>Append the word to the value array of the correct key.</li>
+<li>Return the values of the dictionary.</li>
+</ol>
+</section>
+<section id="complexity-4" class="level4">
+<h4 class="anchored" data-anchor-id="complexity-4">Complexity</h4>
+<ul>
+<li>Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(nk)\)</span>: We need to traverse the array once. <span class="math inline">\(k\)</span> is the maximum length of a string in the array.</li>
+<li>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(nk)\)</span>: The information stored in the dictionary. #### Code</li>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> defaultdict</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> groupAnagrams(<span class="va">self</span>, strs: List[<span class="bu">str</span>]) <span class="op">-&gt;</span> List[List[<span class="bu">str</span>]]:</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        countDict <span class="op">=</span> defaultdict(<span class="bu">list</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> s <span class="kw">in</span> strs:</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>            count <span class="op">=</span> [<span class="dv">0</span>] <span class="op">*</span> <span class="dv">26</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> c <span class="kw">in</span> s:</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>                count[<span class="bu">ord</span>(c) <span class="op">-</span> <span class="bu">ord</span>(<span class="st">'a'</span>)] <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>            countDict[<span class="bu">tuple</span>(count)].append(s)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> countDict.values()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="top-k-frequent-elements" class="level3">
+<h3 class="anchored" data-anchor-id="top-k-frequent-elements">6. Top K Frequent Elements</h3>
+<section id="intuition-5" class="level4">
+<h4 class="anchored" data-anchor-id="intuition-5">Intuition</h4>
+<p>To satisfy the <span class="math inline">\(O(nlogn)\)</span> time constraint, computer science students will think of Quickselect. If you know how to implement Quickselect, it’s fine.</p>
+<p>For someone who doesn’t, the approach is to use a dictionary the frequency as the key, and the value an array of elements with that key. To return, we can just iterate the dictionary from the maximum value to the minimum, append the value to an array and return the k elements. #### Approach</p>
+<ol type="1">
+<li>Take frequency count of the elements in the array, better with Python <code>Counter</code></li>
+<li>Initialize a dictionary, better with Python <code>defaultdict</code>.</li>
+<li>Iterate the array. Append each element to the value of the correct key.</li>
+<li>Iterate the dictionary from the maximum value down for the top-k elements and return it.</li>
+</ol>
+</section>
+<section id="complexity-5" class="level4">
+<h4 class="anchored" data-anchor-id="complexity-5">Complexity</h4>
+<ul>
+<li>Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(n)\)</span>: We need to traverse the array once and the dictionary once. Worst-case, the dictionary has the same size as the array.</li>
+<li>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(n)\)</span>: Worst-case, we will need to store triple the memory of the original array. #### Code</li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> defaultdict, Counter</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> topKFrequent(<span class="va">self</span>, nums: List[<span class="bu">int</span>], k: <span class="bu">int</span>) <span class="op">-&gt;</span> List[<span class="bu">int</span>]:</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>        count <span class="op">=</span> Counter(nums)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        ans <span class="op">=</span> defaultdict(<span class="bu">list</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> num <span class="kw">in</span> count:</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>            ans[count[num]].append(num)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        top <span class="op">=</span> <span class="bu">max</span>(ans)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>        res <span class="op">=</span> []</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(top,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>):</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>            res.extend(ans[i])</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> res[:k]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Optimized solution from NeetCode</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> topKFrequent(<span class="va">self</span>, nums: List[<span class="bu">int</span>], k: <span class="bu">int</span>) <span class="op">-&gt;</span> List[<span class="bu">int</span>]:</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Bucket Sort</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        countDict <span class="op">=</span> {}</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> nums:</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>            countDict[i] <span class="op">=</span> countDict.get(i, <span class="dv">0</span>) <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        freqList <span class="op">=</span> [[] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(nums))]</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> num, count <span class="kw">in</span> countDict.items():</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>            freqList[count<span class="op">-</span><span class="dv">1</span>].append(num)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>        res <span class="op">=</span> []</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(freqList) <span class="op">-</span> <span class="dv">1</span>, <span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>):</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> n <span class="kw">in</span> freqList[i]:</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>                res.append(n)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> <span class="bu">len</span>(res) <span class="op">==</span> k:</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">return</span> res</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>

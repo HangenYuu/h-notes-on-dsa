@@ -2,7 +2,8 @@
 title: "Binary search"
 description: "Binary search"
 author: "Pham Nguyen Hung"
-date: "03/22/2023"
+date: last-modified
+date-format: long
 draft: false
 toc: true
 ---
