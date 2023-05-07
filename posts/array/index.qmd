@@ -7,6 +7,7 @@ date-format: long
 draft: false
 toc: true
 ---
+
 Firstly, See [About](https://h-notes-on-dsa.netlify.app/about.html) page.
 
 # Array:
@@ -22,29 +23,31 @@ The easiest, linear data structure, consisting of elements stored in contiguous 
 The **basic of basic problem**, the first problem everybody encounters when he/she starts LeetCoding.
 
 #### Intuition
+
 <!-- Describe your first thoughts on how to solve this problem. -->
-Traversing the list seems like the most logical thing to do. The brute-force way is to check every pair of numbers. The time complexity is O(n^2). To optimize this, it is better to store the information we have already encountered when we traverse the list. We need to use a data structure that supports fast searching - HashMap. Either way works, but the HashMap can be used for storing the index of the element as well. If we store an element as the key and the index as the value, we can quickly search and return the indices.
+
+Traversing the list seems like the most logical thing to do. The brute-force way is to check every pair of numbers. The time complexity is O(n\^2). To optimize this, it is better to store the information we have already encountered when we traverse the list. We need to use a data structure that supports fast searching - HashMap. Either way works, but the HashMap can be used for storing the index of the element as well. If we store an element as the key and the index as the value, we can quickly search and return the indices.
 
 #### Approach
+
 <!-- Describe your approach to solving the problem. -->
+
 The algorithm can be described as:
 
-1. Traverse the array from the beginning.
-2. Store the element encountered in a set/dictionary.
-3. Check if the sum - element is in the dictionary.
-4. Return the indices.
+1.  Traverse the array from the beginning.
+2.  Store the element encountered in a set/dictionary.
+3.  Check if the sum - element is in the dictionary.
+4.  Return the indices.
 
 #### Complexity
-- Time complexity:
-<!-- Add your time complexity here, e.g. $$O(n)$$ -->
-$O(n)$: Traversing the whole list once.
 
-- Space complexity:
-<!-- Add your space complexity here, e.g. $$O(n)$$ -->
-$O(n)$: In the worst case, we will have a dictionary with a size equal to the array.
+-   Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> $O(n)$: Traversing the whole list once.
+
+-   Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> $O(n)$: In the worst case, we will have a dictionary with a size equal to the array.
 
 #### Code
-```python
+
+``` python
 from collections import defaultdict
 class Solution:
     def twoSum(self, nums: List[int], target: int) -> List[int]:
@@ -58,26 +61,28 @@ class Solution:
 ### 2. Contains Duplicate
 
 #### Intuition
+
 <!-- Describe your first thoughts on how to solve this problem. -->
+
 Again, traverse the array, storing information about what we have encountered. This time, we only need to store the element itself, so a HashSet suffices.
 
 #### Approach
+
 <!-- Describe your approach to solving the problem. -->
-1. Traverse the array.
-2. Check if the current element is in the HashSet. If it is, return True for duplicate.
-3. If we reach the end of the array, return False for no duplicate.
+
+1.  Traverse the array.
+2.  Check if the current element is in the HashSet. If it is, return True for duplicate.
+3.  If we reach the end of the array, return False for no duplicate.
 
 #### Complexity
-- Time complexity:
-<!-- Add your time complexity here, e.g. $$O(n)$$ -->
-$O(n)$: Traversing the whole list once.
 
-- Space complexity:
-<!-- Add your space complexity here, e.g. $$O(n)$$ -->
-$O(n)$: In the worst case, we will have a set with a size equal to the array.
+-   Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> $O(n)$: Traversing the whole list once.
+
+-   Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> $O(n)$: In the worst case, we will have a set with a size equal to the array.
 
 #### Code
-```python
+
+``` python
 class Solution:
     def containsDuplicate(self, nums: List[int]) -> bool:
         numSet = set()
@@ -91,26 +96,28 @@ class Solution:
 ### 3. Valid Anagram:
 
 #### Intuition
+
 <!-- Describe your first thoughts on how to solve this problem. -->
+
 Again, traverse the array, storing information about what we have encountered. This time, we only need to store the element itself, so a HashSet suffices.
 
 #### Approach
+
 <!-- Describe your approach to solving the problem. -->
-1. Traverse the array.
-2. Check if the current element is in the HashSet. If it is, return True for duplicate.
-3. If we reach the end of the array, return False for no duplicate.
+
+1.  Traverse the array.
+2.  Check if the current element is in the HashSet. If it is, return True for duplicate.
+3.  If we reach the end of the array, return False for no duplicate.
 
 #### Complexity
-- Time complexity:
-<!-- Add your time complexity here, e.g. $$O(n)$$ -->
-$O(n)$: Traversing the whole list once.
 
-- Space complexity:
-<!-- Add your space complexity here, e.g. $$O(n)$$ -->
-$O(n)$: In the worst case, we will have a set with a size equal to the array.
+-   Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> $O(n)$: Traversing the whole list once.
+
+-   Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> $O(n)$: In the worst case, we will have a set with a size equal to the array.
 
 #### Code
-```python
+
+``` python
 from collections import defaultdict
 class Solution:
     def isAnagram(self, s: str, t: str) -> bool:
@@ -126,31 +133,33 @@ class Solution:
 ### 4. Majority Element
 
 #### Intuition
+
 <!-- Describe your first thoughts on how to solve this problem. -->
+
 There are many approaches to the problem. The simplest way except brute-force the whole thing is to use a HashMap to count the number of occurences of each element (in Python can be done faster with `collections.Counter`). The solution provided is to deal with the follow-up question of linear time with $O(1)$ memory.
 
 #### Approach
+
 <!-- Describe your approach to solving the problem. -->
+
 This is a named algorithm: Boyer-Moore Voting Algorithm. The procedure is this: while we traverse the array, if we choose the first element as a candidate and consider three things:
 
-1. An encounter with the same element a vote for the candidate
-2. An encounter with a difference element a vote against the candidate
-3. Change the candidate to the current element if it is different than the candidate and the vote for the candidate has become 0
+1.  An encounter with the same element a vote for the candidate
+2.  An encounter with a difference element a vote against the candidate
+3.  Change the candidate to the current element if it is different than the candidate and the vote for the candidate has become 0
 
 then at the end, we should be left with the candidate.
 
 This is because the majority element will occur more than `n//2` times with `n` the length of the array. Because of this, the majority element will be the only possible candidate with a positive vote at the end.
 
 #### Complexity
-- Time complexity:
-<!-- Add your time complexity here, e.g. $$O(n)$$ -->
-$O(n)$: We need to traverse the array once.
-- Space complexity:
-<!-- Add your space complexity here, e.g. $$O(n)$$ -->
-$O(1)$: We only need to keep track of the count and the candidate, which requires constant memory.
+
+-   Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> $O(n)$: We need to traverse the array once.
+-   Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> $O(1)$: We only need to keep track of the count and the candidate, which requires constant memory.
 
 #### Code
-```python
+
+``` python
 class Solution:
     def majorityElement(self, nums):
         count = 0
@@ -172,20 +181,18 @@ From [Valid Anagram](https://leetcode.com/problems/valid-anagram/), we know that
 
 #### Approach
 
-1. Initialize a dictionary, better with Python `defaultdict`.
-2. Iterate the list of words. For each word, initialize an array of 26 0s and increment the correct count for each character. `ord()` is useful in this case.
-3. Append the word to the value array of the correct key.
-4. Return the values of the dictionary.
+1.  Initialize a dictionary, better with Python `defaultdict`.
+2.  Iterate the list of words. For each word, initialize an array of 26 0s and increment the correct count for each character. `ord()` is useful in this case.
+3.  Append the word to the value array of the correct key.
+4.  Return the values of the dictionary.
 
 #### Complexity
-- Time complexity:
-<!-- Add your time complexity here, e.g. $$O(n)$$ -->
-$O(nk)$: We need to traverse the array once. $k$ is the maximum length of a string in the array.
-- Space complexity:
-<!-- Add your space complexity here, e.g. $$O(n)$$ -->
-$O(nk)$: The information stored in the dictionary.
+
+-   Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> $O(nk)$: We need to traverse the array once. $k$ is the maximum length of a string in the array.
+-   Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> $O(nk)$: The information stored in the dictionary. 
+
 #### Code
-```python
+``` python
 from collections import defaultdict
 class Solution:
     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
@@ -204,23 +211,20 @@ class Solution:
 
 To satisfy the $O(nlogn)$ time constraint, computer science students will think of Quickselect. If you know how to implement Quickselect, it's fine.
 
-For someone who doesn't, the approach is to use a dictionary the frequency as the key, and the value an array of elements with that key. To return, we can just iterate the dictionary from the maximum value to the minimum, append the value to an array and return the k elements.
-#### Approach
+For someone who doesn't, the approach is to use a dictionary the frequency as the key, and the value an array of elements with that key. To return, we can just iterate the dictionary from the maximum value to the minimum, append the value to an array and return the k elements. \#### Approach
 
-1. Take frequency count of the elements in the array, better with Python `Counter`
-2. Initialize a dictionary, better with Python `defaultdict`.
-3. Iterate the array. Append each element to the value of the correct key.
-4. Iterate the dictionary from the maximum value down for the top-k elements and return it.
+1.  Take frequency count of the elements in the array, better with Python `Counter`
+2.  Initialize a dictionary, better with Python `defaultdict`.
+3.  Iterate the array. Append each element to the value of the correct key.
+4.  Iterate the dictionary from the maximum value down for the top-k elements and return it.
 
 #### Complexity
-- Time complexity:
-<!-- Add your time complexity here, e.g. $$O(n)$$ -->
-$O(n)$: We need to traverse the array once and the dictionary once. Worst-case, the dictionary has the same size as the array.
-- Space complexity:
-<!-- Add your space complexity here, e.g. $$O(n)$$ -->
-$O(n)$: Worst-case, we will need to store triple the memory of the original array.
+
+-   Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> $O(n)$: We need to traverse the array once and the dictionary once. Worst-case, the dictionary has the same size as the array.
+-   Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> $O(n)$: Worst-case, we will need to store triple the memory of the original array.
+
 #### Code
-```python
+``` python
 from collections import defaultdict, Counter
 class Solution:
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
@@ -234,8 +238,10 @@ class Solution:
             res.extend(ans[i])
         return res[:k]
 ```
+
 Optimized solution from NeetCode
-```python
+
+``` python
 class Solution:
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
         # Bucket Sort
@@ -251,4 +257,123 @@ class Solution:
                 res.append(n)
                 if len(res) == k:
                     return res
+```
+
+### 7. Encode and Decode Strings
+
+#### Intuition
+
+There are many approaches to this problem. My approach is the simplest: I will use an usual combination of character to insert between strings in the list. To minimize memory use, I choose a 3 combo: `'*-*'`. I reckon that I can get the work done with `'*-'`, but `'*-*` is safer and cuter.
+
+A more seasoned programmer will give a more complex approach. He will use `':'` to insert between, and inserting `'::'` when there is a `':'`. This is a general method, which takes care of the case you need to impress the guys by showing that you can think generally, given that you may need to learn another language at the company. But in Python, simpler is better - it is just an one-liner with fast, optimized method for both functions. But of course, it is not so impressive, making you look so dependent on Python.
+
+NeetCode has a middle approach - Use the length and `'#'` to insert before each character. This is much better.
+
+#### Approach
+
+One-liner: Use built-in method `.join()` and `.split()` to do the heavy work.
+
+General:
+
+-   Encode the string by concatenating the length + `'#'` + the string into a big one and return.
+
+-   Decode the string by creating a for loop and deal with phrases consequentially.
+
+    1.  Extract the character length of the next phrase from the string.
+    2.  Use slicing to get the phrase and append to the result list.
+    3.  Move on to the next position.
+    4.  Return the result.
+
+#### Complexity
+
+- Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> $O(n)$: We need to traverse the array and string once for each.
+- Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> $O(1)$: We will need to store some pointers for both functions.
+
+#### Code
+
+One-liner
+```python
+class Solution:
+    """
+    @param: strs: a list of strings
+    @return: encodes a list of strings to a single string.
+    """
+    def encode(self, strs):
+        # write your code here
+        return '*-*'.join(strs)
+
+    """
+    @param: str: A string
+    @return: dcodes a single string to a list of strings
+    """
+    def decode(self, str):
+        # write your code here
+        return str.split('*-*')
+```
+Optimized NeetCode
+``` python
+class Solution:
+    """
+    @param: strs: a list of strings
+    @return: encodes a list of strings to a single string.
+    """
+
+    def encode(self, strs):
+        res = ""
+        for s in strs:
+            res += str(len(s)) + "#" + s
+        return res
+
+    """
+    @param: s: A string
+    @return: decodes a single string to a list of strings
+    """
+
+    def decode(self, s):
+        res, i = [], 0
+
+        while i < len(s):
+            j = i
+            while s[j] != "#":
+                j += 1
+            length = int(s[i:j])
+            res.append(s[j + 1 : j + 1 + length])
+            i = j + 1 + length
+        return res
+```
+
+### 8. Product of Array Except Self
+
+#### Intuiton
+
+The trick is to use "prefix" and "postfix" arrays, respectively storing the product of all elements coming before and after the current values. These arrays have the properties of being able to be calculated iteratively in a for loop from the calculated value before. The answer is simply the element-wise product of the two arrays.
+
+To get to the $O(1)$ memory solution, it is about converting one array into just a pointer to cache the product.
+
+### Approach
+
+1.  Traverse the array to calculate the prefix (postfix array).
+2.  Traverse the array again to update the postfix product and also the result.
+3.  Return the result.
+
+#### Complexity
+
+- Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> $O(n)$: We need to traverse the original array twice.
+- Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> $O(1)$: We will need to store the postfix product while calculating.
+
+#### Code
+```python
+class Solution:
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
+        # To achieve O(1) space, will need to perform the multiplication 
+        # directly on the prefix array
+        # postfix array needs to become just a pointer to the cached product 
+        lenNum = len(nums)
+        prefix, postfix = [1] * lenNum, 1
+        for i in range(1, lenNum):
+            prefix[i] = prefix[i-1]*nums[i-1]
+        for i in range(lenNum-1, -1, -1):
+            prefix[i] *= postfix
+            postfix *= nums[i]
+        return prefix
 ```

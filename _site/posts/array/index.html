@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Pham Nguyen Hung">
-<meta name="dcterms.date" content="2023-05-04">
+<meta name="dcterms.date" content="2023-05-07">
 <meta name="description" content="Array">
 
 <title>H’s notes on Data Structuress and Algorithms - Array</title>
@@ -192,7 +192,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">May 4, 2023</p>
+        <p class="date">May 7, 2023</p>
       </div>
     </div>
     
@@ -219,6 +219,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#majority-element" id="toc-majority-element" class="nav-link" data-scroll-target="#majority-element">4. Majority Element</a></li>
   <li><a href="#group-anagrams" id="toc-group-anagrams" class="nav-link" data-scroll-target="#group-anagrams">5. Group Anagrams</a></li>
   <li><a href="#top-k-frequent-elements" id="toc-top-k-frequent-elements" class="nav-link" data-scroll-target="#top-k-frequent-elements">6. Top K Frequent Elements</a></li>
+  <li><a href="#encode-and-decode-strings" id="toc-encode-and-decode-strings" class="nav-link" data-scroll-target="#encode-and-decode-strings">7. Encode and Decode Strings</a></li>
+  <li><a href="#product-of-array-except-self" id="toc-product-of-array-except-self" class="nav-link" data-scroll-target="#product-of-array-except-self">8. Product of Array Except Self</a></li>
+  <li><a href="#approach-6" id="toc-approach-6" class="nav-link" data-scroll-target="#approach-6">Approach</a></li>
   </ul></li>
   </ul></li>
   </ul>
@@ -409,8 +412,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h4 class="anchored" data-anchor-id="complexity-4">Complexity</h4>
 <ul>
 <li>Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(nk)\)</span>: We need to traverse the array once. <span class="math inline">\(k\)</span> is the maximum length of a string in the array.</li>
-<li>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(nk)\)</span>: The information stored in the dictionary. #### Code</li>
+<li>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(nk)\)</span>: The information stored in the dictionary.</li>
 </ul>
+</section>
+<section id="code-4" class="level4">
+<h4 class="anchored" data-anchor-id="code-4">Code</h4>
 <div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> defaultdict</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> groupAnagrams(<span class="va">self</span>, strs: List[<span class="bu">str</span>]) <span class="op">-&gt;</span> List[List[<span class="bu">str</span>]]:</span>
@@ -440,8 +446,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h4 class="anchored" data-anchor-id="complexity-5">Complexity</h4>
 <ul>
 <li>Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(n)\)</span>: We need to traverse the array once and the dictionary once. Worst-case, the dictionary has the same size as the array.</li>
-<li>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(n)\)</span>: Worst-case, we will need to store triple the memory of the original array. #### Code</li>
+<li>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(n)\)</span>: Worst-case, we will need to store triple the memory of the original array.</li>
 </ul>
+</section>
+<section id="code-5" class="level4">
+<h4 class="anchored" data-anchor-id="code-5">Code</h4>
 <div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> defaultdict, Counter</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> topKFrequent(<span class="va">self</span>, nums: List[<span class="bu">int</span>], k: <span class="bu">int</span>) <span class="op">-&gt;</span> List[<span class="bu">int</span>]:</span>
@@ -470,6 +479,125 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>                res.append(n)</span>
 <span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> <span class="bu">len</span>(res) <span class="op">==</span> k:</span>
 <span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">return</span> res</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="encode-and-decode-strings" class="level3">
+<h3 class="anchored" data-anchor-id="encode-and-decode-strings">7. Encode and Decode Strings</h3>
+<section id="intuition-6" class="level4">
+<h4 class="anchored" data-anchor-id="intuition-6">Intuition</h4>
+<p>There are many approaches to this problem. My approach is the simplest: I will use an usual combination of character to insert between strings in the list. To minimize memory use, I choose a 3 combo: <code>'*-*'</code>. I reckon that I can get the work done with <code>'*-'</code>, but <code>'*-*</code> is safer and cuter.</p>
+<p>A more seasoned programmer will give a more complex approach. He will use <code>':'</code> to insert between, and inserting <code>'::'</code> when there is a <code>':'</code>. This is a general method, which takes care of the case you need to impress the guys by showing that you can think generally, given that you may need to learn another language at the company. But in Python, simpler is better - it is just an one-liner with fast, optimized method for both functions. But of course, it is not so impressive, making you look so dependent on Python.</p>
+<p>NeetCode has a middle approach - Use the length and <code>'#'</code> to insert before each character. This is much better.</p>
+</section>
+<section id="approach-5" class="level4">
+<h4 class="anchored" data-anchor-id="approach-5">Approach</h4>
+<p>One-liner: Use built-in method <code>.join()</code> and <code>.split()</code> to do the heavy work.</p>
+<p>General:</p>
+<ul>
+<li><p>Encode the string by concatenating the length + <code>'#'</code> + the string into a big one and return.</p></li>
+<li><p>Decode the string by creating a for loop and deal with phrases consequentially.</p>
+<ol type="1">
+<li>Extract the character length of the next phrase from the string.</li>
+<li>Use slicing to get the phrase and append to the result list.</li>
+<li>Move on to the next position.</li>
+<li>Return the result.</li>
+</ol></li>
+</ul>
+</section>
+<section id="complexity-6" class="level4">
+<h4 class="anchored" data-anchor-id="complexity-6">Complexity</h4>
+<ul>
+<li>Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(n)\)</span>: We need to traverse the array and string once for each.</li>
+<li>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(1)\)</span>: We will need to store some pointers for both functions.</li>
+</ul>
+</section>
+<section id="code-6" class="level4">
+<h4 class="anchored" data-anchor-id="code-6">Code</h4>
+<p>One-liner</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">    @param: strs: a list of strings</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">    @return: encodes a list of strings to a single string.</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> encode(<span class="va">self</span>, strs):</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>        <span class="co"># write your code here</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">'*-*'</span>.join(strs)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">    @param: str: A string</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">    @return: dcodes a single string to a list of strings</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> decode(<span class="va">self</span>, <span class="bu">str</span>):</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>        <span class="co"># write your code here</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">str</span>.split(<span class="st">'*-*'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Optimized NeetCode</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">    @param: strs: a list of strings</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">    @return: encodes a list of strings to a single string.</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> encode(<span class="va">self</span>, strs):</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>        res <span class="op">=</span> <span class="st">""</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> s <span class="kw">in</span> strs:</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>            res <span class="op">+=</span> <span class="bu">str</span>(<span class="bu">len</span>(s)) <span class="op">+</span> <span class="st">"#"</span> <span class="op">+</span> s</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> res</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co">    @param: s: A string</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co">    @return: decodes a single string to a list of strings</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> decode(<span class="va">self</span>, s):</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>        res, i <span class="op">=</span> [], <span class="dv">0</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> i <span class="op">&lt;</span> <span class="bu">len</span>(s):</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>            j <span class="op">=</span> i</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>            <span class="cf">while</span> s[j] <span class="op">!=</span> <span class="st">"#"</span>:</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>                j <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>            length <span class="op">=</span> <span class="bu">int</span>(s[i:j])</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>            res.append(s[j <span class="op">+</span> <span class="dv">1</span> : j <span class="op">+</span> <span class="dv">1</span> <span class="op">+</span> length])</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>            i <span class="op">=</span> j <span class="op">+</span> <span class="dv">1</span> <span class="op">+</span> length</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> res</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="product-of-array-except-self" class="level3">
+<h3 class="anchored" data-anchor-id="product-of-array-except-self">8. Product of Array Except Self</h3>
+<section id="intuiton" class="level4">
+<h4 class="anchored" data-anchor-id="intuiton">Intuiton</h4>
+<p>The trick is to use “prefix” and “postfix” arrays, respectively storing the product of all elements coming before and after the current values. These arrays have the properties of being able to be calculated iteratively in a for loop from the calculated value before. The answer is simply the element-wise product of the two arrays.</p>
+<p>To get to the <span class="math inline">\(O(1)\)</span> memory solution, it is about converting one array into just a pointer to cache the product.</p>
+</section>
+</section>
+<section id="approach-6" class="level3">
+<h3 class="anchored" data-anchor-id="approach-6">Approach</h3>
+<ol type="1">
+<li>Traverse the array to calculate the prefix (postfix array).</li>
+<li>Traverse the array again to update the postfix product and also the result.</li>
+<li>Return the result.</li>
+</ol>
+<section id="complexity-7" class="level4">
+<h4 class="anchored" data-anchor-id="complexity-7">Complexity</h4>
+<ul>
+<li>Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(n)\)</span>: We need to traverse the original array twice.</li>
+<li>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(1)\)</span>: We will need to store the postfix product while calculating.</li>
+</ul>
+</section>
+<section id="code-7" class="level4">
+<h4 class="anchored" data-anchor-id="code-7">Code</h4>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> productExceptSelf(<span class="va">self</span>, nums: List[<span class="bu">int</span>]) <span class="op">-&gt;</span> List[<span class="bu">int</span>]:</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>        <span class="co"># To achieve O(1) space, will need to perform the multiplication </span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>        <span class="co"># directly on the prefix array</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>        <span class="co"># postfix array needs to become just a pointer to the cached product </span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>        lenNum <span class="op">=</span> <span class="bu">len</span>(nums)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>        prefix, postfix <span class="op">=</span> [<span class="dv">1</span>] <span class="op">*</span> lenNum, <span class="dv">1</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, lenNum):</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>            prefix[i] <span class="op">=</span> prefix[i<span class="op">-</span><span class="dv">1</span>]<span class="op">*</span>nums[i<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(lenNum<span class="op">-</span><span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>):</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>            prefix[i] <span class="op">*=</span> postfix</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>            postfix <span class="op">*=</span> nums[i]</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> prefix</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>
