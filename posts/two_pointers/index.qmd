@@ -34,8 +34,8 @@ The **basic problem** of two pointers. The problem can be solved by many ways (s
 #### Complexity
 - Time complexity: 
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
-$O(n)$: Traversing the whole array once.
-
+$O(n)$: Traversin the whole array once.
+g
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
 $O(1)$: Pointers are essentially integers.
@@ -62,4 +62,96 @@ class Solution:
             rightPointer -= 1
         
         return rightPointer < len(s) - 1
+```
+
+### 2. Two Sum II - Input Array Is Sorted
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+If we set up  two pointers at the start and the end, if the sum of the two numbers is larger, the *only* way to make it smaller is to decrement the right pointer. Likewise, the *only* way to make it larger is to increment the left pointer.
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+1. Initialize two pointers.
+2. Traverse the array, decrement the right and increment the left accordingly.
+3. Return the required indices when found.
+
+#### Complexity
+- Time complexity: 
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: Traversin the whole array once.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$: Pointers are essentially integers.
+
+#### Code
+```python
+class Solution:
+    def twoSum(self, numbers: List[int], target: int) -> List[int]:
+        left, right = 0, len(numbers)-1
+        while left < right:
+            while numbers[left] + numbers[right] > target:
+                right -= 1
+            while numbers[left] + numbers[right] < target:
+                left += 1
+            if numbers[left] + numbers[right] == target:
+                return [left+1, right+1]
+```
+
+### 3. 3Sum
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+If we sort the array, the problem can be turned into a two-pointer problem, where we fix the first value and then use two pointers to search for the remaining two values. There arises a bigger problem though: dealing with duplicates. The best approach is to deal with duplicates after we have found a satisfying triplet. 
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+1. Sort the array
+2. Nested for loop: Traverse the array. For each value, traverse the remaining array with two pointers to look for the satisfying triplets. Take care to deal with duplicates after finding a satisfying triplet.
+3. Return the result.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n^2)$: We use a nested for loop to traverse the array.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$: If we ignore the returning array. If not, the complexity is $O(k)$ for k the number of triplets.
+
+#### Code
+```python
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        if len(nums) == 3:
+            return [nums] if sum(nums) == 0 else []
+        nums.sort()
+        cur, res = 0, []
+        while cur < len(nums) - 2:
+            # A nice little improvement: once the smallest value is positive, we
+            # can safely conclude the search.
+            if nums[cur] > 0:
+                break
+            left, right = cur + 1, len(nums) - 1
+            remain = - nums[cur]
+            while left < right:
+                # print('Sum:', nums[left] + nums[right])
+                if nums[left] + nums[right] < remain:
+                    left += 1
+                elif nums[left] + nums[right] > remain:
+                    right -= 1
+                elif nums[left] + nums[right] == remain:
+                    res.append([nums[left], nums[right], nums[cur]])
+                    # This is where we decrement and increment the pointers to deal with duplicates. 
+                    while left < len(nums)-1 and nums[left+1] == nums[left]:
+                        left += 1
+                    while left < len(nums)-1 and nums[right-1] == nums[right]:
+                        right -= 1
+                    left += 1
+                    right -= 1
+            while cur < len(nums) - 2 and nums[cur+1] == nums[cur]:
+                cur += 1
+            cur += 1
+        return res
 ```

@@ -377,3 +377,79 @@ class Solution:
             postfix *= nums[i]
         return prefix
 ```
+
+### 9. Valid Sudoku
+
+#### Intuiton
+
+The nested for loop to check every element is inevitable. The trick is to realize that the box can be arranged and accessed with modulo 3.
+
+### Approach
+
+1. Initialized `rows`, `cols`, `boxes` to keep track of the respective factor. The most elegant way to do this in Python is with `collections.defaultdict(set)` 
+2. Traverse the board with a nested for loop and update the respective factor.
+3. Return False whenever a condition is violated, or True if the for loop executes successfully.
+
+#### Complexity
+
+- Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> $O(n^2)$: We need to traverse the original array with a nested for loop. Of course, if we are dealing with a standard Sudoku every time then it is $O(1)$.
+- Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> $O(n)$: We will need to store 3 dictionaries with worse case the same size as the board.
+
+#### Code
+```python
+from collections import defaultdict
+
+class Solution:
+    def isValidSudoku(self, board: List[List[str]]) -> bool:
+        rows, cols, boxes = defaultdict(set), defaultdict(set), defaultdict(set)
+        for row in range(9):
+            for col in range(9):
+                cur = board[row][col]
+                if cur != '.':
+                    if (cur in rows[row] or
+                        cur in cols[col] or
+                        cur in boxes[(row//3, col//3)]):
+                        return False
+                    rows[row].add(cur)
+                    cols[col].add(cur)
+                    boxes[(row//3, col//3)].add(cur)
+        return True
+```
+
+### 10. Longest Consecutive Sequence
+
+#### Intuiton
+
+We need to perform a lot of searches and there is the possibility of duplicates. Hence, it is better if we convert the array to a set. We can also create safeguard by NOT counting the number in the sequence if the one preceding it is in the set.
+
+#### Approach
+
+1. Convert the whole array into a set.
+2. Traverse the set. For each element, count and update the longest consecutive sequence if the one preceding it is not in the array.
+3. Return the longest length.
+
+#### Complexity
+
+- Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> $O(n)$: We need to traverse the original array once
+- Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> $O(n)$: We will need to store a set with the same size as the array.
+
+#### Code
+```python
+class Solution:
+    def longestConsecutive(self, nums):
+        longest_streak = 0
+        num_set = set(nums)
+
+        for num in num_set:
+            if num - 1 not in num_set:
+                current_num = num
+                current_streak = 1
+
+                while current_num + 1 in num_set:
+                    current_num += 1
+                    current_streak += 1
+
+                longest_streak = max(longest_streak, current_streak)
+
+        return longest_streak
+```
