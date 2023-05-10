@@ -155,3 +155,87 @@ class Solution:
             cur += 1
         return res
 ```
+### 4. Container With Most Water
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+The trick is the idea of *maximum so far*. This appears a lot in problems where we need to iterate the array and update an extremum as we go along. The rule for moving the pointer comes from the question: *How do I potentially increase the value of maximum area so far?*. The answer is by moving the *smaller* pointer, the bottleneck in calculating the amount of water the container can hold.
+
+An improvement on the solution is a simple check-up. Taking the width constant, the best container is the one with the maximum height. Therefore, at any moment the volume of the best container possible with the current width cannot surpass the maximum so far, we can safely break out of the for loop. 
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+1. Initialize: 2 pointers, maximum so far, and maximum height.
+2. Traverse the array with two pointers. Update the maximum height as we go along.
+3. Once the terminating condition is met, return the maximum so far.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: We need to traverse the array once...
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$: ... and store a bunch of integers.
+
+#### Code
+```python
+class Solution:
+    def maxArea(self, height: List[int]) -> int:
+        maxSoFar = -1
+        left, right = 0, len(height)-1
+        maxHeight = max(height)
+        while left < right:
+            minHeight = min(height[left], height[right])
+            maxSoFar = max(maxSoFar, (right-left)*minHeight)
+            if height[left] == minHeight:
+                left += 1
+            else:
+                right -= 1
+            if maxHeight*(right - left) <= maxSoFar:
+                break
+        return maxSoFar        
+```
+### 5. Trapping Rain Water
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+- Deal with the calculation one element at a time.
+- Need to keep the maximum left and right heights.
+- The water trapped depends on the smaller maximum height.
+- Let's say the maximum left height is smaller. The water trapped is the difference between the maximum left height and the current left height, which is >= 0.
+- We need to increment the side with the smaller maximum height. 
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+1. Initialize pointer and maximum height for each side.
+2. Traverse the array. Increment the side with the smaller maximum height. Update the maximum height at that side and the water trapped so far.
+3. Return the result.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: We need to traverse the array once...
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$: ... and store a bunch of integers.
+
+#### Code
+```python
+class Solution:
+    def trap(self, height: List[int]) -> int:
+        if not height:
+            return 0
+        left, right = 0, len(height) - 1
+        leftMax, rightMax=  height[left], height[right]
+        res = 0
+        while left < right:
+            if leftMax < rightMax:
+                left += 1
+                leftMax = max(leftMax, height[left])
+                res += leftMax - height[left]
+            else:
+                right -= 1
+                rightMax = max(rightMax, height[right])
+                res += rightMax - height[right]
+        return res
+```

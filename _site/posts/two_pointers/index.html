@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Pham Nguyen Hung">
-<meta name="dcterms.date" content="2023-05-09">
+<meta name="dcterms.date" content="2023-05-10">
 <meta name="description" content="Two pointers">
 
 <title>H’s notes on Data Structuress and Algorithms - Two pointers</title>
@@ -166,7 +166,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">May 9, 2023</p>
+        <p class="date">May 10, 2023</p>
       </div>
     </div>
     
@@ -190,6 +190,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#valid-palindrome" id="toc-valid-palindrome" class="nav-link" data-scroll-target="#valid-palindrome">1. Valid Palindrome</a></li>
   <li><a href="#two-sum-ii---input-array-is-sorted" id="toc-two-sum-ii---input-array-is-sorted" class="nav-link" data-scroll-target="#two-sum-ii---input-array-is-sorted">2. Two Sum II - Input Array Is Sorted</a></li>
   <li><a href="#sum" id="toc-sum" class="nav-link" data-scroll-target="#sum">3. 3Sum</a></li>
+  <li><a href="#container-with-most-water" id="toc-container-with-most-water" class="nav-link" data-scroll-target="#container-with-most-water">4. Container With Most Water</a></li>
+  <li><a href="#trapping-rain-water" id="toc-trapping-rain-water" class="nav-link" data-scroll-target="#trapping-rain-water">5. Trapping Rain Water</a></li>
   </ul></li>
   </ul></li>
   </ul>
@@ -353,6 +355,99 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>                cur <span class="op">+=</span> <span class="dv">1</span></span>
 <span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>            cur <span class="op">+=</span> <span class="dv">1</span></span>
 <span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> res</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="container-with-most-water" class="level3">
+<h3 class="anchored" data-anchor-id="container-with-most-water">4. Container With Most Water</h3>
+<section id="intuition-3" class="level4">
+<h4 class="anchored" data-anchor-id="intuition-3">Intuition</h4>
+<!-- Describe your first thoughts on how to solve this problem. -->
+<p>The trick is the idea of <em>maximum so far</em>. This appears a lot in problems where we need to iterate the array and update an extremum as we go along. The rule for moving the pointer comes from the question: <em>How do I potentially increase the value of maximum area so far?</em>. The answer is by moving the <em>smaller</em> pointer, the bottleneck in calculating the amount of water the container can hold.</p>
+<p>An improvement on the solution is a simple check-up. Taking the width constant, the best container is the one with the maximum height. Therefore, at any moment the volume of the best container possible with the current width cannot surpass the maximum so far, we can safely break out of the for loop.</p>
+</section>
+<section id="approach-3" class="level4">
+<h4 class="anchored" data-anchor-id="approach-3">Approach</h4>
+<!-- Describe your approach to solving the problem. -->
+<ol type="1">
+<li>Initialize: 2 pointers, maximum so far, and maximum height.</li>
+<li>Traverse the array with two pointers. Update the maximum height as we go along.</li>
+<li>Once the terminating condition is met, return the maximum so far.</li>
+</ol>
+</section>
+<section id="complexity-3" class="level4">
+<h4 class="anchored" data-anchor-id="complexity-3">Complexity</h4>
+<ul>
+<li>Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(n)\)</span>: We need to traverse the array once…</li>
+<li>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(1)\)</span>: … and store a bunch of integers.</li>
+</ul>
+</section>
+<section id="code-3" class="level4">
+<h4 class="anchored" data-anchor-id="code-3">Code</h4>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> maxArea(<span class="va">self</span>, height: List[<span class="bu">int</span>]) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        maxSoFar <span class="op">=</span> <span class="op">-</span><span class="dv">1</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        left, right <span class="op">=</span> <span class="dv">0</span>, <span class="bu">len</span>(height)<span class="op">-</span><span class="dv">1</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        maxHeight <span class="op">=</span> <span class="bu">max</span>(height)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> left <span class="op">&lt;</span> right:</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>            minHeight <span class="op">=</span> <span class="bu">min</span>(height[left], height[right])</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>            maxSoFar <span class="op">=</span> <span class="bu">max</span>(maxSoFar, (right<span class="op">-</span>left)<span class="op">*</span>minHeight)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> height[left] <span class="op">==</span> minHeight:</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>                left <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>:</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>                right <span class="op">-=</span> <span class="dv">1</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> maxHeight<span class="op">*</span>(right <span class="op">-</span> left) <span class="op">&lt;=</span> maxSoFar:</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>                <span class="cf">break</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> maxSoFar        </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="trapping-rain-water" class="level3">
+<h3 class="anchored" data-anchor-id="trapping-rain-water">5. Trapping Rain Water</h3>
+<section id="intuition-4" class="level4">
+<h4 class="anchored" data-anchor-id="intuition-4">Intuition</h4>
+<!-- Describe your first thoughts on how to solve this problem. -->
+<ul>
+<li>Deal with the calculation one element at a time.</li>
+<li>Need to keep the maximum left and right heights.</li>
+<li>The water trapped depends on the smaller maximum height.</li>
+<li>Let’s say the maximum left height is smaller. The water trapped is the difference between the maximum left height and the current left height, which is &gt;= 0.</li>
+<li>We need to increment the side with the smaller maximum height.</li>
+</ul>
+</section>
+<section id="approach-4" class="level4">
+<h4 class="anchored" data-anchor-id="approach-4">Approach</h4>
+<!-- Describe your approach to solving the problem. -->
+<ol type="1">
+<li>Initialize pointer and maximum height for each side.</li>
+<li>Traverse the array. Increment the side with the smaller maximum height. Update the maximum height at that side and the water trapped so far.</li>
+<li>Return the result.</li>
+</ol>
+</section>
+<section id="complexity-4" class="level4">
+<h4 class="anchored" data-anchor-id="complexity-4">Complexity</h4>
+<ul>
+<li>Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(n)\)</span>: We need to traverse the array once…</li>
+<li>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(1)\)</span>: … and store a bunch of integers.</li>
+</ul>
+</section>
+<section id="code-4" class="level4">
+<h4 class="anchored" data-anchor-id="code-4">Code</h4>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> trap(<span class="va">self</span>, height: List[<span class="bu">int</span>]) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> height:</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="dv">0</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        left, right <span class="op">=</span> <span class="dv">0</span>, <span class="bu">len</span>(height) <span class="op">-</span> <span class="dv">1</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        leftMax, rightMax<span class="op">=</span>  height[left], height[right]</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        res <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> left <span class="op">&lt;</span> right:</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> leftMax <span class="op">&lt;</span> rightMax:</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>                left <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>                leftMax <span class="op">=</span> <span class="bu">max</span>(leftMax, height[left])</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>                res <span class="op">+=</span> leftMax <span class="op">-</span> height[left]</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>:</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>                right <span class="op">-=</span> <span class="dv">1</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>                rightMax <span class="op">=</span> <span class="bu">max</span>(rightMax, height[right])</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>                res <span class="op">+=</span> rightMax <span class="op">-</span> height[right]</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> res</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>
