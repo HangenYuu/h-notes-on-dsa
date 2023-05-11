@@ -2,10 +2,10 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/stack/index.html",
       "/posts/two_pointers/index.html",
       "/posts/array/index.html",
       "/posts/tree/index.html",
-      "/posts/stack/index.html",
       "/posts/sliding_window/index.html",
       "/posts/binary_search/index.html",
       "/posts/graph/index.html",

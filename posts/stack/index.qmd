@@ -57,4 +57,81 @@ class Solution:
         return len(stack) == 0
 ```
 
-### 2.
+### 2. Evaluate Reverse Polish Notation 
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+The notation works perfectly with a stack. Basically, whenever you encounter an operand, you need to pop from the end of the stack and perform operation in the correct order before append the result to the stack. Otherwise, just append the numbers in the order we encounter them.
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+1. Traverse the list.
+2. If encounter a number, append it to the stack. If encounter an operand, pop from the stack two times, operate, and append the result.
+3. Return the result.
+
+#### Complexity
+- Time complexity: 
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: Traversing the whole array once.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$: At the worst case, we will need to store more than half of the array inside the stack.
+
+#### Code
+```python
+class Solution:
+    def evalRPN(self, tokens: List[str]) -> int:
+        stack = []
+        for token in tokens:
+            if token =='+':
+                a, b = stack.pop(), stack.pop()
+                stack.append(a+b)
+            elif token =='*':
+                a, b = stack.pop(), stack.pop()
+                stack.append(a*b)
+            elif token =='/':
+                a, b = stack.pop(), stack.pop()
+                stack.append(int(b/a))
+            elif token =='-':
+                a, b = stack.pop(), stack.pop()
+                stack.append(b-a)
+            else:
+                stack.append(int(token))
+        return stack.pop()
+```
+
+### 3. Daily Temperatures
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+The number of days to wait is the difference in the indices of the days. The stack comes in handy here by storing the value of the element sequentially, and then we pop from it when we encounter a day with larger temperature.
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+1. Initialize the stack and the `answer` array, which is an array of 0s with the same length as `temperatures`.
+2. Traverse the array. Storing the value and index to a stack if the value is not larger than the last element in the stack. Pop from the stack and update `answer` otherwise.
+3. Return `answer`.
+
+#### Complexity
+- Time complexity: 
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: Traversing the whole array once.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$: At the worst case, we will need to store nearly the whole  array inside the stack.
+
+#### Code
+```python
+class Solution:
+    def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
+        answer = [0]*len(temperatures)
+        stack = []
+        for ind, temp in enumerate(temperatures):
+            while stack and stack[-1][0] < temp:
+                stackTemp, stackInd = stack.pop()
+                answer[stackInd] = ind - stackInd
+            stack.append((temp, ind))
+        return answer
+```
