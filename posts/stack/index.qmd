@@ -135,3 +135,107 @@ class Solution:
             stack.append((temp, ind))
         return answer
 ```
+
+### 4. Min Stack
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+The trick is having another stack to store the *minimum so far*.
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+With the minimum so far stack, we just need to update it along with the main stack. The main task will be the `push` operation, where we need to append the new value if it is the new minimum, or the same last value.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+As required by the problem, everything is in $O(1)$ time.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+We are using two stacks, so it is double the memory. Nevertheless, it is $O(n)$.
+
+#### Code
+```python
+class MinStack:
+    # The trick is having the min stack so far
+    def __init__(self):
+        self.stack = []
+        self.min_stack = []
+
+    def push(self, val: int) -> None:
+        self.stack.append(val)
+        if not self.min_stack or val < self.min_stack[-1]:
+            self.min_stack.append(val)
+        else:
+            self.min_stack.append(self.min_stack[-1])
+
+    def pop(self) -> None:
+        self.stack.pop()
+        self.min_stack.pop()
+
+    def top(self) -> int:
+        return self.stack[-1]
+
+    def getMin(self) -> int:
+        return self.min_stack[-1]
+
+
+# Your MinStack object will be instantiated and called as such:
+# obj = MinStack()
+# obj.push(val)
+# obj.pop()
+# param_3 = obj.top()
+# param_4 = obj.getMin()
+```
+### 5. Generate Parentheses
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+The problem gave me a taste of backtracking. It is time to realize that this is possible. Backtracking is built on recursion, which is built on the recursion call stack. So yeah, stack will be present in recursion problem.
+
+In recursion problem, we start with the base case. The base case here revolves around the condition to add left and right parentheses. Simply, we can validly add a left parenthesis if the number of left parentheses is smaller than $n$, while we can validly add a right parenthesis if the number of left parentheses is smaller than  the number of right parentheses. The base case is when the number of left and the number of right all hit $n$.
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+1. Initialize `res` and `stack` array. One to return, one to keep track of the string generated.
+2. Define the backtracking function `backtrack` based on the conditions above.
+3. Call `backtrack` to update `res` and return.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(\frac{4^n}{\sqrt n})$: It is complicated to derive this time complexity, related to Catalan numbers. An alternative is remembering the brute-force time complexity: $O(2^{2n}*n)$. At each position in the $2n$ string there are two ways to choose which parenthesis to add, and checking for validity takes $O(n)$ time. 
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$: The maximum depth of the recursive stack.
+
+#### Code
+```python
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        # Backtracking problem
+        # Revolve around conditions to add open parenthesis and
+        # closed parenthesis
+        # Open parenthesis can be added if it is less than n
+        # Closed parenthesis can be added if it is less than open
+        stack, res = [], []
+        
+        def backtrack(openN, closedN):
+            if openN == closedN == n:
+                res.append(''.join(stack))
+                return
+            
+            if openN < n:
+                stack.append('(')
+                backtrack(openN+1, closedN)
+                stack.pop()
+            
+            if closedN < openN:
+                stack.append(')')
+                backtrack(openN, closedN+1)
+                stack.pop()
+        backtrack(0, 0)
+        return res
+```

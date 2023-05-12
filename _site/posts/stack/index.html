@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Pham Nguyen Hung">
-<meta name="dcterms.date" content="2023-05-11">
+<meta name="dcterms.date" content="2023-05-12">
 <meta name="description" content="Stack">
 
 <title>H’s notes on Data Structuress and Algorithms - Stack</title>
@@ -166,7 +166,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">May 11, 2023</p>
+        <p class="date">May 12, 2023</p>
       </div>
     </div>
     
@@ -190,6 +190,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#valid-parentheses" id="toc-valid-parentheses" class="nav-link" data-scroll-target="#valid-parentheses">1. Valid Parentheses</a></li>
   <li><a href="#evaluate-reverse-polish-notation" id="toc-evaluate-reverse-polish-notation" class="nav-link" data-scroll-target="#evaluate-reverse-polish-notation">2. Evaluate Reverse Polish Notation</a></li>
   <li><a href="#daily-temperatures" id="toc-daily-temperatures" class="nav-link" data-scroll-target="#daily-temperatures">3. Daily Temperatures</a></li>
+  <li><a href="#min-stack" id="toc-min-stack" class="nav-link" data-scroll-target="#min-stack">4. Min Stack</a></li>
+  <li><a href="#generate-parentheses" id="toc-generate-parentheses" class="nav-link" data-scroll-target="#generate-parentheses">5. Generate Parentheses</a></li>
   </ul></li>
   </ul></li>
   </ul>
@@ -333,6 +335,112 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>                answer[stackInd] <span class="op">=</span> ind <span class="op">-</span> stackInd</span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>            stack.append((temp, ind))</span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> answer</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="min-stack" class="level3">
+<h3 class="anchored" data-anchor-id="min-stack">4. Min Stack</h3>
+<section id="intuition-3" class="level4">
+<h4 class="anchored" data-anchor-id="intuition-3">Intuition</h4>
+<!-- Describe your first thoughts on how to solve this problem. -->
+<p>The trick is having another stack to store the <em>minimum so far</em>.</p>
+</section>
+<section id="approach-3" class="level4">
+<h4 class="anchored" data-anchor-id="approach-3">Approach</h4>
+<!-- Describe your approach to solving the problem. -->
+<p>With the minimum so far stack, we just need to update it along with the main stack. The main task will be the <code>push</code> operation, where we need to append the new value if it is the new minimum, or the same last value.</p>
+</section>
+<section id="complexity-3" class="level4">
+<h4 class="anchored" data-anchor-id="complexity-3">Complexity</h4>
+<ul>
+<li><p>Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> As required by the problem, everything is in <span class="math inline">\(O(1)\)</span> time.</p></li>
+<li><p>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> We are using two stacks, so it is double the memory. Nevertheless, it is <span class="math inline">\(O(n)\)</span>.</p></li>
+</ul>
+</section>
+<section id="code-3" class="level4">
+<h4 class="anchored" data-anchor-id="code-3">Code</h4>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> MinStack:</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># The trick is having the min stack so far</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.stack <span class="op">=</span> []</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.min_stack <span class="op">=</span> []</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> push(<span class="va">self</span>, val: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.stack.append(val)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> <span class="va">self</span>.min_stack <span class="kw">or</span> val <span class="op">&lt;</span> <span class="va">self</span>.min_stack[<span class="op">-</span><span class="dv">1</span>]:</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.min_stack.append(val)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.min_stack.append(<span class="va">self</span>.min_stack[<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> pop(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.stack.pop()</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.min_stack.pop()</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> top(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.stack[<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> getMin(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.min_stack[<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Your MinStack object will be instantiated and called as such:</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="co"># obj = MinStack()</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="co"># obj.push(val)</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="co"># obj.pop()</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="co"># param_3 = obj.top()</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="co"># param_4 = obj.getMin()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="generate-parentheses" class="level3">
+<h3 class="anchored" data-anchor-id="generate-parentheses">5. Generate Parentheses</h3>
+<section id="intuition-4" class="level4">
+<h4 class="anchored" data-anchor-id="intuition-4">Intuition</h4>
+<!-- Describe your first thoughts on how to solve this problem. -->
+<p>The problem gave me a taste of backtracking. It is time to realize that this is possible. Backtracking is built on recursion, which is built on the recursion call stack. So yeah, stack will be present in recursion problem.</p>
+<p>In recursion problem, we start with the base case. The base case here revolves around the condition to add left and right parentheses. Simply, we can validly add a left parenthesis if the number of left parentheses is smaller than <span class="math inline">\(n\)</span>, while we can validly add a right parenthesis if the number of left parentheses is smaller than the number of right parentheses. The base case is when the number of left and the number of right all hit <span class="math inline">\(n\)</span>.</p>
+</section>
+<section id="approach-4" class="level4">
+<h4 class="anchored" data-anchor-id="approach-4">Approach</h4>
+<!-- Describe your approach to solving the problem. -->
+<ol type="1">
+<li>Initialize <code>res</code> and <code>stack</code> array. One to return, one to keep track of the string generated.</li>
+<li>Define the backtracking function <code>backtrack</code> based on the conditions above.</li>
+<li>Call <code>backtrack</code> to update <code>res</code> and return.</li>
+</ol>
+</section>
+<section id="complexity-4" class="level4">
+<h4 class="anchored" data-anchor-id="complexity-4">Complexity</h4>
+<ul>
+<li><p>Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(\frac{4^n}{\sqrt n})\)</span>: It is complicated to derive this time complexity, related to Catalan numbers. An alternative is remembering the brute-force time complexity: <span class="math inline">\(O(2^{2n}*n)\)</span>. At each position in the <span class="math inline">\(2n\)</span> string there are two ways to choose which parenthesis to add, and checking for validity takes <span class="math inline">\(O(n)\)</span> time.</p></li>
+<li><p>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(n)\)</span>: The maximum depth of the recursive stack.</p></li>
+</ul>
+</section>
+<section id="code-4" class="level4">
+<h4 class="anchored" data-anchor-id="code-4">Code</h4>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> generateParenthesis(<span class="va">self</span>, n: <span class="bu">int</span>) <span class="op">-&gt;</span> List[<span class="bu">str</span>]:</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Backtracking problem</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Revolve around conditions to add open parenthesis and</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        <span class="co"># closed parenthesis</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Open parenthesis can be added if it is less than n</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Closed parenthesis can be added if it is less than open</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        stack, res <span class="op">=</span> [], []</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        <span class="kw">def</span> backtrack(openN, closedN):</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> openN <span class="op">==</span> closedN <span class="op">==</span> n:</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>                res.append(<span class="st">''</span>.join(stack))</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> openN <span class="op">&lt;</span> n:</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>                stack.append(<span class="st">'('</span>)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>                backtrack(openN<span class="op">+</span><span class="dv">1</span>, closedN)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>                stack.pop()</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> closedN <span class="op">&lt;</span> openN:</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>                stack.append(<span class="st">')'</span>)</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>                backtrack(openN, closedN<span class="op">+</span><span class="dv">1</span>)</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>                stack.pop()</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>        backtrack(<span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> res</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>
