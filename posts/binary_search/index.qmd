@@ -104,3 +104,109 @@ class Solution:
                 low = mid + 1
         return low #high
 ```
+
+### 3. Search a 2D Matrix
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+The matrix is sorted + time complexity requirement of $O(log(m*n))$ &rarr; a binary search problem where we need to do binary search two times.
+
+The first binary search is for the row `target` is in. The condition to satisfy is `start` < `target` < `end`. We can move `start` and `end` if the end of the row is smaller than `target` and the start of the row is larger than `target`, respectively.
+
+The next binary search within the row is trivial.
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+1. Initialize pointers. We need to store the index of the row so initialize an extra one.
+2. Perform binary search based on conditions above to find the row.
+3. Reinitialize pointers.
+4. Perform a normal binary search within the row and return result accordingly.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(log(m*n))$: Two binary searches were performed, one to find the row, and one within the row.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$: We only need to store pointers.
+
+#### Code
+```python
+class Solution:
+    def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+        # O(log(m*n)) = O(logm) + O(logn)
+        start, mid, end = 0, 0, len(matrix)-1
+        while start <= end:
+            mid = (start+end)//2
+            if matrix[mid][0] == target or matrix[mid][-1] == target:
+                return True
+            elif matrix[mid][0] < target < matrix[mid][-1]:
+                break
+            elif matrix[mid][-1] < target:
+                start = mid + 1
+            elif matrix[mid][0] > target:
+                end = mid - 1
+        # Return False immediately if start > end
+        # as it signifies no valid row found
+        if start > end:
+            return False
+        start, end = 0, len(matrix[0]) - 1
+        while start <= end:
+            middle = (start+end)//2
+            if matrix[mid][middle] == target:
+                return True
+            elif matrix[mid][middle] < target:
+                start = middle + 1
+            else:
+                end = middle - 1
+        return False
+```
+
+### 4. Koko Eating Bananas
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+The problem is discovering what we are supposed to perform binary search on. For this purpose, we need to lean on the brute-force method. So the brute-force method is iterating all possible values of `k` from 1 to `max(piles`. The rest is realizing that this is a sorted array, hence we can perform binary search on that.
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+1. Initialize pointers and a variable to store the result e.g., `res`.
+2. Iterate the array from 1 to `max(piles)` for `k`.
+2. At each value, calculate the hours taken for such `k`. If the hourse is smaller or equal to `h`, it is a likely candidate so we update the `res` if necessary and update the right pointer. Else, we update the left pointer.
+3. Return `res` at the end
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(log(max(piles))*len(piles))$: For each iteration of binary search, we need to calculate the hours, which requires iterating through the array once each time.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$: We need to store a bunch of variables.
+
+#### Code
+```python
+from math import ceil
+class Solution:
+    def minEatingSpeed(self, piles: List[int], h: int) -> int:
+        # Easy case:
+        if len(piles)==h:
+            return max(piles)
+
+        # General cases:
+        left, right = 1, max(piles)
+        res = right
+        while left <= right:
+            k = (left+right)//2
+            hours = 0
+            for pile in piles:
+                hours += ceil(pile/k)
+            if hours <= h:
+                right = k - 1
+                res = min(res, k)
+            else:
+                left = k + 1
+        
+        return res
+```
