@@ -210,3 +210,58 @@ class Solution:
         
         return res
 ```
+
+### 5. Median of Two Sorted Arrays
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+The result median is the element that has roughly $(m+n)//2$ elements to both sides. We can get to this element by partitioning a certain number of elements from each array that sums up to $(m+n)//2$. The median can then be selected or calculated from the last element in the left subarray and the first element in the right subarray of each array.
+
+The good thing is the safeguard that NeetCode came up with. The index chosen can be out of bound. For such case, we can set the variable to be $-\infty$ for the left variable or $\infty$ for the right variable, as we only need to care for the right minimum and left maximum.
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+1. Initialize variables - the arrays, total length, half point.
+2. Perform binary search on one array by selecting the left half-array every time (all elements up to index `(start+end)//2`) and take the rest from the other array. Pick out the last left element and the first right element.
+3. If all the left are smaller than the other right, calculate the median. Increment the pointer to decrease/increase the number of elements taken from an array if the last left is smaller than the first right correspondingly.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(log(m+n))$: We essentially iterate a concatenated version of the two arrays.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$: This implementation requires creating a copy of each array. 
+
+#### Code
+```python
+class Solution:
+    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+        A, B = nums1, nums2
+        total = len(A) + len(B)
+        half = total // 2
+        
+        if len(B) < len(A):
+            A, B = B, A
+        
+        l, r = 0, len(A)-1
+        while True:
+            i = (l+r)//2
+            j = half - i -2
+
+            Aleft = A[i] if i >= 0 else float("-infinity")
+            Bleft = B[j] if j >= 0 else float("-infinity")
+            Aright = A[i+1] if (i+1) < len(A) else float("infinity")
+            Bright = B[j+1] if (j+1) < len(B) else float("infinity")
+
+            # partition is correct
+            if Aleft <= Bright and Bleft <= Aright:
+                if total % 2:
+                    return min(Aright, Bright)
+                return (max(Aleft, Bleft) + min(Aright, Bright)) / 2
+            elif Aleft > Bright:
+                r = i - 1
+            else:
+                l = i + 1
+```

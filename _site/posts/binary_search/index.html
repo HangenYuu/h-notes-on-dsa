@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Pham Nguyen Hung">
-<meta name="dcterms.date" content="2023-05-15">
+<meta name="dcterms.date" content="2023-05-17">
 <meta name="description" content="Binary search">
 
 <title>H’s notes on Data Structuress and Algorithms - Binary search</title>
@@ -166,7 +166,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">May 15, 2023</p>
+        <p class="date">May 17, 2023</p>
       </div>
     </div>
     
@@ -191,6 +191,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#first-bad-version" id="toc-first-bad-version" class="nav-link" data-scroll-target="#first-bad-version">2. First Bad Version</a></li>
   <li><a href="#search-a-2d-matrix" id="toc-search-a-2d-matrix" class="nav-link" data-scroll-target="#search-a-2d-matrix">3. Search a 2D Matrix</a></li>
   <li><a href="#koko-eating-bananas" id="toc-koko-eating-bananas" class="nav-link" data-scroll-target="#koko-eating-bananas">4. Koko Eating Bananas</a></li>
+  <li><a href="#median-of-two-sorted-arrays" id="toc-median-of-two-sorted-arrays" class="nav-link" data-scroll-target="#median-of-two-sorted-arrays">5. Median of Two Sorted Arrays</a></li>
   </ul></li>
   </ul></li>
   </ul>
@@ -409,6 +410,62 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>                left <span class="op">=</span> k <span class="op">+</span> <span class="dv">1</span></span>
 <span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>        </span>
 <span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> res</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="median-of-two-sorted-arrays" class="level3">
+<h3 class="anchored" data-anchor-id="median-of-two-sorted-arrays">5. Median of Two Sorted Arrays</h3>
+<section id="intuition-4" class="level4">
+<h4 class="anchored" data-anchor-id="intuition-4">Intuition</h4>
+<!-- Describe your first thoughts on how to solve this problem. -->
+<p>The result median is the element that has roughly <span class="math inline">\((m+n)//2\)</span> elements to both sides. We can get to this element by partitioning a certain number of elements from each array that sums up to <span class="math inline">\((m+n)//2\)</span>. The median can then be selected or calculated from the last element in the left subarray and the first element in the right subarray of each array.</p>
+<p>The good thing is the safeguard that NeetCode came up with. The index chosen can be out of bound. For such case, we can set the variable to be <span class="math inline">\(-\infty\)</span> for the left variable or <span class="math inline">\(\infty\)</span> for the right variable, as we only need to care for the right minimum and left maximum.</p>
+</section>
+<section id="approach-4" class="level4">
+<h4 class="anchored" data-anchor-id="approach-4">Approach</h4>
+<!-- Describe your approach to solving the problem. -->
+<ol type="1">
+<li>Initialize variables - the arrays, total length, half point.</li>
+<li>Perform binary search on one array by selecting the left half-array every time (all elements up to index <code>(start+end)//2</code>) and take the rest from the other array. Pick out the last left element and the first right element.</li>
+<li>If all the left are smaller than the other right, calculate the median. Increment the pointer to decrease/increase the number of elements taken from an array if the last left is smaller than the first right correspondingly.</li>
+</ol>
+</section>
+<section id="complexity-4" class="level4">
+<h4 class="anchored" data-anchor-id="complexity-4">Complexity</h4>
+<ul>
+<li><p>Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(log(m+n))\)</span>: We essentially iterate a concatenated version of the two arrays.</p></li>
+<li><p>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(n)\)</span>: This implementation requires creating a copy of each array.</p></li>
+</ul>
+</section>
+<section id="code-4" class="level4">
+<h4 class="anchored" data-anchor-id="code-4">Code</h4>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> findMedianSortedArrays(<span class="va">self</span>, nums1: List[<span class="bu">int</span>], nums2: List[<span class="bu">int</span>]) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        A, B <span class="op">=</span> nums1, nums2</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        total <span class="op">=</span> <span class="bu">len</span>(A) <span class="op">+</span> <span class="bu">len</span>(B)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        half <span class="op">=</span> total <span class="op">//</span> <span class="dv">2</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">len</span>(B) <span class="op">&lt;</span> <span class="bu">len</span>(A):</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>            A, B <span class="op">=</span> B, A</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        l, r <span class="op">=</span> <span class="dv">0</span>, <span class="bu">len</span>(A)<span class="op">-</span><span class="dv">1</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>            i <span class="op">=</span> (l<span class="op">+</span>r)<span class="op">//</span><span class="dv">2</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>            j <span class="op">=</span> half <span class="op">-</span> i <span class="op">-</span><span class="dv">2</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>            Aleft <span class="op">=</span> A[i] <span class="cf">if</span> i <span class="op">&gt;=</span> <span class="dv">0</span> <span class="cf">else</span> <span class="bu">float</span>(<span class="st">"-infinity"</span>)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>            Bleft <span class="op">=</span> B[j] <span class="cf">if</span> j <span class="op">&gt;=</span> <span class="dv">0</span> <span class="cf">else</span> <span class="bu">float</span>(<span class="st">"-infinity"</span>)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>            Aright <span class="op">=</span> A[i<span class="op">+</span><span class="dv">1</span>] <span class="cf">if</span> (i<span class="op">+</span><span class="dv">1</span>) <span class="op">&lt;</span> <span class="bu">len</span>(A) <span class="cf">else</span> <span class="bu">float</span>(<span class="st">"infinity"</span>)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>            Bright <span class="op">=</span> B[j<span class="op">+</span><span class="dv">1</span>] <span class="cf">if</span> (j<span class="op">+</span><span class="dv">1</span>) <span class="op">&lt;</span> <span class="bu">len</span>(B) <span class="cf">else</span> <span class="bu">float</span>(<span class="st">"infinity"</span>)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>            <span class="co"># partition is correct</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> Aleft <span class="op">&lt;=</span> Bright <span class="kw">and</span> Bleft <span class="op">&lt;=</span> Aright:</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> total <span class="op">%</span> <span class="dv">2</span>:</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">return</span> <span class="bu">min</span>(Aright, Bright)</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> (<span class="bu">max</span>(Aleft, Bleft) <span class="op">+</span> <span class="bu">min</span>(Aright, Bright)) <span class="op">/</span> <span class="dv">2</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>            <span class="cf">elif</span> Aleft <span class="op">&gt;</span> Bright:</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>                r <span class="op">=</span> i <span class="op">-</span> <span class="dv">1</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>:</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>                l <span class="op">=</span> i <span class="op">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>

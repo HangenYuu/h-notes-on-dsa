@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Pham Nguyen Hung">
-<meta name="dcterms.date" content="2023-05-12">
+<meta name="dcterms.date" content="2023-05-17">
 <meta name="description" content="Stack">
 
 <title>H’s notes on Data Structuress and Algorithms - Stack</title>
@@ -166,7 +166,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">May 12, 2023</p>
+        <p class="date">May 17, 2023</p>
       </div>
     </div>
     
@@ -192,6 +192,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#daily-temperatures" id="toc-daily-temperatures" class="nav-link" data-scroll-target="#daily-temperatures">3. Daily Temperatures</a></li>
   <li><a href="#min-stack" id="toc-min-stack" class="nav-link" data-scroll-target="#min-stack">4. Min Stack</a></li>
   <li><a href="#generate-parentheses" id="toc-generate-parentheses" class="nav-link" data-scroll-target="#generate-parentheses">5. Generate Parentheses</a></li>
+  <li><a href="#largest-rectangle-in-histogram" id="toc-largest-rectangle-in-histogram" class="nav-link" data-scroll-target="#largest-rectangle-in-histogram">6. Largest Rectangle In Histogram</a></li>
   </ul></li>
   </ul></li>
   </ul>
@@ -441,6 +442,50 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>                stack.pop()</span>
 <span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>        backtrack(<span class="dv">0</span>, <span class="dv">0</span>)</span>
 <span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> res</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="largest-rectangle-in-histogram" class="level3">
+<h3 class="anchored" data-anchor-id="largest-rectangle-in-histogram">6. Largest Rectangle In Histogram</h3>
+<section id="intuition-5" class="level4">
+<h4 class="anchored" data-anchor-id="intuition-5">Intuition</h4>
+<!-- Describe your first thoughts on how to solve this problem. -->
+<p>The trick revolves around the condition to extend the rectangle. We can extend the rectangle if the current height is larger than the previous height. If not, we need to pop from the stack, calculate the area of the rectangle and update the maximum area. The next bit is storing the index of <em>the last element</em> that the current height can extend back to instead of its own index.</p>
+</section>
+<section id="approach-5" class="level4">
+<h4 class="anchored" data-anchor-id="approach-5">Approach</h4>
+<!-- Describe your approach to solving the problem. -->
+<ol type="1">
+<li>Initialize <code>maxArea</code> and <code>stack</code> array. One to return, one to keep track of the (index, height) pairs.</li>
+<li>Iterate the <code>heights</code> arrray. At each height, if it is smaller than the previous one and the stack is not empty, we pop from the stack, calculate the maximum height possible, update <code>maxArea</code> if necessary, and push <code>(index, height)</code> pair to the stack.</li>
+<li>Before return, we need to calculate the area of every rectangle left in the stack. The area is calculated by the height of the rectangle times the width, which is the difference between the current index and the index of the last element in the stack. Update <code>maxArea</code> if necessary and return.</li>
+</ol>
+</section>
+<section id="complexity-5" class="level4">
+<h4 class="anchored" data-anchor-id="complexity-5">Complexity</h4>
+<ul>
+<li><p>Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(n)\)</span>: We iterate through the <code>heights</code> array once, and the stack once.</p></li>
+<li><p>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(n)\)</span>: In the worst case, the stack will be the same size as the <code>heights</code> array.</p></li>
+</ul>
+</section>
+<section id="code-5" class="level4">
+<h4 class="anchored" data-anchor-id="code-5">Code</h4>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> largestRectangleArea(<span class="va">self</span>, heights: List[<span class="bu">int</span>]) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>        maxArea <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>        stack <span class="op">=</span> [] <span class="co"># (index, height)</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i, h <span class="kw">in</span> <span class="bu">enumerate</span>(heights):</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>            start <span class="op">=</span> i</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>            <span class="cf">while</span> stack <span class="kw">and</span> stack[<span class="op">-</span><span class="dv">1</span>][<span class="dv">1</span>] <span class="op">&gt;</span> h:</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>                index, height <span class="op">=</span> stack.pop()</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>                maxArea <span class="op">=</span> <span class="bu">max</span>(maxArea, height <span class="op">*</span> (i<span class="op">-</span>index))</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>                start <span class="op">=</span> index</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>            stack.append((start, h))</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i, h <span class="kw">in</span> stack:</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>            maxArea <span class="op">=</span> <span class="bu">max</span>(maxArea, h <span class="op">*</span> (<span class="bu">len</span>(heights)<span class="op">-</span>i))</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> maxArea</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>

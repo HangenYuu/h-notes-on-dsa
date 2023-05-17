@@ -239,3 +239,46 @@ class Solution:
         backtrack(0, 0)
         return res
 ```
+
+### 6. Largest Rectangle In Histogram
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+The trick revolves around the condition to extend the rectangle. We can extend the rectangle if the current height is larger than the previous height. If not, we need to pop from the stack, calculate the area of the rectangle and update the maximum area. The next bit is storing the index of *the last element* that the current height can extend back to instead of its own index.
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+1. Initialize `maxArea` and `stack` array. One to return, one to keep track of the (index, height) pairs.
+2. Iterate the `heights` arrray. At each height, if it is smaller than the previous one and the stack is not empty, we pop from the stack, calculate the maximum height possible, update `maxArea` if necessary, and push `(index, height)` pair to the stack.
+3. Before return, we need to calculate the area of every rectangle left in the stack. The area is calculated by the height of the rectangle times the width, which is the difference between the current index and the index of the last element in the stack. Update `maxArea` if necessary and return.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: We iterate through the `heights` array once, and the stack once.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$: In the worst case, the stack will be the same size as the `heights` array.
+
+#### Code
+```python
+class Solution:
+    def largestRectangleArea(self, heights: List[int]) -> int:
+        maxArea = 0
+        stack = [] # (index, height)
+
+        for i, h in enumerate(heights):
+            start = i
+            while stack and stack[-1][1] > h:
+                index, height = stack.pop()
+                maxArea = max(maxArea, height * (i-index))
+                start = index
+            stack.append((start, h))
+        
+        for i, h in stack:
+            maxArea = max(maxArea, h * (len(heights)-i))
+        
+        return maxArea
+```
+
