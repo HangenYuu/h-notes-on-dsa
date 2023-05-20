@@ -1,0 +1,62 @@
+---
+title: "Fast and slow pointers"
+description: "Fast and slow pointers"
+author: "Pham Nguyen Hung"
+date: last-modified
+date-format: long
+draft: false
+toc: true
+---
+Firstly, See [About](https://h-notes-on-dsa.netlify.app/about.html) page.
+
+# Fast and slow pointers
+
+## Definitions
+This is not a data structure, but a pattern of coding interview questions. This is something passed down from languages with pointers such as C++ or Java. The idea is that we will traverse the array with two pointers simultaneously, one of them will be "faster" than the other, in the sense of headstart (start at a further location while moving at the same speed) or speed (the fast one move faster e.g., two steps at a time, while the slow one will move one step at a time while starting at the same locaiton). This pattern is very useful for solving problems related to linked lists or arrays. Also known as the Floyd's "Hare and Tortoise Algorithm".
+
+## Problem
+
+### 1. Happy Number
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+The hint lies at the problem statement: it is either going to 1, or going into a loop. If there is a loop, fast and slow pointers should be used.
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+1. Initialize the two pointers `slow` and `fast` to `n` and the helper function to calculate sum of square of digits ($SS$).
+2. At each step, assign `slow` to the $SS$ of itself and `fast` to the $SS$ of $SS$ of itself. We check and then return accordingly when we go into loop or encounter 1.
+
+#### Complexity
+
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(\log n)$: The detailed analysis can be found [here](https://leetcode.com/problems/happy-number/editorial/). The first solution with HashSet is helpful as it explains how can we rule out the third possibility that is not mentioned in the problem statement: the number increases infinitely. Simply, it will all goes down below 243. The $\log$ appears here because it is the cost of processing every unit of a number. The full term is $O(243 \times 3 + \log n+\log \log n+\log \log \log n)... = O(\log n)$ but the $\log$ term dominates the sum. For our two pointers, the cost is $O(\log n)$ for each, but $2$ is a constant so omitted.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$: We only need to store pointers.
+
+#### Code
+```python
+class Solution:
+    def isHappy(self, n: int) -> bool:
+        if n == 1:
+            return True
+        slow = fast = n 
+        
+        while True:
+            slow = self._sumOfSquare(slow)
+            fast = self._sumOfSquare(self._sumOfSquare(fast))
+            if slow == 1 or fast == 1:
+                return True
+            if slow == fast:
+                return False
+
+    def _sumOfSquare(self, n: int) -> int:
+        result = 0
+        while n != 0:
+            result += (n % 10)**2
+            n //= 10
+        return result
+```
