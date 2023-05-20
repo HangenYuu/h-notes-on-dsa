@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Pham Nguyen Hung">
-<meta name="dcterms.date" content="2023-05-10">
+<meta name="dcterms.date" content="2023-05-20">
 <meta name="description" content="Two pointers">
 
 <title>H’s notes on Data Structuress and Algorithms - Two pointers</title>
@@ -166,7 +166,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">May 10, 2023</p>
+        <p class="date">May 20, 2023</p>
       </div>
     </div>
     
@@ -192,6 +192,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#sum" id="toc-sum" class="nav-link" data-scroll-target="#sum">3. 3Sum</a></li>
   <li><a href="#container-with-most-water" id="toc-container-with-most-water" class="nav-link" data-scroll-target="#container-with-most-water">4. Container With Most Water</a></li>
   <li><a href="#trapping-rain-water" id="toc-trapping-rain-water" class="nav-link" data-scroll-target="#trapping-rain-water">5. Trapping Rain Water</a></li>
+  <li><a href="#reverse-words-in-a-string" id="toc-reverse-words-in-a-string" class="nav-link" data-scroll-target="#reverse-words-in-a-string">6. Reverse Words in a String</a></li>
+  <li><a href="#valid-palindrome-ii" id="toc-valid-palindrome-ii" class="nav-link" data-scroll-target="#valid-palindrome-ii">7. Valid Palindrome II</a></li>
   </ul></li>
   </ul></li>
   </ul>
@@ -448,6 +450,139 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>                rightMax <span class="op">=</span> <span class="bu">max</span>(rightMax, height[right])</span>
 <span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>                res <span class="op">+=</span> rightMax <span class="op">-</span> height[right]</span>
 <span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> res</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="reverse-words-in-a-string" class="level3">
+<h3 class="anchored" data-anchor-id="reverse-words-in-a-string">6. Reverse Words in a String</h3>
+<section id="intuition-5" class="level4">
+<h4 class="anchored" data-anchor-id="intuition-5">Intuition</h4>
+<!-- Describe your first thoughts on how to solve this problem. -->
+<p>Let’s forget about the Python one-liner despite its performance - you can take a look at it at the end. It will not help you learn anything besides the power of reading the documentation.</p>
+<p>Back to the problem. If we are not in Python, we will need to convert the string into a mutable array, reverse <em>every</em> character in the array, and then iterate and reverse <em>every</em> character in word, which came before a white space or at the end. The last bit can be done with two pointers.</p>
+<p>(We can also define a function to reverse every element in a list. I don’t want to go that far so I will just use the built-in Python one.)</p>
+</section>
+<section id="approach-5" class="level4">
+<h4 class="anchored" data-anchor-id="approach-5">Approach</h4>
+<!-- Describe your approach to solving the problem. -->
+<ol type="1">
+<li>Process the string to remove extra whitespaces.</li>
+<li>Convert the string to a list of character and reverse it.</li>
+<li>Iterate the list of character, reverse every character in a word.</li>
+<li>Join the characters back and return.</li>
+</ol>
+</section>
+<section id="complexity-5" class="level4">
+<h4 class="anchored" data-anchor-id="complexity-5">Complexity</h4>
+<ul>
+<li><p>Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(n)\)</span>: We need to iterate the list of characters two times. Note that the two times are not nested.</p></li>
+<li><p>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(n)\)</span>: We need to create the list of characters #### Code</p></li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> reverseWords(<span class="va">self</span>, s: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">len</span>(s) <span class="op">&lt;</span> <span class="dv">2</span>:</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> s</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        sentence <span class="op">=</span> re.sub(<span class="st">' +'</span>, <span class="st">' '</span>, s.strip())</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>        <span class="co"># General one</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Convert the string into a list of characters and reverse it</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>        sentence <span class="op">=</span> <span class="bu">list</span>(sentence)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>        sentence <span class="op">=</span> sentence[::<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Iterate and reverse each word back</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>        <span class="co"># A word exists before each space</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>        start, end <span class="op">=</span> <span class="dv">0</span>, <span class="dv">1</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> start <span class="op">&lt;</span> <span class="bu">len</span>(sentence):</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>            <span class="cf">while</span> end <span class="op">&lt;</span> <span class="bu">len</span>(sentence) <span class="kw">and</span> sentence[end] <span class="op">!=</span> <span class="st">' '</span>:</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>                end <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>._reverseWords(sentence, start, end<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>            start <span class="op">=</span> end <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>            end <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">''</span>.join(sentence)</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> _reverseWords(<span class="va">self</span>, sentence, start, end):</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> start <span class="op">&lt;=</span> end:</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>            temp <span class="op">=</span> sentence[start]</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>            sentence[start] <span class="op">=</span> sentence[end]</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>            sentence[end] <span class="op">=</span> temp</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>            start <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>            end <span class="op">-=</span> <span class="dv">1</span></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>        </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Trivial Python solution</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Trivial Python solution</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> reverseWords(<span class="va">self</span>, s: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">" "</span>.join(s.split()[::<span class="op">-</span><span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="valid-palindrome-ii" class="level3">
+<h3 class="anchored" data-anchor-id="valid-palindrome-ii">7. Valid Palindrome II</h3>
+<section id="intuition-6" class="level4">
+<h4 class="anchored" data-anchor-id="intuition-6">Intuition</h4>
+<!-- Describe your first thoughts on how to solve this problem. -->
+<p>This problem builds upon <a href="https://leetcode.com/problems/valid-palindrome/">Valid Palindrome I</a>. The intuition is this: if we iterate the string with two pointers as before, at the first pair where two characters are different, the string is valid if the substring from <em>the element right next to the right of the left character in the pair</em> to <em>the right character in the pair</em> is a valid palindrome, or the substring from <em>the left character in the pair</em> to <em>the element right next to the left of the right character in the pair</em> is a valid palindrome.</p>
+</section>
+<section id="approach-6" class="level4">
+<h4 class="anchored" data-anchor-id="approach-6">Approach</h4>
+<!-- Describe your approach to solving the problem. -->
+<ol type="1">
+<li>Iterate the string with two pointers. Check for similarity as with normal valid palindrome problem.</li>
+<li>If encountered dissimilarity, check valid palindrome for the two substrings mentioned above and return.</li>
+<li>Return result at the end.</li>
+</ol>
+</section>
+<section id="complexity-6" class="level4">
+<h4 class="anchored" data-anchor-id="complexity-6">Complexity</h4>
+<p>There are two ways to write solutions: <strong>hidden class method</strong> and <code>nonlocal</code> <strong>keyword</strong>.</p>
+<ul>
+<li><p>Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(n)\)</span>: We need to iterate through the input string once in both cases.</p></li>
+<li><p>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(1)\)</span>: We only need to store pointers.</p></li>
+</ul>
+</section>
+<section id="code-5" class="level4">
+<h4 class="anchored" data-anchor-id="code-5">Code</h4>
+<p>This is the proper hidden class method solution.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> validPalindrome(<span class="va">self</span>, s: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">bool</span>:</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>        start, end <span class="op">=</span> <span class="dv">0</span>, <span class="bu">len</span>(s) <span class="op">-</span> <span class="dv">1</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> start <span class="op">&lt;</span> end:</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> s[start] <span class="op">!=</span> s[end]:</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> (<span class="va">self</span>._checkPalindrome(s[start<span class="op">+</span><span class="dv">1</span>:end<span class="op">+</span><span class="dv">1</span>]) <span class="kw">or</span> <span class="va">self</span>._checkPalindrome(s[start:end]))</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>            start <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>            end <span class="op">-=</span> <span class="dv">1</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">True</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> _checkPalindrome(<span class="va">self</span>, s: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">bool</span>:</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>        left, right <span class="op">=</span> <span class="dv">0</span>, <span class="bu">len</span>(s)<span class="op">-</span><span class="dv">1</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> left <span class="op">&lt;</span> right:</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> s[left] <span class="op">!=</span> s[right]:</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>            left <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>            right <span class="op">-=</span> <span class="dv">1</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">True</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>And this is the nested function solution.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> validPalindrome(<span class="va">self</span>, s: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">bool</span>:</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>        <span class="kw">def</span> _checkPalindrome(left: <span class="bu">int</span>, right: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">bool</span>:</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>            <span class="co"># nonlocal s</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>            <span class="cf">while</span> left <span class="op">&lt;</span> right:</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> s[left] <span class="op">!=</span> s[right]:</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>                left <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>                right <span class="op">-=</span> <span class="dv">1</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">True</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>        start, end <span class="op">=</span> <span class="dv">0</span>, <span class="bu">len</span>(s) <span class="op">-</span> <span class="dv">1</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> start <span class="op">&lt;</span> end:</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> s[start] <span class="op">!=</span> s[end]:</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> (_checkPalindrome(start<span class="op">+</span><span class="dv">1</span>,end) <span class="kw">or</span> _checkPalindrome(start,end<span class="op">-</span><span class="dv">1</span>))</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>            start <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>            end <span class="op">-=</span> <span class="dv">1</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">True</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The hidden class function is preferred as it adheres to the <strong>single responsibility</strong> principle, bringing the benefits including readability, maintainability, and modularity.</p>
 
 
 </section>

@@ -6,8 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Pham Nguyen Hung">
+<meta name="dcterms.date" content="2023-05-20">
+<meta name="description" content="Fast and slow pointers">
 
-<title>H’s notes on Data Structuress and Algorithms</title>
+<title>H’s notes on Data Structuress and Algorithms - Fast and slow pointers</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,27 +23,59 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -60,40 +95,11 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-fixed">
@@ -103,7 +109,7 @@ ul.task-list li input[type="checkbox"] {
     <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">H’s notes on Data Structuress and Algorithms</span>
     </a>
   </div>
@@ -114,7 +120,7 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./about.html" rel="" target="">
+    <a class="nav-link" href="../../about.html" rel="" target="">
  <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item compact">
@@ -137,295 +143,125 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page-left">
-      <h1 class="title">H’s notes on Data Structuress and Algorithms</h1>
-                      </div>
+    <div class="quarto-title column-body">
+      <h1 class="title">Fast and slow pointers</h1>
+                  <div>
+        <div class="description">
+          Fast and slow pointers
+        </div>
+      </div>
+                </div>
   </div>
     
   
   <div class="quarto-title-meta">
 
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Pham Nguyen Hung </p>
+            </div>
+    </div>
       
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">May 20, 2023</p>
+      </div>
+    </div>
     
       
     </div>
     
   
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(9)</span></div></div></div>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#fast-and-slow-pointers" id="toc-fast-and-slow-pointers" class="nav-link active" data-scroll-target="#fast-and-slow-pointers">Fast and slow pointers</a>
+  <ul class="collapse">
+  <li><a href="#definitions" id="toc-definitions" class="nav-link" data-scroll-target="#definitions">Definitions</a></li>
+  <li><a href="#problem" id="toc-problem" class="nav-link" data-scroll-target="#problem">Problem</a>
+  <ul class="collapse">
+  <li><a href="#happy-number" id="toc-happy-number" class="nav-link" data-scroll-target="#happy-number">1. Happy Number</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
+<main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
 
 
+<p>Firstly, See <a href="https://h-notes-on-dsa.netlify.app/about.html">About</a> page.</p>
+<section id="fast-and-slow-pointers" class="level1">
+<h1>Fast and slow pointers</h1>
+<section id="definitions" class="level2">
+<h2 class="anchored" data-anchor-id="definitions">Definitions</h2>
+<p>This is not a data structure, but a pattern of coding interview questions. This is something passed down from languages with pointers such as C++ or Java. The idea is that we will traverse the array with two pointers simultaneously, one of them will be “faster” than the other, in the sense of headstart (start at a further location while moving at the same speed) or speed (the fast one move faster e.g., two steps at a time, while the slow one will move one step at a time while starting at the same locaiton). This pattern is very useful for solving problems related to linked lists or arrays. Also known as the Floyd’s “Hare and Tortoise Algorithm”.</p>
+</section>
+<section id="problem" class="level2">
+<h2 class="anchored" data-anchor-id="problem">Problem</h2>
+<section id="happy-number" class="level3">
+<h3 class="anchored" data-anchor-id="happy-number">1. Happy Number</h3>
+<section id="intuition" class="level4">
+<h4 class="anchored" data-anchor-id="intuition">Intuition</h4>
+<!-- Describe your first thoughts on how to solve this problem. -->
+<p>The hint lies at the problem statement: it is either going to 1, or going into a loop. If there is a loop, fast and slow pointers should be used.</p>
+</section>
+<section id="approach" class="level4">
+<h4 class="anchored" data-anchor-id="approach">Approach</h4>
+<!-- Describe your approach to solving the problem. -->
+<ol type="1">
+<li>Initialize the two pointers <code>slow</code> and <code>fast</code> to <code>n</code> and the helper function to calculate sum of square of digits (<span class="math inline">\(SS\)</span>).</li>
+<li>At each step, assign <code>slow</code> to the <span class="math inline">\(SS\)</span> of itself and <code>fast</code> to the <span class="math inline">\(SS\)</span> of <span class="math inline">\(SS\)</span> of itself. We check and then return accordingly when we go into loop or encounter 1.</li>
+</ol>
+</section>
+<section id="complexity" class="level4">
+<h4 class="anchored" data-anchor-id="complexity">Complexity</h4>
+<ul>
+<li><p>Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(\log n)\)</span>: The detailed analysis can be found <a href="https://leetcode.com/problems/happy-number/editorial/">here</a>. The first solution with HashSet is helpful as it explains how can we rule out the third possibility that is not mentioned in the problem statement: the number increases infinitely. Simply, it will all goes down below 243. The <span class="math inline">\(\log\)</span> appears here because it is the cost of processing every unit of a number. The full term is <span class="math inline">\(O(243 \times 3 + \log n+\log \log n+\log \log \log n)... = O(\log n)\)</span> but the <span class="math inline">\(\log\)</span> term dominates the sum. For our two pointers, the cost is <span class="math inline">\(O(\log n)\)</span> for each, but <span class="math inline">\(2\)</span> is a constant so omitted.</p></li>
+<li><p>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(1)\)</span>: We only need to store pointers.</p></li>
+</ul>
+</section>
+<section id="code" class="level4">
+<h4 class="anchored" data-anchor-id="code">Code</h4>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> isHappy(<span class="va">self</span>, n: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">bool</span>:</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> n <span class="op">==</span> <span class="dv">1</span>:</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">True</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        slow <span class="op">=</span> fast <span class="op">=</span> n </span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>            slow <span class="op">=</span> <span class="va">self</span>._sumOfSquare(slow)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>            fast <span class="op">=</span> <span class="va">self</span>._sumOfSquare(<span class="va">self</span>._sumOfSquare(fast))</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> slow <span class="op">==</span> <span class="dv">1</span> <span class="kw">or</span> fast <span class="op">==</span> <span class="dv">1</span>:</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> <span class="va">True</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> slow <span class="op">==</span> fast:</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> _sumOfSquare(<span class="va">self</span>, n: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>        result <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        <span class="co"># while not n%10:</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        <span class="co">#     n = int(n/10) </span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> n <span class="op">!=</span> <span class="dv">0</span>:</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>            result <span class="op">+=</span> (n <span class="op">%</span> <span class="dv">10</span>)<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>            n <span class="op">//=</span> <span class="dv">10</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> result</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
+</section>
+</section>
+</section>
+</section>
 
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-listing-date-sort="1684557771000" data-listing-file-modified-sort="1684557771687" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4">
-<div class="thumbnail">
-<p><a href="./posts/fast_and_slow_pointers/index.html"> <div class="listing-item-img-placeholder card-img-top" >&nbsp;</div> </a></p>
-</div>
-<div class="body">
-<a href="./posts/fast_and_slow_pointers/index.html">
-<h3 class="no-anchor listing-title">
-Fast and slow pointers
-</h3>
-<div class="listing-subtitle">
-
-</div>
-<div class="listing-description">
-<p>Fast and slow pointers</p>
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/fast_and_slow_pointers/index.html">
-<div class="listing-date">
-May 20, 2023
-</div>
-<div class="listing-author">
-Pham Nguyen Hung
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-listing-date-sort="1684554568000" data-listing-file-modified-sort="1684554568883" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="18">
-<div class="thumbnail">
-<p><a href="./posts/two_pointers/index.html"> <div class="listing-item-img-placeholder card-img-top" >&nbsp;</div> </a></p>
-</div>
-<div class="body">
-<a href="./posts/two_pointers/index.html">
-<h3 class="no-anchor listing-title">
-Two pointers
-</h3>
-<div class="listing-subtitle">
-
-</div>
-<div class="listing-description">
-<p>Two pointers</p>
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/two_pointers/index.html">
-<div class="listing-date">
-May 20, 2023
-</div>
-<div class="listing-author">
-Pham Nguyen Hung
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-listing-date-sort="1684547109000" data-listing-file-modified-sort="1684547109843" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="19">
-<div class="thumbnail">
-<p><a href="./posts/array/index.html"> <div class="listing-item-img-placeholder card-img-top" >&nbsp;</div> </a></p>
-</div>
-<div class="body">
-<a href="./posts/array/index.html">
-<h3 class="no-anchor listing-title">
-Array
-</h3>
-<div class="listing-subtitle">
-
-</div>
-<div class="listing-description">
-<p>Array</p>
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/array/index.html">
-<div class="listing-date">
-May 20, 2023
-</div>
-<div class="listing-author">
-Pham Nguyen Hung
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-listing-date-sort="1684291480000" data-listing-file-modified-sort="1684291480080" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13">
-<div class="thumbnail">
-<p><a href="./posts/stack/index.html"> <div class="listing-item-img-placeholder card-img-top" >&nbsp;</div> </a></p>
-</div>
-<div class="body">
-<a href="./posts/stack/index.html">
-<h3 class="no-anchor listing-title">
-Stack
-</h3>
-<div class="listing-subtitle">
-
-</div>
-<div class="listing-description">
-<p>Stack</p>
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/stack/index.html">
-<div class="listing-date">
-May 17, 2023
-</div>
-<div class="listing-author">
-Pham Nguyen Hung
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-listing-date-sort="1684289662000" data-listing-file-modified-sort="1684289662406" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13">
-<div class="thumbnail">
-<p><a href="./posts/binary_search/index.html"> <div class="listing-item-img-placeholder card-img-top" >&nbsp;</div> </a></p>
-</div>
-<div class="body">
-<a href="./posts/binary_search/index.html">
-<h3 class="no-anchor listing-title">
-Binary search
-</h3>
-<div class="listing-subtitle">
-
-</div>
-<div class="listing-description">
-<p>Binary search</p>
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/binary_search/index.html">
-<div class="listing-date">
-May 17, 2023
-</div>
-<div class="listing-author">
-Pham Nguyen Hung
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="5" data-listing-date-sort="1683155576000" data-listing-file-modified-sort="1683155576716" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="19">
-<div class="thumbnail">
-<p><a href="./posts/tree/index.html"> <p class="card-img-top"><img src="posts\tree\tmp-tree.jpg"  class="thumbnail-image card-img"/></p> </a></p>
-</div>
-<div class="body">
-<a href="./posts/tree/index.html">
-<h3 class="no-anchor listing-title">
-Tree
-</h3>
-<div class="listing-subtitle">
-
-</div>
-<div class="listing-description">
-<p>Mostly binary tree</p>
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/tree/index.html">
-<div class="listing-date">
-May 4, 2023
-</div>
-<div class="listing-author">
-Pham Nguyen Hung
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="6" data-listing-date-sort="1683155562000" data-listing-file-modified-sort="1683155562645" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5">
-<div class="thumbnail">
-<p><a href="./posts/sliding_window/index.html"> <div class="listing-item-img-placeholder card-img-top" >&nbsp;</div> </a></p>
-</div>
-<div class="body">
-<a href="./posts/sliding_window/index.html">
-<h3 class="no-anchor listing-title">
-Sliding window
-</h3>
-<div class="listing-subtitle">
-
-</div>
-<div class="listing-description">
-<p>A variation of two pointers</p>
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/sliding_window/index.html">
-<div class="listing-date">
-May 4, 2023
-</div>
-<div class="listing-author">
-Pham Nguyen Hung
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="7" data-listing-date-sort="1683155548000" data-listing-file-modified-sort="1683155548681" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="25">
-<div class="thumbnail">
-<p><a href="./posts/graph/index.html"> <div class="listing-item-img-placeholder card-img-top" >&nbsp;</div> </a></p>
-</div>
-<div class="body">
-<a href="./posts/graph/index.html">
-<h3 class="no-anchor listing-title">
-Graph
-</h3>
-<div class="listing-subtitle">
-
-</div>
-<div class="listing-description">
-<p>Graph</p>
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/graph/index.html">
-<div class="listing-date">
-May 4, 2023
-</div>
-<div class="listing-author">
-Pham Nguyen Hung
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="8" data-listing-date-sort="1683155545000" data-listing-file-modified-sort="1683155545142" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="21">
-<div class="thumbnail">
-<p><a href="./posts/linked_list/index.html"> <div class="listing-item-img-placeholder card-img-top" >&nbsp;</div> </a></p>
-</div>
-<div class="body">
-<a href="./posts/linked_list/index.html">
-<h3 class="no-anchor listing-title">
-Linked List
-</h3>
-<div class="listing-subtitle">
-
-</div>
-<div class="listing-description">
-<p>Linked List</p>
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/linked_list/index.html">
-<div class="listing-date">
-May 4, 2023
-</div>
-<div class="listing-author">
-Pham Nguyen Hung
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

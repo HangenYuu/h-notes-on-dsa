@@ -239,3 +239,144 @@ class Solution:
                 res += rightMax - height[right]
         return res
 ```
+
+### 6. Reverse Words in a String
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+Let's forget about the Python one-liner despite its performance - you can take a look at it at the end. It will not help you learn anything besides the power of reading the documentation. 
+
+Back to the problem. If we are not in Python, we will need to convert the string into a mutable array, reverse *every* character in the array, and then iterate and reverse *every* character in word, which came before a white space or at the end. The last bit can be done with two pointers.
+
+(We can also define a function to reverse every element in a list. I don't want to go that far so I will just use the built-in Python one.)
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+1. Process the string to remove extra whitespaces.
+2. Convert the string to a list of character and reverse it.
+3. Iterate the list of character, reverse every character in a word.
+4. Join the characters back and return.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: We need to iterate the list of characters two times. Note that the two times are not nested.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$: We need to create the list of characters
+#### Code
+```python
+import re
+
+class Solution:
+    def reverseWords(self, s: str) -> str:
+        if len(s) < 2:
+            return s
+
+        sentence = re.sub(' +', ' ', s.strip())
+        # General one
+        # Convert the string into a list of characters and reverse it
+        sentence = list(sentence)
+        sentence = sentence[::-1]
+
+        # Iterate and reverse each word back
+        # A word exists before each space
+        start, end = 0, 1
+        while start < len(sentence):
+            while end < len(sentence) and sentence[end] != ' ':
+                end += 1
+            self._reverseWords(sentence, start, end-1)
+            start = end + 1
+            end += 1
+        return ''.join(sentence)
+
+    def _reverseWords(self, sentence, start, end):
+        while start <= end:
+            temp = sentence[start]
+            sentence[start] = sentence[end]
+            sentence[end] = temp
+
+            start += 1
+            end -= 1
+        
+```
+Trivial Python solution
+```python
+# Trivial Python solution
+class Solution:
+    def reverseWords(self, s: str) -> str:
+        return " ".join(s.split()[::-1])
+```
+
+### 7. Valid Palindrome II
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+This problem builds upon [Valid Palindrome I](https://leetcode.com/problems/valid-palindrome/). The intuition is this: if we iterate the string with two pointers as before, at the first pair where two characters are different, the string is valid if the substring from *the element right next to the right of the left character in the pair* to *the right character in the pair* is a valid palindrome, or the substring from *the left character in the pair* to *the element right next to the left of the right character in the pair* is a valid palindrome.
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+1. Iterate the string with two pointers. Check for similarity as with normal valid palindrome problem.
+2. If encountered dissimilarity, check valid palindrome for the two substrings mentioned above and return.
+3. Return result at the end.
+
+#### Complexity
+
+There are two ways to write solutions: **hidden class method** and `nonlocal` **keyword**.
+
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: We need to iterate through the input string once in both cases.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$: We only need to store pointers.
+
+#### Code
+
+This is the proper hidden class method solution.
+```python
+class Solution:
+    def validPalindrome(self, s: str) -> bool:
+        start, end = 0, len(s) - 1
+        while start < end:
+            if s[start] != s[end]:
+                return (self._checkPalindrome(s[start+1:end+1]) or self._checkPalindrome(s[start:end]))
+            start += 1
+            end -= 1
+        return True
+    
+    def _checkPalindrome(self, s: str) -> bool:
+        left, right = 0, len(s)-1
+        while left < right:
+            if s[left] != s[right]:
+                return False
+            left += 1
+            right -= 1
+        return True
+```
+And this is the nested function solution.
+```python
+class Solution:
+    def validPalindrome(self, s: str) -> bool:
+        
+        def _checkPalindrome(left: int, right: int) -> bool:
+            # nonlocal s
+            while left < right:
+                if s[left] != s[right]:
+                    return False
+                left += 1
+                right -= 1
+            return True
+
+        start, end = 0, len(s) - 1
+        while start < end:
+            if s[start] != s[end]:
+                return (_checkPalindrome(start+1,end) or _checkPalindrome(start,end-1))
+            start += 1
+            end -= 1
+        return True
+```
+The hidden class function is preferred as it adheres to the **single responsibility** principle, bringing the benefits including readability, maintainability, and modularity.
+
