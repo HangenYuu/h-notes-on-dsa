@@ -60,3 +60,227 @@ class Solution:
             n //= 10
         return result
 ```
+
+### 2. Linked List Cycle
+
+The introductory fast and slow pointers problem. If there is a loop, the fast and slow pointers are bound to meet with each other somewhere.
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+If I am not told about the problem, I don't think I can come up with the solution. This is something you have to know beforehand. But well, in an interview, you will be assessed on your ability to solve harder problems with this approach, so that is our real goal.
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+1. Initialize the two pointers `fast` and `slow` to `head`.
+2. At each step, assign `fast` to the next of the next of itself and `slow` to the next of itself. We check and then return accordingly when we go into loop i.e., the two pointers meet.
+3. If we reach the end of the list, we return `False`.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: Both pointers traverse the list at least once.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$: We only need to store pointers.
+
+#### Code
+```python
+class Solution:
+    def hasCycle(self, head: Optional[ListNode]) -> bool:
+        # Easy case
+        if head is None or head.next is None:
+            return False
+        
+        # General case
+        fast = slow = head
+        while fast.next and fast.next.next:
+            fast = fast.next.next
+            slow = slow.next
+            if fast == slow:
+                return True
+        return False
+```
+
+### 3. Remove Nth Node From End of List
+
+The idea is to initialize two fast and slow pointers, but started at different positions while moving at the same speed. We want that when the fast pointer hits the end, the slow pointer is at the node before the to-be-removed node to rearrange the connection.
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+This is the second type of fast and slow pointers: they move at the same speed but start at different positions. The idea is that we want the fast pointer to hit the end of the list, while the slow pointer is at the node before the to-be-removed node. Then we can rearrange the connection.
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+1. Initialize the two pointers `fast` and `slow` to `head`.
+2. Move the `fast` pointer `n+1` steps ahead of the `slow` pointer.
+3. Move both pointers until the `fast` pointer hits the end of the list.
+4. Remove the node next of the `slow` pointer.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: Both pointers traverse the list at most once.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$: We only need to store pointers.
+
+#### Code
+```python
+class Solution:
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+        # Easy case
+        if head.next is None:
+            return
+        
+        # General case
+        # Fast and slow pointer
+        slow = fast = head
+        for _ in range(n+1):
+            if fast:
+                fast = fast.next
+            else:
+            # If fast pointer is already None before the end, there is just one
+            # case and it is the head needs removing, so we return the next element
+                return head.next
+        # If not, we start to move the slow and fast pointers to the end.
+        while fast:
+            slow, fast = slow.next, fast.next
+        
+        slow.next = slow.next.next
+        
+        return head
+```
+
+### 4. Middle of the Linked List
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+Because the fast pointer is doubly faster than the slow, when the fast pointer hits the end, the slow pointer will be at the middle node.
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+1. Initialize the two pointers `fast` and `slow` to `head`.
+2. Move the `fast` pointer 2 steps and the `slow` pointer 1 step at each iteration till termination.
+3. Return the `slow` pointer or the node next to it.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: Both pointers traverse the list at most once.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$: We only need to store pointers.
+
+#### Code
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def middleNode(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if head.next is None:
+            return head
+        slow, fast = head, head
+        while fast.next is not None and fast.next.next is not None:
+            slow = slow.next
+            fast = fast.next.next
+        if fast.next is not None:
+            slow = slow.next
+        return slow
+```
+
+### 5. Circular Array Loop
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+Let's ignore the instruction to solve in $O(n)$ time complexity for now ($O(1)$ space complexity is achieved with pointers).
+
+For every element, we need to check if it is a part of a cycle. If it is, we need to check if the cycle is valid. If it is, we return `True`. Otherwise, we continue to check the next element. A cycle is invalid if there exist elements with different signs in the cycle. This means that at least one product between a pair of elements is negative. The direction direction condition can be tracked with a variable, and the terminating condition can be signaled by setting the pointer to $-1$. A cycle also needs to have more than one element. This means that an element with value divisible by the length of the array is invalid. This solution is $O(n^2)$ time complexity, as we will have a nested loop each iterating through the array in the worst case.
+
+To move on to the $O(n)$ solution, we can keep track of the elements we have visited. The most straightforward is having an array or a HashMap, but it violates the $O(1)$ space complexity. Hence, this means modifying the array in place into 0.
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+1. Initialize the variable `current_direction` to `None`.
+2. Iterate through the array. If the element is divisible by the length of the array, continue to the next element.
+3. If the element is not divisible by the length of the array, set the `current_direction` to `True` if the element is positive, and `False` if the element is negative. Set the `slow` and `fast` pointers to the current index.
+4. While the two pointers have not met or terminating condition (pointer is $-1$), move the slow pointer one step and the fast pointer two steps, each time checking for the terminating condition. If the pointers are equal and both are not $-1$, return `True`.
+5. Return `False` at the end.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n^2)$ or $O(n)$: Depend on the implementation and condition whether we can modify the array in place.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$: We only need to store pointers.
+
+#### Code
+```python
+class Solution:
+    def circularArrayLoop(self, nums: List[int]) -> bool:
+        current_direction = None
+        for i in range(len(nums)):
+            if not nums[i] % len(nums):
+                continue
+            current_direction = True if nums[i] > 0 else False
+            slow = fast = i
+            while slow != fast or slow != -1 or fast != -1:
+                slow = self._one_step(nums, slow, current_direction)
+                if slow == -1:
+                    break
+                fast = self._one_step(nums, fast, current_direction)
+                if fast != -1:
+                    fast = self._one_step(nums, fast, current_direction)
+                
+                if fast == -1 or slow == fast:
+                    break
+                
+            if slow == fast and slow != -1:
+                return True
+        
+        return False
+
+    def _one_step(self, nums, current_index, current_direction):
+        next_direction = True if nums[current_index] > 0 else False
+        if ((next_direction != current_direction) or 
+            (not nums[current_index] % len(nums))):
+            return -1
+        next_step = (current_index + nums[current_index]) % len(nums)
+        return next_step
+```
+Optimized $O(n)$ version:
+```python
+class Solution:
+    def circularArrayLoop(self, nums: List[int]) -> bool:
+        if len(nums) < 2:
+            return False
+        n = len(nums)
+        for i in range(n):
+            if nums[i] == 0:
+                continue
+            
+            slow, fast = i, (i + nums[i]) % n
+            while nums[i] * nums[fast] > 0 and nums[i] * nums[(fast + nums[fast])%n] > 0:
+                if slow == fast:
+                    if slow == (slow + nums[slow])%n:
+                        break
+                    return True
+                slow = (slow + nums[slow])%n
+                fast = (fast + nums[fast])%n
+                fast = (fast + nums[fast])%n
+
+            slow = i
+            sgn = nums[i]
+            while sgn * nums[slow] > 0:
+                tmp = (slow + nums[slow])%n
+                nums[slow] = 0
+                slow = tmp
+        return False
+```
