@@ -2,8 +2,8 @@
   {
     "listing": "/index.html",
     "items": [
-      "/posts/binary_search/index.html",
       "/posts/fast_and_slow_pointers/index.html",
+      "/posts/binary_search/index.html",
       "/posts/linked_list/index.html",
       "/posts/sliding_window/index.html",
       "/posts/stack/index.html",

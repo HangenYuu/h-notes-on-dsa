@@ -291,11 +291,11 @@ class Solution:
 <!-- Describe your first thoughts on how to solve this problem. -->
 Dirichlet's principle will help you to prove that there must be a duplicate in the array. Next, because of the constraints of numbers from $1$ to $n$ inside an array of length $n+1$, we can see that we can access every element of the array with the function `nums[index]`. This means that the array can be turned into a linked list, where the value is the index and the next pointer is the value of the element. In this linked list, the duplicate element *creates a cycle*, as there are at least two elements pointing to it, making it the entrance of a cycle.
 
-![](6-1.svg)
+![](6-1.png)
 
 However, the problem is not *Is there a cycle?* but *Where is the cycle?*. In other words, we need to find the entrance to the cycle. This bears similarity to [Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/description/). The solution is to use fast and slow pointers as before, with some insights from math to find the entrance.
 
-![](6-2.svg)
+![](6-2.png)
 
 We define the following variables (see diagram above):
 - $F$: the distance from the start of the array to the entrance of the cycle
