@@ -4,7 +4,7 @@ description: "Graph"
 author: "Pham Nguyen Hung"
 date: last-modified
 date-format: long
-draft: false
+draft: true
 toc: true
 ---
 Firstly, See [About](https://h-notes-on-dsa.netlify.app/about.html) page.
@@ -355,7 +355,7 @@ The basic problem applying the disjoint set approach. A province is essentially 
 <!-- Describe your first thoughts on how to solve this problem. -->
 
 
-##### Approach
+##### Algorithm
 <!-- Describe your approach to solving the problem. -->
 
 
@@ -429,7 +429,7 @@ Essentially the Number of Provinces problem. For this one, I tried not defining 
 <!-- Describe your first thoughts on how to solve this problem. -->
 
 
-##### Approach
+##### Algorithm
 <!-- Describe your approach to solving the problem. -->
 
 
@@ -486,7 +486,7 @@ We will use properties 1. to quickly rule out cases and 2. to implement the gene
 <!-- Describe your first thoughts on how to solve this problem. -->
 
 
-##### Approach
+##### Algorithm
 <!-- Describe your approach to solving the problem. -->
 
 
@@ -519,7 +519,7 @@ A.k.a the earliest moment the number of provinces goes to 1. If after performing
 <!-- Describe your first thoughts on how to solve this problem. -->
 
 
-##### Approach
+##### Algorithm
 <!-- Describe your approach to solving the problem. -->
 
 
@@ -574,7 +574,7 @@ The intuition here is recognizing that when the connected nindices form a graph 
 <!-- Describe your first thoughts on how to solve this problem. -->
 
 
-##### Approach
+##### Algorithm
 <!-- Describe your approach to solving the problem. -->
 
 

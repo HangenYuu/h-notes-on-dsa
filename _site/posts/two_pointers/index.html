@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Pham Nguyen Hung">
-<meta name="dcterms.date" content="2023-05-20">
+<meta name="dcterms.date" content="2023-05-22">
 <meta name="description" content="Two pointers">
 
 <title>H’s notes on Data Structuress and Algorithms - Two pointers</title>
@@ -166,7 +166,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">May 20, 2023</p>
+        <p class="date">May 22, 2023</p>
       </div>
     </div>
     
@@ -221,8 +221,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- Describe your first thoughts on how to solve this problem. -->
 <p>The <strong>basic problem</strong> of two pointers. The problem can be solved by many ways (strip the string then reverse, etc.), but the most straightforward way if you know two pointers is using two pointers. You will traverse the string in both directions, bypassing <em>non-alphanumeric</em> characters. For each alphanumeric pairs, the lowercase versions of the character must match.</p>
 </section>
-<section id="approach" class="level4">
-<h4 class="anchored" data-anchor-id="approach">Approach</h4>
+<section id="algorithm" class="level4">
+<h4 class="anchored" data-anchor-id="algorithm">Algorithm</h4>
 <!-- Describe your approach to solving the problem. -->
 <ol type="1">
 <li>Initialize two pointers.</li>
@@ -270,8 +270,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- Describe your first thoughts on how to solve this problem. -->
 <p>If we set up two pointers at the start and the end, if the sum of the two numbers is larger, the <em>only</em> way to make it smaller is to decrement the right pointer. Likewise, the <em>only</em> way to make it larger is to increment the left pointer.</p>
 </section>
-<section id="approach-1" class="level4">
-<h4 class="anchored" data-anchor-id="approach-1">Approach</h4>
+<section id="algorithm-1" class="level4">
+<h4 class="anchored" data-anchor-id="algorithm-1">Algorithm</h4>
 <!-- Describe your approach to solving the problem. -->
 <ol type="1">
 <li>Initialize two pointers.</li>
@@ -307,8 +307,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- Describe your first thoughts on how to solve this problem. -->
 <p>If we sort the array, the problem can be turned into a two-pointer problem, where we fix the first value and then use two pointers to search for the remaining two values. There arises a bigger problem though: dealing with duplicates. The best approach is to deal with duplicates after we have found a satisfying triplet.</p>
 </section>
-<section id="approach-2" class="level4">
-<h4 class="anchored" data-anchor-id="approach-2">Approach</h4>
+<section id="algorithm-2" class="level4">
+<h4 class="anchored" data-anchor-id="algorithm-2">Algorithm</h4>
 <!-- Describe your approach to solving the problem. -->
 <ol type="1">
 <li>Sort the array</li>
@@ -367,8 +367,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The trick is the idea of <em>maximum so far</em>. This appears a lot in problems where we need to iterate the array and update an extremum as we go along. The rule for moving the pointer comes from the question: <em>How do I potentially increase the value of maximum area so far?</em>. The answer is by moving the <em>smaller</em> pointer, the bottleneck in calculating the amount of water the container can hold.</p>
 <p>An improvement on the solution is a simple check-up. Taking the width constant, the best container is the one with the maximum height. Therefore, at any moment the volume of the best container possible with the current width cannot surpass the maximum so far, we can safely break out of the for loop.</p>
 </section>
-<section id="approach-3" class="level4">
-<h4 class="anchored" data-anchor-id="approach-3">Approach</h4>
+<section id="algorithm-3" class="level4">
+<h4 class="anchored" data-anchor-id="algorithm-3">Algorithm</h4>
 <!-- Describe your approach to solving the problem. -->
 <ol type="1">
 <li>Initialize: 2 pointers, maximum so far, and maximum height.</li>
@@ -415,8 +415,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>We need to increment the side with the smaller maximum height.</li>
 </ul>
 </section>
-<section id="approach-4" class="level4">
-<h4 class="anchored" data-anchor-id="approach-4">Approach</h4>
+<section id="algorithm-4" class="level4">
+<h4 class="anchored" data-anchor-id="algorithm-4">Algorithm</h4>
 <!-- Describe your approach to solving the problem. -->
 <ol type="1">
 <li>Initialize pointer and maximum height for each side.</li>
@@ -461,8 +461,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Back to the problem. If we are not in Python, we will need to convert the string into a mutable array, reverse <em>every</em> character in the array, and then iterate and reverse <em>every</em> character in word, which came before a white space or at the end. The last bit can be done with two pointers.</p>
 <p>(We can also define a function to reverse every element in a list. I don’t want to go that far so I will just use the built-in Python one.)</p>
 </section>
-<section id="approach-5" class="level4">
-<h4 class="anchored" data-anchor-id="approach-5">Approach</h4>
+<section id="algorithm-5" class="level4">
+<h4 class="anchored" data-anchor-id="algorithm-5">Algorithm</h4>
 <!-- Describe your approach to solving the problem. -->
 <ol type="1">
 <li>Process the string to remove extra whitespaces.</li>
@@ -524,8 +524,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- Describe your first thoughts on how to solve this problem. -->
 <p>This problem builds upon <a href="https://leetcode.com/problems/valid-palindrome/">Valid Palindrome I</a>. The intuition is this: if we iterate the string with two pointers as before, at the first pair where two characters are different, the string is valid if the substring from <em>the element right next to the right of the left character in the pair</em> to <em>the right character in the pair</em> is a valid palindrome, or the substring from <em>the left character in the pair</em> to <em>the element right next to the left of the right character in the pair</em> is a valid palindrome.</p>
 </section>
-<section id="approach-6" class="level4">
-<h4 class="anchored" data-anchor-id="approach-6">Approach</h4>
+<section id="algorithm-6" class="level4">
+<h4 class="anchored" data-anchor-id="algorithm-6">Algorithm</h4>
 <!-- Describe your approach to solving the problem. -->
 <ol type="1">
 <li>Iterate the string with two pointers. Check for similarity as with normal valid palindrome problem.</li>

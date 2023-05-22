@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Pham Nguyen Hung">
-<meta name="dcterms.date" content="2023-05-20">
+<meta name="dcterms.date" content="2023-05-22">
 <meta name="description" content="Array">
 
 <title>H’s notes on Data Structuress and Algorithms - Array</title>
@@ -166,7 +166,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">May 20, 2023</p>
+        <p class="date">May 22, 2023</p>
       </div>
     </div>
     
@@ -195,9 +195,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#top-k-frequent-elements" id="toc-top-k-frequent-elements" class="nav-link" data-scroll-target="#top-k-frequent-elements">6. Top K Frequent Elements</a></li>
   <li><a href="#encode-and-decode-strings" id="toc-encode-and-decode-strings" class="nav-link" data-scroll-target="#encode-and-decode-strings">7. Encode and Decode Strings</a></li>
   <li><a href="#product-of-array-except-self" id="toc-product-of-array-except-self" class="nav-link" data-scroll-target="#product-of-array-except-self">8. Product of Array Except Self</a></li>
-  <li><a href="#approach-6" id="toc-approach-6" class="nav-link" data-scroll-target="#approach-6">Approach</a></li>
+  <li><a href="#algorithm-6" id="toc-algorithm-6" class="nav-link" data-scroll-target="#algorithm-6">Algorithm</a></li>
   <li><a href="#valid-sudoku" id="toc-valid-sudoku" class="nav-link" data-scroll-target="#valid-sudoku">9. Valid Sudoku</a></li>
-  <li><a href="#approach-7" id="toc-approach-7" class="nav-link" data-scroll-target="#approach-7">Approach</a></li>
+  <li><a href="#algorithm-7" id="toc-algorithm-7" class="nav-link" data-scroll-target="#algorithm-7">Algorithm</a></li>
   <li><a href="#longest-consecutive-sequence" id="toc-longest-consecutive-sequence" class="nav-link" data-scroll-target="#longest-consecutive-sequence">10. Longest Consecutive Sequence</a></li>
   </ul></li>
   </ul></li>
@@ -227,8 +227,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- Describe your first thoughts on how to solve this problem. -->
 <p>Traversing the list seems like the most logical thing to do. The brute-force way is to check every pair of numbers. The time complexity is O(n^2). To optimize this, it is better to store the information we have already encountered when we traverse the list. We need to use a data structure that supports fast searching - HashMap. Either way works, but the HashMap can be used for storing the index of the element as well. If we store an element as the key and the index as the value, we can quickly search and return the indices.</p>
 </section>
-<section id="approach" class="level4">
-<h4 class="anchored" data-anchor-id="approach">Approach</h4>
+<section id="algorithm" class="level4">
+<h4 class="anchored" data-anchor-id="algorithm">Algorithm</h4>
 <!-- Describe your approach to solving the problem. -->
 <p>The algorithm can be described as:</p>
 <ol type="1">
@@ -264,8 +264,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- Describe your first thoughts on how to solve this problem. -->
 <p>Again, traverse the array, storing information about what we have encountered. This time, we only need to store the element itself, so a HashSet suffices.</p>
 </section>
-<section id="approach-1" class="level4">
-<h4 class="anchored" data-anchor-id="approach-1">Approach</h4>
+<section id="algorithm-1" class="level4">
+<h4 class="anchored" data-anchor-id="algorithm-1">Algorithm</h4>
 <!-- Describe your approach to solving the problem. -->
 <ol type="1">
 <li>Traverse the array.</li>
@@ -299,8 +299,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- Describe your first thoughts on how to solve this problem. -->
 <p>Again, traverse the array, storing information about what we have encountered. This time, we only need to store the element itself, so a HashSet suffices.</p>
 </section>
-<section id="approach-2" class="level4">
-<h4 class="anchored" data-anchor-id="approach-2">Approach</h4>
+<section id="algorithm-2" class="level4">
+<h4 class="anchored" data-anchor-id="algorithm-2">Algorithm</h4>
 <!-- Describe your approach to solving the problem. -->
 <ol type="1">
 <li>Traverse the array.</li>
@@ -336,8 +336,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- Describe your first thoughts on how to solve this problem. -->
 <p>There are many approaches to the problem. The simplest way except brute-force the whole thing is to use a HashMap to count the number of occurences of each element (in Python can be done faster with <code>collections.Counter</code>). The solution provided is to deal with the follow-up question of linear time with <span class="math inline">\(O(1)\)</span> memory.</p>
 </section>
-<section id="approach-3" class="level4">
-<h4 class="anchored" data-anchor-id="approach-3">Approach</h4>
+<section id="algorithm-3" class="level4">
+<h4 class="anchored" data-anchor-id="algorithm-3">Algorithm</h4>
 <!-- Describe your approach to solving the problem. -->
 <p>This is a named algorithm: Boyer-Moore Voting Algorithm. The procedure is this: while we traverse the array, if we choose the first element as a candidate and consider three things:</p>
 <ol type="1">
@@ -376,8 +376,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h4 class="anchored" data-anchor-id="intuition-4">Intuition</h4>
 <p>From <a href="https://leetcode.com/problems/valid-anagram/">Valid Anagram</a>, we know that one word is an anagram of another if character frequencies are the same. We can check everything in one go with a dictionary. The key information is <em>lowercase letter only</em>. This means that character frequency can be capture in a tuple of 26 number, each one the number of character a, b, etc. in the word. We can append each word to the correct key in the dictionary. Afterwards, we simply return the values of the dictionary.</p>
 </section>
-<section id="approach-4" class="level4">
-<h4 class="anchored" data-anchor-id="approach-4">Approach</h4>
+<section id="algorithm-4" class="level4">
+<h4 class="anchored" data-anchor-id="algorithm-4">Algorithm</h4>
 <ol type="1">
 <li>Initialize a dictionary, better with Python <code>defaultdict</code>.</li>
 <li>Iterate the list of words. For each word, initialize an array of 26 0s and increment the correct count for each character. <code>ord()</code> is useful in this case.</li>
@@ -411,7 +411,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="intuition-5" class="level4">
 <h4 class="anchored" data-anchor-id="intuition-5">Intuition</h4>
 <p>To satisfy the <span class="math inline">\(O(nlogn)\)</span> time constraint, computer science students will think of Quickselect. If you know how to implement Quickselect, it’s fine.</p>
-<p>For someone who doesn’t, the approach is to use a dictionary the frequency as the key, and the value an array of elements with that key. To return, we can just iterate the dictionary from the maximum value to the minimum, append the value to an array and return the k elements. #### Approach</p>
+<p>For someone who doesn’t, the approach is to use a dictionary the frequency as the key, and the value an array of elements with that key. To return, we can just iterate the dictionary from the maximum value to the minimum, append the value to an array and return the k elements. #### Algorithm</p>
 <ol type="1">
 <li>Take frequency count of the elements in the array, better with Python <code>Counter</code></li>
 <li>Initialize a dictionary, better with Python <code>defaultdict</code>.</li>
@@ -466,8 +466,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A more seasoned programmer will give a more complex approach. He will use <code>':'</code> to insert between, and inserting <code>'::'</code> when there is a <code>':'</code>. This is a general method, which takes care of the case you need to impress the guys by showing that you can think generally, given that you may need to learn another language at the company. But in Python, simpler is better - it is just an one-liner with fast, optimized method for both functions. But of course, it is not so impressive, making you look so dependent on Python.</p>
 <p>NeetCode has a middle approach - Use the length and <code>'#'</code> to insert before each character. This is much better.</p>
 </section>
-<section id="approach-5" class="level4">
-<h4 class="anchored" data-anchor-id="approach-5">Approach</h4>
+<section id="algorithm-5" class="level4">
+<h4 class="anchored" data-anchor-id="algorithm-5">Algorithm</h4>
 <p>One-liner: Use built-in method <code>.join()</code> and <code>.split()</code> to do the heavy work.</p>
 <p>General:</p>
 <ul>
@@ -546,8 +546,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>To get to the <span class="math inline">\(O(1)\)</span> memory solution, it is about converting one array into just a pointer to cache the product.</p>
 </section>
 </section>
-<section id="approach-6" class="level3">
-<h3 class="anchored" data-anchor-id="approach-6">Approach</h3>
+<section id="algorithm-6" class="level3">
+<h3 class="anchored" data-anchor-id="algorithm-6">Algorithm</h3>
 <ol type="1">
 <li>Traverse the array to calculate the prefix (postfix array).</li>
 <li>Traverse the array again to update the postfix product and also the result.</li>
@@ -584,8 +584,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The nested for loop to check every element is inevitable. The trick is to realize that the box can be arranged and accessed with modulo 3.</p>
 </section>
 </section>
-<section id="approach-7" class="level3">
-<h3 class="anchored" data-anchor-id="approach-7">Approach</h3>
+<section id="algorithm-7" class="level3">
+<h3 class="anchored" data-anchor-id="algorithm-7">Algorithm</h3>
 <ol type="1">
 <li>Initialized <code>rows</code>, <code>cols</code>, <code>boxes</code> to keep track of the respective factor. The most elegant way to do this in Python is with <code>collections.defaultdict(set)</code></li>
 <li>Traverse the board with a nested for loop and update the respective factor.</li>
@@ -625,8 +625,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h4 class="anchored" data-anchor-id="intuiton-2">Intuiton</h4>
 <p>We need to perform a lot of searches and there is the possibility of duplicates. Hence, it is better if we convert the array to a set. We can also create safeguard by NOT counting the number in the sequence if the one preceding it is in the set.</p>
 </section>
-<section id="approach-8" class="level4">
-<h4 class="anchored" data-anchor-id="approach-8">Approach</h4>
+<section id="algorithm-8" class="level4">
+<h4 class="anchored" data-anchor-id="algorithm-8">Algorithm</h4>
 <ol type="1">
 <li>Convert the whole array into a set.</li>
 <li>Traverse the set. For each element, count and update the longest consecutive sequence if the one preceding it is not in the array.</li>

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Pham Nguyen Hung">
-<meta name="dcterms.date" content="2023-05-04">
+<meta name="dcterms.date" content="2023-05-22">
 <meta name="description" content="A variation of two pointers">
 
 <title>H’s notes on Data Structuress and Algorithms - Sliding window</title>
@@ -166,7 +166,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">May 4, 2023</p>
+        <p class="date">May 22, 2023</p>
       </div>
     </div>
     
@@ -218,8 +218,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>First, the brute-force algorithm involves keeping track of the maximum number so far. This is a good thing that we can keep.</p>
 <p>Second, let’s assume this array of <code>[2, ..., 1]</code>. Let’s say that the maximum of the subarray between 2 and 1 is 6: <code>[2, ...6..., 1]</code> (it does not matter where the 6 is as long as it occurs before 1). The max profit we can get so far is <span class="math inline">\(6-2=4\)</span>. To increase the profit, there are two ways: shift the buy date to a day with smaller price, or shift the sell date to a day with a larger price. Let’s say there is a 7 after 1. We can increase the profit if we shift the sell date from 6 to 7: <code>[2, ...6..., 1, ...7...]</code>. However, the best profit is when we shift the buy date from 2 to 1 as well. Now, because we already keep track of the max profit so far, so it cannot be worse if <em>we shift the buy date every single time we find a better buy date</em>.</p>
 </section>
-<section id="approach" class="level4">
-<h4 class="anchored" data-anchor-id="approach">Approach</h4>
+<section id="algorithm" class="level4">
+<h4 class="anchored" data-anchor-id="algorithm">Algorithm</h4>
 <!-- Describe your approach to solving the problem. -->
 <p>The algorithm: 1. Initialize the left and right sides of the window + the max profit so far. 2. Traverse the array with the right side. 3. If we encounter a better buy date (right &lt; left), update the buy date. If we encounter a potential sell date (right &gt;= left), check and update the profit so far. 4. Return the max profit at the end. #### Complexity - Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(n)\)</span>: We are traversing the array once. - Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(1)\)</span>: We are only keeping track of a bunch of integers. #### Code</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
@@ -243,8 +243,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This is one problem in the class of “if you know, you know”, though of course you can discover for yourself from keen observation.</p>
 <p>The named algorithm is Kadane’s algorithm. I did not know the exact formal definition for it, but its pattern is that of sliding window (though the class will be dynamic programming). The intuition here is that if we keep track of the sum of a subarray, one that sum reaches a negative number, <em>the whole subarray can be discarded from consideration</em>, because whatever the value of the next element, the subarray sum will always be worse if we include the negative-sum subarray. Incredible intuition, though I could not see this in the first time I did it.</p>
 </section>
-<section id="approach-1" class="level4">
-<h4 class="anchored" data-anchor-id="approach-1">Approach</h4>
+<section id="algorithm-1" class="level4">
+<h4 class="anchored" data-anchor-id="algorithm-1">Algorithm</h4>
 <!-- Describe your approach to solving the problem. -->
 <ol type="1">
 <li>Traverse the array, keeping track of the current sum <code>curSum</code> and the maximum sum so far <code>maxSum</code> of the array.</li>

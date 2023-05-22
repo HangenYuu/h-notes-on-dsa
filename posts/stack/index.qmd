@@ -23,7 +23,7 @@ A data structure with the trademark of LIFO (last in, first out). It has direct 
 <!-- Describe your first thoughts on how to solve this problem. -->
 This is the [Two Sum](https://leetcode.com/problems/two-sum/) of stack. The problem requirements can be translated into the intuition that if we push the left parenthesis into a stack and pop them out whenever we encounter a right parenthesis, the correct parenthesis sequence will generate all matching pairs.
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
 1. Initialize, including a HashMap for right and left parenthesis, and check that the array has an even number of elements.
 2. Traverse the array of parentheses.
@@ -63,7 +63,7 @@ class Solution:
 <!-- Describe your first thoughts on how to solve this problem. -->
 The notation works perfectly with a stack. Basically, whenever you encounter an operand, you need to pop from the end of the stack and perform operation in the correct order before append the result to the stack. Otherwise, just append the numbers in the order we encounter them.
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
 1. Traverse the list.
 2. If encounter a number, append it to the stack. If encounter an operand, pop from the stack two times, operate, and append the result.
@@ -107,7 +107,7 @@ class Solution:
 <!-- Describe your first thoughts on how to solve this problem. -->
 The number of days to wait is the difference in the indices of the days. The stack comes in handy here by storing the value of the element sequentially, and then we pop from it when we encounter a day with larger temperature.
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
 1. Initialize the stack and the `answer` array, which is an array of 0s with the same length as `temperatures`.
 2. Traverse the array. Storing the value and index to a stack if the value is not larger than the last element in the stack. Pop from the stack and update `answer` otherwise.
@@ -142,7 +142,7 @@ class Solution:
 <!-- Describe your first thoughts on how to solve this problem. -->
 The trick is having another stack to store the *minimum so far*.
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
 With the minimum so far stack, we just need to update it along with the main stack. The main task will be the `push` operation, where we need to append the new value if it is the new minimum, or the same last value.
 
@@ -196,7 +196,7 @@ The problem gave me a taste of backtracking. It is time to realize that this is 
 
 In recursion problem, we start with the base case. The base case here revolves around the condition to add left and right parentheses. Simply, we can validly add a left parenthesis if the number of left parentheses is smaller than $n$, while we can validly add a right parenthesis if the number of left parentheses is smaller than  the number of right parentheses. The base case is when the number of left and the number of right all hit $n$.
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
 1. Initialize `res` and `stack` array. One to return, one to keep track of the string generated.
 2. Define the backtracking function `backtrack` based on the conditions above.
@@ -246,7 +246,7 @@ class Solution:
 <!-- Describe your first thoughts on how to solve this problem. -->
 The trick revolves around the condition to extend the rectangle. We can extend the rectangle if the current height is larger than the previous height. If not, we need to pop from the stack, calculate the area of the rectangle and update the maximum area. The next bit is storing the index of *the last element* that the current height can extend back to instead of its own index.
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
 1. Initialize `maxArea` and `stack` array. One to return, one to keep track of the (index, height) pairs.
 2. Iterate the `heights` arrray. At each height, if it is smaller than the previous one and the stack is not empty, we pop from the stack, calculate the maximum height possible, update `maxArea` if necessary, and push `(index, height)` pair to the stack.

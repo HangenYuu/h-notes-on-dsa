@@ -45,7 +45,7 @@ This is useful as we can use the `head` as a pointer to traverse the linked list
 <!-- Describe your first thoughts on how to solve this problem. -->
 This is what I call a **basic problem** - a problem that can be become a sub-problem for a bigger task in the future LeetCode problems. This is like a formula that you have no choice but to remember (coding interview is still closed-book at the moment, year 2023), and then exploit it over and over again.
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
 When dealing with Linked List, the king is pointer - ~~something as dangerous as pointing gun to your head~~an object that points to the particular position of a node in the list. The number of pointers a problem requires depend on the amount of information we need at when processing each node in the list. Here, we need to know 3 pieces: the current node (obviously), the previous node to point the current node to, and the next node to move the pointer. Hence, we will use three pointers - `pre`, `cur`, and `nex` to keep track while traversing the list.
 
@@ -83,7 +83,7 @@ Choose a new linked list. Move the two head pointers down the two lists, compare
 <!-- Describe your first thoughts on how to solve this problem. -->
 
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
 
 
@@ -143,7 +143,7 @@ Here we saw for the first time all the problems above come together into one pro
 <!-- Describe your first thoughts on how to solve this problem. -->
 
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
 
 
@@ -202,7 +202,7 @@ This is not a Linked List question, but it utilizes the fast and slow pointers t
 <!-- Describe your first thoughts on how to solve this problem. -->
 
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
 
 
@@ -242,7 +242,7 @@ Sometimes overthinking is a big problem. This question is super hard - if you tr
 <!-- Describe your first thoughts on how to solve this problem. -->
 
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
 
 
@@ -299,7 +299,7 @@ Here we see the reverse linked list sub-problem becomes relevant again. The algo
 <!-- Describe your first thoughts on how to solve this problem. -->
 
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
 
 
@@ -358,7 +358,7 @@ The second problem added to LeetCode, after [Two Sum](https://leetcode.com/probl
 <!-- Describe your first thoughts on how to solve this problem. -->
 
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
 
 
@@ -421,7 +421,7 @@ class Solution:
 <!-- Describe your first thoughts on how to solve this problem. -->
 
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
 
 

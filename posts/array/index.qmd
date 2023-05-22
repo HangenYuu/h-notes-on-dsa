@@ -28,7 +28,7 @@ The **basic of basic problem**, the first problem everybody encounters when he/s
 
 Traversing the list seems like the most logical thing to do. The brute-force way is to check every pair of numbers. The time complexity is O(n\^2). To optimize this, it is better to store the information we have already encountered when we traverse the list. We need to use a data structure that supports fast searching - HashMap. Either way works, but the HashMap can be used for storing the index of the element as well. If we store an element as the key and the index as the value, we can quickly search and return the indices.
 
-#### Approach
+#### Algorithm
 
 <!-- Describe your approach to solving the problem. -->
 
@@ -66,7 +66,7 @@ class Solution:
 
 Again, traverse the array, storing information about what we have encountered. This time, we only need to store the element itself, so a HashSet suffices.
 
-#### Approach
+#### Algorithm
 
 <!-- Describe your approach to solving the problem. -->
 
@@ -101,7 +101,7 @@ class Solution:
 
 Again, traverse the array, storing information about what we have encountered. This time, we only need to store the element itself, so a HashSet suffices.
 
-#### Approach
+#### Algorithm
 
 <!-- Describe your approach to solving the problem. -->
 
@@ -138,7 +138,7 @@ class Solution:
 
 There are many approaches to the problem. The simplest way except brute-force the whole thing is to use a HashMap to count the number of occurences of each element (in Python can be done faster with `collections.Counter`). The solution provided is to deal with the follow-up question of linear time with $O(1)$ memory.
 
-#### Approach
+#### Algorithm
 
 <!-- Describe your approach to solving the problem. -->
 
@@ -179,7 +179,7 @@ class Solution:
 
 From [Valid Anagram](https://leetcode.com/problems/valid-anagram/), we know that one word is an anagram of another if character frequencies are the same. We can check everything in one go with a dictionary. The key information is *lowercase letter only*. This means that character frequency can be capture in a tuple of 26 number, each one the number of character a, b, etc. in the word. We can append each word to the correct key in the dictionary. Afterwards, we simply return the values of the dictionary.
 
-#### Approach
+#### Algorithm
 
 1.  Initialize a dictionary, better with Python `defaultdict`.
 2.  Iterate the list of words. For each word, initialize an array of 26 0s and increment the correct count for each character. `ord()` is useful in this case.
@@ -211,7 +211,7 @@ class Solution:
 
 To satisfy the $O(nlogn)$ time constraint, computer science students will think of Quickselect. If you know how to implement Quickselect, it's fine.
 
-For someone who doesn't, the approach is to use a dictionary the frequency as the key, and the value an array of elements with that key. To return, we can just iterate the dictionary from the maximum value to the minimum, append the value to an array and return the k elements. \#### Approach
+For someone who doesn't, the approach is to use a dictionary the frequency as the key, and the value an array of elements with that key. To return, we can just iterate the dictionary from the maximum value to the minimum, append the value to an array and return the k elements. \#### Algorithm
 
 1.  Take frequency count of the elements in the array, better with Python `Counter`
 2.  Initialize a dictionary, better with Python `defaultdict`.
@@ -269,7 +269,7 @@ A more seasoned programmer will give a more complex approach. He will use `':'` 
 
 NeetCode has a middle approach - Use the length and `'#'` to insert before each character. This is much better.
 
-#### Approach
+#### Algorithm
 
 One-liner: Use built-in method `.join()` and `.split()` to do the heavy work.
 
@@ -350,7 +350,7 @@ The trick is to use "prefix" and "postfix" arrays, respectively storing the prod
 
 To get to the $O(1)$ memory solution, it is about converting one array into just a pointer to cache the product.
 
-### Approach
+### Algorithm
 
 1.  Traverse the array to calculate the prefix (postfix array).
 2.  Traverse the array again to update the postfix product and also the result.
@@ -384,7 +384,7 @@ class Solution:
 
 The nested for loop to check every element is inevitable. The trick is to realize that the box can be arranged and accessed with modulo 3.
 
-### Approach
+### Algorithm
 
 1. Initialized `rows`, `cols`, `boxes` to keep track of the respective factor. The most elegant way to do this in Python is with `collections.defaultdict(set)` 
 2. Traverse the board with a nested for loop and update the respective factor.
@@ -422,7 +422,7 @@ class Solution:
 
 We need to perform a lot of searches and there is the possibility of duplicates. Hence, it is better if we convert the array to a set. We can also create safeguard by NOT counting the number in the sequence if the one preceding it is in the set.
 
-#### Approach
+#### Algorithm
 
 1. Convert the whole array into a set.
 2. Traverse the set. For each element, count and update the longest consecutive sequence if the one preceding it is not in the array.

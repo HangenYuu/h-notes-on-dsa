@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Pham Nguyen Hung">
-<meta name="dcterms.date" content="2023-05-21">
+<meta name="dcterms.date" content="2023-05-22">
 <meta name="description" content="Fast and slow pointers">
 
 <title>H’s notes on Data Structuress and Algorithms - Fast and slow pointers</title>
@@ -166,7 +166,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">May 21, 2023</p>
+        <p class="date">May 22, 2023</p>
       </div>
     </div>
     
@@ -192,6 +192,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#remove-nth-node-from-end-of-list" id="toc-remove-nth-node-from-end-of-list" class="nav-link" data-scroll-target="#remove-nth-node-from-end-of-list">3. Remove Nth Node From End of List</a></li>
   <li><a href="#middle-of-the-linked-list" id="toc-middle-of-the-linked-list" class="nav-link" data-scroll-target="#middle-of-the-linked-list">4. Middle of the Linked List</a></li>
   <li><a href="#circular-array-loop" id="toc-circular-array-loop" class="nav-link" data-scroll-target="#circular-array-loop">5. Circular Array Loop</a></li>
+  <li><a href="#find-the-duplicate-number" id="toc-find-the-duplicate-number" class="nav-link" data-scroll-target="#find-the-duplicate-number">6. Find the Duplicate Number</a></li>
   </ul></li>
   </ul></li>
   </ul>
@@ -219,8 +220,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- Describe your first thoughts on how to solve this problem. -->
 <p>The hint lies at the problem statement: it is either going to 1, or going into a loop. If there is a loop, fast and slow pointers should be used.</p>
 </section>
-<section id="approach" class="level4">
-<h4 class="anchored" data-anchor-id="approach">Approach</h4>
+<section id="algorithm" class="level4">
+<h4 class="anchored" data-anchor-id="algorithm">Algorithm</h4>
 <!-- Describe your approach to solving the problem. -->
 <ol type="1">
 <li>Initialize the two pointers <code>slow</code> and <code>fast</code> to <code>n</code> and the helper function to calculate sum of square of digits (<span class="math inline">\(SS\)</span>).</li>
@@ -266,8 +267,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- Describe your first thoughts on how to solve this problem. -->
 <p>If I am not told about the problem, I don’t think I can come up with the solution. This is something you have to know beforehand. But well, in an interview, you will be assessed on your ability to solve harder problems with this approach, so that is our real goal.</p>
 </section>
-<section id="approach-1" class="level4">
-<h4 class="anchored" data-anchor-id="approach-1">Approach</h4>
+<section id="algorithm-1" class="level4">
+<h4 class="anchored" data-anchor-id="algorithm-1">Algorithm</h4>
 <!-- Describe your approach to solving the problem. -->
 <ol type="1">
 <li>Initialize the two pointers <code>fast</code> and <code>slow</code> to <code>head</code>.</li>
@@ -308,8 +309,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- Describe your first thoughts on how to solve this problem. -->
 <p>This is the second type of fast and slow pointers: they move at the same speed but start at different positions. The idea is that we want the fast pointer to hit the end of the list, while the slow pointer is at the node before the to-be-removed node. Then we can rearrange the connection.</p>
 </section>
-<section id="approach-2" class="level4">
-<h4 class="anchored" data-anchor-id="approach-2">Approach</h4>
+<section id="algorithm-2" class="level4">
+<h4 class="anchored" data-anchor-id="algorithm-2">Algorithm</h4>
 <!-- Describe your approach to solving the problem. -->
 <ol type="1">
 <li>Initialize the two pointers <code>fast</code> and <code>slow</code> to <code>head</code>.</li>
@@ -359,8 +360,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- Describe your first thoughts on how to solve this problem. -->
 <p>Because the fast pointer is doubly faster than the slow, when the fast pointer hits the end, the slow pointer will be at the middle node.</p>
 </section>
-<section id="approach-3" class="level4">
-<h4 class="anchored" data-anchor-id="approach-3">Approach</h4>
+<section id="algorithm-3" class="level4">
+<h4 class="anchored" data-anchor-id="algorithm-3">Algorithm</h4>
 <!-- Describe your approach to solving the problem. -->
 <ol type="1">
 <li>Initialize the two pointers <code>fast</code> and <code>slow</code> to <code>head</code>.</li>
@@ -404,8 +405,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>For every element, we need to check if it is a part of a cycle. If it is, we need to check if the cycle is valid. If it is, we return <code>True</code>. Otherwise, we continue to check the next element. A cycle is invalid if there exist elements with different signs in the cycle. This means that at least one product between a pair of elements is negative. The direction direction condition can be tracked with a variable, and the terminating condition can be signaled by setting the pointer to <span class="math inline">\(-1\)</span>. A cycle also needs to have more than one element. This means that an element with value divisible by the length of the array is invalid. This solution is <span class="math inline">\(O(n^2)\)</span> time complexity, as we will have a nested loop each iterating through the array in the worst case.</p>
 <p>To move on to the <span class="math inline">\(O(n)\)</span> solution, we can keep track of the elements we have visited. The most straightforward is having an array or a HashMap, but it violates the <span class="math inline">\(O(1)\)</span> space complexity. Hence, this means modifying the array in place into 0.</p>
 </section>
-<section id="approach-4" class="level4">
-<h4 class="anchored" data-anchor-id="approach-4">Approach</h4>
+<section id="algorithm-4" class="level4">
+<h4 class="anchored" data-anchor-id="algorithm-4">Algorithm</h4>
 <!-- Describe your approach to solving the problem. -->
 <ol type="1">
 <li>Initialize the variable <code>current_direction</code> to <code>None</code>.</li>
@@ -482,6 +483,62 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>                nums[slow] <span class="op">=</span> <span class="dv">0</span></span>
 <span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>                slow <span class="op">=</span> tmp</span>
 <span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">False</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="find-the-duplicate-number" class="level3">
+<h3 class="anchored" data-anchor-id="find-the-duplicate-number">6. Find the Duplicate Number</h3>
+<section id="intuition-5" class="level4">
+<h4 class="anchored" data-anchor-id="intuition-5">Intuition</h4>
+<!-- Describe your first thoughts on how to solve this problem. -->
+<p>Dirichlet’s principle will help you to prove that there must be a duplicate in the array. Next, because of the constraints of numbers from <span class="math inline">\(1\)</span> to <span class="math inline">\(n\)</span> inside an array of length <span class="math inline">\(n+1\)</span>, we can see that we can access every element of the array with the function <code>nums[index]</code>. This means that the array can be turned into a linked list, where the value is the index and the next pointer is the value of the element. In this linked list, the duplicate element <em>creates a cycle</em>, as there are at least two elements pointing to it, making it the entrance of a cycle.</p>
+<p><img src="6-1.svg" class="img-fluid"></p>
+<p>However, the problem is not <em>Is there a cycle?</em> but <em>Where is the cycle?</em>. In other words, we need to find the entrance to the cycle. This bears similarity to <a href="https://leetcode.com/problems/linked-list-cycle-ii/description/">Linked List Cycle II</a>. The solution is to use fast and slow pointers as before, with some insights from math to find the entrance.</p>
+<p><img src="6-2.svg" class="img-fluid"></p>
+<p>We define the following variables (see diagram above): - <span class="math inline">\(F\)</span>: the distance from the start of the array to the entrance of the cycle - <span class="math inline">\(a\)</span>: the distance from the entrance of the cycle to the meeting point of the fast and slow pointers - <span class="math inline">\(C\)</span>: the length of the cycle</p>
+<p>At the intersection point i.e., where two pointers meet, we have the following equations: <span class="math display">\[2 \times \text{distance slow pointer moves} = \text{distance fast pointer moves}\]</span></p>
+<p>Which is equivalent to: <span class="math display">\[
+2(F + a) = F + a + nC, \text{for some n} \in \mathbb{N}
+\]</span> This gives us an interesting equation: <span class="math display">\[
+F = (n-1)C + (C - a)
+\]</span> In plain English, this means that if the two pointers both start at first element, the distance from the intersection point found to the cycle entrance is equal to the distance from that first element to the cycle entrance. This means that if we move one pointer back to the first element and move both pointers one step at a time, they will meet at the cycle entrance.</p>
+</section>
+<section id="algorithm-5" class="level4">
+<h4 class="anchored" data-anchor-id="algorithm-5">Algorithm</h4>
+<!-- Describe your approach to solving the problem. -->
+<ol type="1">
+<li>Set the fast and slow pointers to the first element of the array.</li>
+<li>Move the fast pointer two steps and the slow pointer one step at a time, until they meet.</li>
+<li>Set the slow pointer to the first element of the array.</li>
+<li>Move both pointers one step at a time, until they meet.</li>
+<li>Return the meeting point.</li>
+</ol>
+</section>
+<section id="complexity-5" class="level4">
+<h4 class="anchored" data-anchor-id="complexity-5">Complexity</h4>
+<ul>
+<li>Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(n)\)</span>: We need to traverse the array a number of time.</li>
+<li>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(1)\)</span>: We only need to store pointers.</li>
+</ul>
+</section>
+<section id="code-5" class="level4">
+<h4 class="anchored" data-anchor-id="code-5">Code</h4>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> findDuplicate(<span class="va">self</span>, nums: List[<span class="bu">int</span>]) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Phase 1: Intersection point</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        fast <span class="op">=</span> slow <span class="op">=</span> nums[<span class="dv">0</span>]</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>            fast <span class="op">=</span> nums[nums[fast]]</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>            slow <span class="op">=</span> nums[slow]</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> fast <span class="op">==</span> slow:</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>                <span class="cf">break</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Phase 2: Find the cycle entrance</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>        slow <span class="op">=</span> nums[<span class="dv">0</span>]</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> slow <span class="op">!=</span> fast:</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>            fast <span class="op">=</span> nums[fast]</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>            slow <span class="op">=</span> nums[slow]</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> slow</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>

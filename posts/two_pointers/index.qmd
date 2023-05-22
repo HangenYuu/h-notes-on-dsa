@@ -23,7 +23,7 @@ This is not a data structure, but a pattern of coding interview questions. This 
 <!-- Describe your first thoughts on how to solve this problem. -->
 The **basic problem** of two pointers. The problem can be solved by many ways (strip the string then reverse, etc.), but the most straightforward way if you know two pointers is using two pointers. You will traverse the string in both directions, bypassing *non-alphanumeric* characters. For each alphanumeric pairs, the lowercase versions of the character must match.
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
 1. Initialize two pointers.
 2. Traverse the array from both ends.
@@ -70,7 +70,7 @@ class Solution:
 <!-- Describe your first thoughts on how to solve this problem. -->
 If we set up  two pointers at the start and the end, if the sum of the two numbers is larger, the *only* way to make it smaller is to decrement the right pointer. Likewise, the *only* way to make it larger is to increment the left pointer.
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
 1. Initialize two pointers.
 2. Traverse the array, decrement the right and increment the left accordingly.
@@ -105,7 +105,7 @@ class Solution:
 <!-- Describe your first thoughts on how to solve this problem. -->
 If we sort the array, the problem can be turned into a two-pointer problem, where we fix the first value and then use two pointers to search for the remaining two values. There arises a bigger problem though: dealing with duplicates. The best approach is to deal with duplicates after we have found a satisfying triplet. 
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
 1. Sort the array
 2. Nested for loop: Traverse the array. For each value, traverse the remaining array with two pointers to look for the satisfying triplets. Take care to deal with duplicates after finding a satisfying triplet.
@@ -163,7 +163,7 @@ The trick is the idea of *maximum so far*. This appears a lot in problems where 
 
 An improvement on the solution is a simple check-up. Taking the width constant, the best container is the one with the maximum height. Therefore, at any moment the volume of the best container possible with the current width cannot surpass the maximum so far, we can safely break out of the for loop. 
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
 1. Initialize: 2 pointers, maximum so far, and maximum height.
 2. Traverse the array with two pointers. Update the maximum height as we go along.
@@ -205,7 +205,7 @@ class Solution:
 - Let's say the maximum left height is smaller. The water trapped is the difference between the maximum left height and the current left height, which is >= 0.
 - We need to increment the side with the smaller maximum height. 
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
 1. Initialize pointer and maximum height for each side.
 2. Traverse the array. Increment the side with the smaller maximum height. Update the maximum height at that side and the water trapped so far.
@@ -250,7 +250,7 @@ Back to the problem. If we are not in Python, we will need to convert the string
 
 (We can also define a function to reverse every element in a list. I don't want to go that far so I will just use the built-in Python one.)
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
 1. Process the string to remove extra whitespaces.
 2. Convert the string to a list of character and reverse it.
@@ -315,7 +315,7 @@ class Solution:
 <!-- Describe your first thoughts on how to solve this problem. -->
 This problem builds upon [Valid Palindrome I](https://leetcode.com/problems/valid-palindrome/). The intuition is this: if we iterate the string with two pointers as before, at the first pair where two characters are different, the string is valid if the substring from *the element right next to the right of the left character in the pair* to *the right character in the pair* is a valid palindrome, or the substring from *the left character in the pair* to *the element right next to the left of the right character in the pair* is a valid palindrome.
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
 1. Iterate the string with two pointers. Check for similarity as with normal valid palindrome problem.
 2. If encountered dissimilarity, check valid palindrome for the two substrings mentioned above and return.

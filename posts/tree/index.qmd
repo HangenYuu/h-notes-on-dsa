@@ -4,7 +4,7 @@ description: "Mostly binary tree"
 author: "Pham Nguyen Hung"
 date: last-modified
 date-format: long
-draft: false
+draft: true
 toc: true
 ---
 Firstly, See [About](https://h-notes-on-dsa.netlify.app/about.html) page.
@@ -107,7 +107,7 @@ Another way to solve the problem is to replace `return` value with a global vari
 <!-- Describe your first thoughts on how to solve this problem. -->
 The first application of recursion. Thinking in node, the two are the same if each pair of nodes has the same value. Therefore, the recursive function should 1. check the current pair then 2. check the two child pairs. This problem is simple enough so that we don't need to write another helper function to deal with the situation.
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
 1. Create the recursive function. The base case is two roots are equal if both are None, else False.
 2. Call the recursive function for the child before returning the result.
@@ -173,7 +173,7 @@ The tweaked problem of above. The trees now are the same if each pair of nodes a
 <!-- Describe your first thoughts on how to solve this problem. -->
 Same as above
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
 Same as above
 
@@ -211,7 +211,7 @@ It is easier if we have a picture.
 ![](tmp-tree.jpg)
 
 Let's think recursively about the problem. Let's say we start with an empty tree. The height will immediately be 0. If we have a tree with just 1 node, the depth should be 1. Now suppose that node is a child of another node. This node will have two 2 children: the aforementioned node and an empty node. The depth of the empty child should be 0 while the depth of the non-empty child is 1. Ultimately, the depth of the root node will be 2. By imagining this for an increasingly bigger tree, we can see that *the depth of a node is the maximum depth of its child node plus 1*. In the recursion framework, the `return` value is the depth a node, which we pass up from the child to the parent.
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
 In terms of recursive algorithm, we have to define the base case - return 0 if the root is empty. Afterwards, we just need to call the fuction recursively.
 
@@ -241,7 +241,7 @@ class Solution:
 <!-- Describe your first thoughts on how to solve this problem. -->
 Recursively, the problem can be reduced to switching the left and right children of every node, from the root to the leaves.
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
 1. Create a recursive function with the only line: `root.left, root.right = root.right, root.left`
 2. Call the recursive function on the children after switching the left and right children. You can do that after switching as well. It makes no difference in this problem.
@@ -284,7 +284,7 @@ In a binary search tree, there are five cases when you compare the value of a no
 
 Based on the constraint of the binary search tree, the correct result would be *the first node that have the property*`p.val <= node.val <= q.val`. This is an unexpected intuition, but it is correct in a BST. The reason is `p` and `q` will be split at this node into 2 different subtrees afterwards, so no lower common ancestor can exist in the tree.
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
 0. Initialized the nodes - `small & large` as the smaller and the larger between `p` and `q`. This is optional as the famous NeetCode did not do it.
 1. Traverse the tree with a `while` loop.
@@ -325,7 +325,7 @@ class Solution:
 
 From the definition, the height-balancedness of a binary tree depends on the height-balancedness of a node. This means that the problem can be solved recursively at the node level. Now, the height-balancedness of a node depends on the height-balancedness of its children, and the height-balancedness of itself. The main problem becomes calculating whether a node is height-balanced or not. We can determine this from the depths of the children, more specifically whether absolute difference in depths of the children is smaller than 2.
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
 The recursive function should be defined which `return` 2 values: `whether a node is height-balanced` & `the depth of the node`.
 
@@ -387,7 +387,7 @@ But more often than not, a problem is a bottom-up one. This means that we usuall
 <!-- Describe your first thoughts on how to solve this problem. -->
 This is another problem that requires the depth of each node. Math manipulation will make you realize that *the diameter at a node is the sum of the depths of the children.*
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
 Bottom-up! Bottom-up! The recursive function will be defined bottom-up-ly! We will nest the helper function inside the main function (is it a closure? I think so). We will keep `diameter` as a seperate `nonlocal` variable storing the largest diameter so far. The return will only be the depth of a node, as the diameter is calculated and updated within the function.
 

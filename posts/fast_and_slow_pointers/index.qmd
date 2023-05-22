@@ -22,7 +22,7 @@ This is not a data structure, but a pattern of coding interview questions. This 
 <!-- Describe your first thoughts on how to solve this problem. -->
 The hint lies at the problem statement: it is either going to 1, or going into a loop. If there is a loop, fast and slow pointers should be used.
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
 1. Initialize the two pointers `slow` and `fast` to `n` and the helper function to calculate sum of square of digits ($SS$).
 2. At each step, assign `slow` to the $SS$ of itself and `fast` to the $SS$ of $SS$ of itself. We check and then return accordingly when we go into loop or encounter 1.
@@ -69,7 +69,7 @@ The introductory fast and slow pointers problem. If there is a loop, the fast an
 <!-- Describe your first thoughts on how to solve this problem. -->
 If I am not told about the problem, I don't think I can come up with the solution. This is something you have to know beforehand. But well, in an interview, you will be assessed on your ability to solve harder problems with this approach, so that is our real goal.
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
 1. Initialize the two pointers `fast` and `slow` to `head`.
 2. At each step, assign `fast` to the next of the next of itself and `slow` to the next of itself. We check and then return accordingly when we go into loop i.e., the two pointers meet.
@@ -110,7 +110,7 @@ The idea is to initialize two fast and slow pointers, but started at different p
 <!-- Describe your first thoughts on how to solve this problem. -->
 This is the second type of fast and slow pointers: they move at the same speed but start at different positions. The idea is that we want the fast pointer to hit the end of the list, while the slow pointer is at the node before the to-be-removed node. Then we can rearrange the connection.
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
 1. Initialize the two pointers `fast` and `slow` to `head`.
 2. Move the `fast` pointer `n+1` steps ahead of the `slow` pointer.
@@ -159,7 +159,7 @@ class Solution:
 <!-- Describe your first thoughts on how to solve this problem. -->
 Because the fast pointer is doubly faster than the slow, when the fast pointer hits the end, the slow pointer will be at the middle node.
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
 1. Initialize the two pointers `fast` and `slow` to `head`.
 2. Move the `fast` pointer 2 steps and the `slow` pointer 1 step at each iteration till termination.
@@ -204,7 +204,7 @@ For every element, we need to check if it is a part of a cycle. If it is, we nee
 
 To move on to the $O(n)$ solution, we can keep track of the elements we have visited. The most straightforward is having an array or a HashMap, but it violates the $O(1)$ space complexity. Hence, this means modifying the array in place into 0.
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
 1. Initialize the variable `current_direction` to `None`.
 2. Iterate through the array. If the element is divisible by the length of the array, continue to the next element.
@@ -283,4 +283,71 @@ class Solution:
                 nums[slow] = 0
                 slow = tmp
         return False
+```
+
+### 6. Find the Duplicate Number
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+Dirichlet's principle will help you to prove that there must be a duplicate in the array. Next, because of the constraints of numbers from $1$ to $n$ inside an array of length $n+1$, we can see that we can access every element of the array with the function `nums[index]`. This means that the array can be turned into a linked list, where the value is the index and the next pointer is the value of the element. In this linked list, the duplicate element *creates a cycle*, as there are at least two elements pointing to it, making it the entrance of a cycle.
+
+![](6-1.svg)
+
+However, the problem is not *Is there a cycle?* but *Where is the cycle?*. In other words, we need to find the entrance to the cycle. This bears similarity to [Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/description/). The solution is to use fast and slow pointers as before, with some insights from math to find the entrance.
+
+![](6-2.svg)
+
+We define the following variables (see diagram above):
+- $F$: the distance from the start of the array to the entrance of the cycle
+- $a$: the distance from the entrance of the cycle to the meeting point of the fast and slow pointers
+- $C$: the length of the cycle
+
+At the intersection point i.e., where two pointers meet, we have the following equations:
+$$2 \times \text{distance slow pointer moves} = \text{distance fast pointer moves}$$
+
+Which is equivalent to:
+$$
+2(F + a) = F + a + nC, \text{for some n} \in \mathbb{N}
+$$
+This gives us an interesting equation:
+$$
+F = (n-1)C + (C - a)
+$$
+In plain English, this means that if the two pointers both start at first element, the distance from the intersection point found to the cycle entrance is equal to the distance from that first element to the cycle entrance. This means that if we move one pointer back to the first element and move both pointers one step at a time, they will meet at the cycle entrance.
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+1. Set the fast and slow pointers to the first element of the array.
+2. Move the fast pointer two steps and the slow pointer one step at a time, until they meet.
+3. Set the slow pointer to the first element of the array.
+4. Move both pointers one step at a time, until they meet.
+5. Return the meeting point.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: We need to traverse the array a number of time.
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$: We only need to store pointers.
+
+#### Code
+```python
+class Solution:
+    def findDuplicate(self, nums: List[int]) -> int:
+        # Phase 1: Intersection point
+        fast = slow = nums[0]
+        while True:
+            fast = nums[nums[fast]]
+            slow = nums[slow]
+            if fast == slow:
+                break
+        
+        # Phase 2: Find the cycle entrance
+        slow = nums[0]
+        while slow != fast:
+            fast = nums[fast]
+            slow = nums[slow]
+        
+        return slow
 ```

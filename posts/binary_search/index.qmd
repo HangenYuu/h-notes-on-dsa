@@ -23,7 +23,7 @@ In a sorted array, there exists a faster way to search for a specific element th
 <!-- Describe your first thoughts on how to solve this problem. -->
 The **basic problem** of binary search. It basically asks you to implement it.
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
 1. Initialize two pointers - `start` and `end`.
 2. Traverse the array from both ends.
@@ -72,7 +72,7 @@ class Solution:
 <!-- Describe your first thoughts on how to solve this problem. -->
 For any call `isBadVersion(version)`, if the version is good, it means that the first bad version *will be* a later version; if the version is bad, it means that the first bad version *might be* an older version. And given the version comes in non-decreasing order, that sounds exactly like a binary search problem. Notice the italic *will be* and *might be* - it will affect the way we implement the algorithm.
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
 1. Initialize two pointers - `first` and `last` or whatever to the first and the last version, denoted by numbers.
 2. The terminating condition for this specific implementation is `first == last`, so the loop condition is `while first < last`.
@@ -115,7 +115,7 @@ The first binary search is for the row `target` is in. The condition to satisfy 
 
 The next binary search within the row is trivial.
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
 1. Initialize pointers. We need to store the index of the row so initialize an extra one.
 2. Perform binary search based on conditions above to find the row.
@@ -169,7 +169,7 @@ class Solution:
 <!-- Describe your first thoughts on how to solve this problem. -->
 The problem is discovering what we are supposed to perform binary search on. For this purpose, we need to lean on the brute-force method. So the brute-force method is iterating all possible values of `k` from 1 to `max(piles`. The rest is realizing that this is a sorted array, hence we can perform binary search on that.
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
 1. Initialize pointers and a variable to store the result e.g., `res`.
 2. Iterate the array from 1 to `max(piles)` for `k`.
@@ -219,7 +219,7 @@ The result median is the element that has roughly $(m+n)//2$ elements to both si
 
 The good thing is the safeguard that NeetCode came up with. The index chosen can be out of bound. For such case, we can set the variable to be $-\infty$ for the left variable or $\infty$ for the right variable, as we only need to care for the right minimum and left maximum.
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
 1. Initialize variables - the arrays, total length, half point.
 2. Perform binary search on one array by selecting the left half-array every time (all elements up to index `(start+end)//2`) and take the rest from the other array. Pick out the last left element and the first right element.
@@ -264,4 +264,45 @@ class Solution:
                 r = i - 1
             else:
                 l = i + 1
+```
+
+### 6. Find the Duplicate Number
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+This can be solved with fast and slow pointers. However, there exists an interesting binary search solution. It has a worse time complexity, but it is interesting to see how the problem can be framed as a binary search problem.
+
+In an array with $n+1$ elements from $1$ to $n$, the number of elements smaller or equal than $k$ is $k$. However, if there is a duplicate, say $n$, the number of elements smaller or equal than $k$ is greater than $k$,  for all elements greater than or equal to $n$. We can use this property to perform binary search on the range $[1, n]$, searching for the first element with the number of elements smaller or equal to it greater than itself.
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+1. Initialize the left and right pointers.
+2. Perform binary search on the range $[1, n]$. At each iteration, calculate the number of elements smaller or equal to the middle element. If the number is greater than the middle element, we know the duplicate is in the left half. Else, we know the duplicate is in the right half.
+3. Return the left pointer.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n \log n)$: At each iteration of the binary search, we need to iterate through the array to calculate the number of elements smaller or equal to the middle element.
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$: We only need to store pointers.
+
+#### Code
+
+Update: The solution cannot pass the time limit check on LeetCode. The solution is correct, but it is not efficient enough.
+```python
+class Solution:
+    def findDuplicate(self, nums: List[int]) -> int:
+        left, right = 1, len(nums)-1
+        while left <= right:
+            mid = (left+right)//2
+            less = sum(1 for num in nums if num <= mid)
+
+            if less > mid:
+                right -= 1
+            else:
+                left += 1
+        
+        return left
 ```

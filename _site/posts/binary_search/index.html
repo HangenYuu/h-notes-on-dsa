@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Pham Nguyen Hung">
-<meta name="dcterms.date" content="2023-05-17">
+<meta name="dcterms.date" content="2023-05-22">
 <meta name="description" content="Binary search">
 
 <title>H’s notes on Data Structuress and Algorithms - Binary search</title>
@@ -166,7 +166,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">May 17, 2023</p>
+        <p class="date">May 22, 2023</p>
       </div>
     </div>
     
@@ -192,6 +192,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#search-a-2d-matrix" id="toc-search-a-2d-matrix" class="nav-link" data-scroll-target="#search-a-2d-matrix">3. Search a 2D Matrix</a></li>
   <li><a href="#koko-eating-bananas" id="toc-koko-eating-bananas" class="nav-link" data-scroll-target="#koko-eating-bananas">4. Koko Eating Bananas</a></li>
   <li><a href="#median-of-two-sorted-arrays" id="toc-median-of-two-sorted-arrays" class="nav-link" data-scroll-target="#median-of-two-sorted-arrays">5. Median of Two Sorted Arrays</a></li>
+  <li><a href="#find-the-duplicate-number" id="toc-find-the-duplicate-number" class="nav-link" data-scroll-target="#find-the-duplicate-number">6. Find the Duplicate Number</a></li>
   </ul></li>
   </ul></li>
   </ul>
@@ -219,8 +220,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- Describe your first thoughts on how to solve this problem. -->
 <p>The <strong>basic problem</strong> of binary search. It basically asks you to implement it.</p>
 </section>
-<section id="approach" class="level4">
-<h4 class="anchored" data-anchor-id="approach">Approach</h4>
+<section id="algorithm" class="level4">
+<h4 class="anchored" data-anchor-id="algorithm">Algorithm</h4>
 <!-- Describe your approach to solving the problem. -->
 <ol type="1">
 <li>Initialize two pointers - <code>start</code> and <code>end</code>.</li>
@@ -270,8 +271,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- Describe your first thoughts on how to solve this problem. -->
 <p>For any call <code>isBadVersion(version)</code>, if the version is good, it means that the first bad version <em>will be</em> a later version; if the version is bad, it means that the first bad version <em>might be</em> an older version. And given the version comes in non-decreasing order, that sounds exactly like a binary search problem. Notice the italic <em>will be</em> and <em>might be</em> - it will affect the way we implement the algorithm.</p>
 </section>
-<section id="approach-1" class="level4">
-<h4 class="anchored" data-anchor-id="approach-1">Approach</h4>
+<section id="algorithm-1" class="level4">
+<h4 class="anchored" data-anchor-id="algorithm-1">Algorithm</h4>
 <!-- Describe your approach to solving the problem. -->
 <ol type="1">
 <li>Initialize two pointers - <code>first</code> and <code>last</code> or whatever to the first and the last version, denoted by numbers.</li>
@@ -313,8 +314,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The first binary search is for the row <code>target</code> is in. The condition to satisfy is <code>start</code> &lt; <code>target</code> &lt; <code>end</code>. We can move <code>start</code> and <code>end</code> if the end of the row is smaller than <code>target</code> and the start of the row is larger than <code>target</code>, respectively.</p>
 <p>The next binary search within the row is trivial.</p>
 </section>
-<section id="approach-2" class="level4">
-<h4 class="anchored" data-anchor-id="approach-2">Approach</h4>
+<section id="algorithm-2" class="level4">
+<h4 class="anchored" data-anchor-id="algorithm-2">Algorithm</h4>
 <!-- Describe your approach to solving the problem. -->
 <ol type="1">
 <li>Initialize pointers. We need to store the index of the row so initialize an extra one.</li>
@@ -369,8 +370,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- Describe your first thoughts on how to solve this problem. -->
 <p>The problem is discovering what we are supposed to perform binary search on. For this purpose, we need to lean on the brute-force method. So the brute-force method is iterating all possible values of <code>k</code> from 1 to <code>max(piles</code>. The rest is realizing that this is a sorted array, hence we can perform binary search on that.</p>
 </section>
-<section id="approach-3" class="level4">
-<h4 class="anchored" data-anchor-id="approach-3">Approach</h4>
+<section id="algorithm-3" class="level4">
+<h4 class="anchored" data-anchor-id="algorithm-3">Algorithm</h4>
 <!-- Describe your approach to solving the problem. -->
 <ol type="1">
 <li>Initialize pointers and a variable to store the result e.g., <code>res</code>.</li>
@@ -420,8 +421,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The result median is the element that has roughly <span class="math inline">\((m+n)//2\)</span> elements to both sides. We can get to this element by partitioning a certain number of elements from each array that sums up to <span class="math inline">\((m+n)//2\)</span>. The median can then be selected or calculated from the last element in the left subarray and the first element in the right subarray of each array.</p>
 <p>The good thing is the safeguard that NeetCode came up with. The index chosen can be out of bound. For such case, we can set the variable to be <span class="math inline">\(-\infty\)</span> for the left variable or <span class="math inline">\(\infty\)</span> for the right variable, as we only need to care for the right minimum and left maximum.</p>
 </section>
-<section id="approach-4" class="level4">
-<h4 class="anchored" data-anchor-id="approach-4">Approach</h4>
+<section id="algorithm-4" class="level4">
+<h4 class="anchored" data-anchor-id="algorithm-4">Algorithm</h4>
 <!-- Describe your approach to solving the problem. -->
 <ol type="1">
 <li>Initialize variables - the arrays, total length, half point.</li>
@@ -466,6 +467,48 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>                r <span class="op">=</span> i <span class="op">-</span> <span class="dv">1</span></span>
 <span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>:</span>
 <span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>                l <span class="op">=</span> i <span class="op">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="find-the-duplicate-number" class="level3">
+<h3 class="anchored" data-anchor-id="find-the-duplicate-number">6. Find the Duplicate Number</h3>
+<section id="intuition-5" class="level4">
+<h4 class="anchored" data-anchor-id="intuition-5">Intuition</h4>
+<!-- Describe your first thoughts on how to solve this problem. -->
+<p>This can be solved with fast and slow pointers. However, there exists an interesting binary search solution. It has a worse time complexity, but it is interesting to see how the problem can be framed as a binary search problem.</p>
+<p>In an array with <span class="math inline">\(n+1\)</span> elements from <span class="math inline">\(1\)</span> to <span class="math inline">\(n\)</span>, the number of elements smaller or equal than <span class="math inline">\(k\)</span> is <span class="math inline">\(k\)</span>. However, if there is a duplicate, say <span class="math inline">\(n\)</span>, the number of elements smaller or equal than <span class="math inline">\(k\)</span> is greater than <span class="math inline">\(k\)</span>, for all elements greater than or equal to <span class="math inline">\(n\)</span>. We can use this property to perform binary search on the range <span class="math inline">\([1, n]\)</span>, searching for the first element with the number of elements smaller or equal to it greater than itself.</p>
+</section>
+<section id="algorithm-5" class="level4">
+<h4 class="anchored" data-anchor-id="algorithm-5">Algorithm</h4>
+<!-- Describe your approach to solving the problem. -->
+<ol type="1">
+<li>Initialize the left and right pointers.</li>
+<li>Perform binary search on the range <span class="math inline">\([1, n]\)</span>. At each iteration, calculate the number of elements smaller or equal to the middle element. If the number is greater than the middle element, we know the duplicate is in the left half. Else, we know the duplicate is in the right half.</li>
+<li>Return the left pointer.</li>
+</ol>
+</section>
+<section id="complexity-5" class="level4">
+<h4 class="anchored" data-anchor-id="complexity-5">Complexity</h4>
+<ul>
+<li>Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(n \log n)\)</span>: At each iteration of the binary search, we need to iterate through the array to calculate the number of elements smaller or equal to the middle element.</li>
+<li>Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> <span class="math inline">\(O(1)\)</span>: We only need to store pointers.</li>
+</ul>
+</section>
+<section id="code-5" class="level4">
+<h4 class="anchored" data-anchor-id="code-5">Code</h4>
+<p>Update: The solution cannot pass the time limit check on LeetCode. The solution is correct, but it is not efficient enough.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Solution:</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> findDuplicate(<span class="va">self</span>, nums: List[<span class="bu">int</span>]) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>        left, right <span class="op">=</span> <span class="dv">1</span>, <span class="bu">len</span>(nums)<span class="op">-</span><span class="dv">1</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> left <span class="op">&lt;=</span> right:</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>            mid <span class="op">=</span> (left<span class="op">+</span>right)<span class="op">//</span><span class="dv">2</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>            less <span class="op">=</span> <span class="bu">sum</span>(<span class="dv">1</span> <span class="cf">for</span> num <span class="kw">in</span> nums <span class="cf">if</span> num <span class="op">&lt;=</span> mid)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> less <span class="op">&gt;</span> mid:</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>                right <span class="op">-=</span> <span class="dv">1</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>:</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>                left <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> left</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>

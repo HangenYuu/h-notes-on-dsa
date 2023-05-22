@@ -2,46 +2,38 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://h-notes-on-dsa.netlify.app/about.html</loc>
-    <lastmod>2023-05-21T10:05:00.580Z</lastmod>
+    <lastmod>2023-05-22T03:22:05.039Z</lastmod>
   </url>
   <url>
     <loc>https://h-notes-on-dsa.netlify.app/index.html</loc>
-    <lastmod>2023-05-21T10:05:02.041Z</lastmod>
+    <lastmod>2023-05-22T03:22:09.512Z</lastmod>
   </url>
   <url>
     <loc>https://h-notes-on-dsa.netlify.app/posts/array/index.html</loc>
-    <lastmod>2023-05-21T10:05:03.164Z</lastmod>
+    <lastmod>2023-05-22T03:22:10.909Z</lastmod>
   </url>
   <url>
     <loc>https://h-notes-on-dsa.netlify.app/posts/binary_search/index.html</loc>
-    <lastmod>2023-05-21T10:05:04.031Z</lastmod>
+    <lastmod>2023-05-22T03:22:12.109Z</lastmod>
   </url>
   <url>
     <loc>https://h-notes-on-dsa.netlify.app/posts/fast_and_slow_pointers/index.html</loc>
-    <lastmod>2023-05-21T10:05:04.916Z</lastmod>
-  </url>
-  <url>
-    <loc>https://h-notes-on-dsa.netlify.app/posts/graph/index.html</loc>
-    <lastmod>2023-05-21T10:05:11.400Z</lastmod>
+    <lastmod>2023-05-22T03:22:13.622Z</lastmod>
   </url>
   <url>
     <loc>https://h-notes-on-dsa.netlify.app/posts/linked_list/index.html</loc>
-    <lastmod>2023-05-21T10:05:12.285Z</lastmod>
+    <lastmod>2023-05-22T03:22:18.177Z</lastmod>
   </url>
   <url>
     <loc>https://h-notes-on-dsa.netlify.app/posts/sliding_window/index.html</loc>
-    <lastmod>2023-05-21T10:05:13.033Z</lastmod>
+    <lastmod>2023-05-22T03:22:19.284Z</lastmod>
   </url>
   <url>
     <loc>https://h-notes-on-dsa.netlify.app/posts/stack/index.html</loc>
-    <lastmod>2023-05-21T10:05:13.923Z</lastmod>
-  </url>
-  <url>
-    <loc>https://h-notes-on-dsa.netlify.app/posts/tree/index.html</loc>
-    <lastmod>2023-05-21T10:05:15.121Z</lastmod>
+    <lastmod>2023-05-22T03:22:20.686Z</lastmod>
   </url>
   <url>
     <loc>https://h-notes-on-dsa.netlify.app/posts/two_pointers/index.html</loc>
-    <lastmod>2023-05-21T10:05:16.146Z</lastmod>
+    <lastmod>2023-05-22T03:22:24.166Z</lastmod>
   </url>
 </urlset>
