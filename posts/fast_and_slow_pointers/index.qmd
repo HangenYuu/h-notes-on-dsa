@@ -351,3 +351,70 @@ class Solution:
         
         return slow
 ```
+
+### 7. Palindrome Linked List
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+Obviously, the first way is to copy the linked list over to an array, and then use two pointers to check for palindrome. However, to satisfy the $O(1)$ space complexity, we need to check for palindrome in place. The intuition is if a linked list is a palindrome, the second half reversed will be the same as the first half. We can use two pointers to find the middle of the linked list, and then reverse the second half. Finally, we can compare the first half and the second half to check for palindrome. Of course, this will modify the linked list in place, so we need to restore the second half if the linked list is involved in another problem. 
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+1. Use two pointers to find the middle of the linked list.
+2. Reverse the second half of the linked list.
+3. Compare the first half and the second half to check for palindrome.
+4. Reverse the second half again to restore the linked list.
+5. Return the result.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: We need to traverse the linked list a number of time.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$: We only need to store pointers.
+
+#### Code
+```python
+from typing import Optional
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def isPalindrome(self, head: Optional[ListNode]) -> bool:
+        if not head.next:
+            return True
+        # Iterate the linked list to find the middle
+        # This part can be turned into a separate method
+        slow, fast = head, head
+        while fast.next and fast.next.next:
+            slow = slow.next
+            fast = fast.next.next
+
+        # Reverse the second half
+        second_half_head = self._reverseLinkedList(slow.next)
+        first_half_current, second_half_current = head, second_half_head
+
+        # Compare the first half and the second half
+        while second_half_current:
+            if second_half_current.val != first_half_current.val:
+                return False
+            second_half_current, first_half_current = second_half_current.next, first_half_current.next
+        
+        # Restore the linked list
+        slow.next = self._reverseLinkedList(second_half_head)
+        return True
+
+    def _reverseLinkedList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        pre, cur, nxt = None, head, head.next
+        while nxt:
+            cur.next = pre
+            pre = cur
+            cur = nxt
+            nxt = nxt.next
+        cur.next = pre
+        return cur
+```

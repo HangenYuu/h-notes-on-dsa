@@ -1,6 +1,9 @@
 project:
   type: website
 
+execute:
+  freeze: auto
+
 website:
   title: "H's notes on Data Structuress and Algorithms"
   navbar:
