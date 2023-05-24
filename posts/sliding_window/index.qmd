@@ -133,7 +133,7 @@ class Solution:
                 store.add(segment)
         return list(result)
 ```
-Rolling hashes
+Rolling hashes version:
 ```python
 from typing import List
 
@@ -161,4 +161,89 @@ class Solution:
                 result.add(s[start:start + window_size])
             store.add(hashing)
         return result
+```
+
+### 4. Sliding Window Maximum
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+The problem is explicitly sliding window. The brute-force solution is calculating the maximum of each window. This takes $O(nk)$ time, where $n$ is the length of the array and $k$ is the size of the window. We can do better by using a data structure that can keep track of the maximum of each window in $O(1)$ time. This data structure is called *deque* (double-ended queue). We can use a deque to store the indices of the elements in the window in the descending order. At each step, we check if the first element of the deque is still in the window. If it is not, we remove it. Then we check if the current element is larger than the last element of the deque. If it is, we remove the last element of the deque. Then we append the current element to the deque. The first element of the deque is the index of the maximum element in the window. We append it to the result array.
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+1. Initialize a deque and a result array.
+2. Traverse the array. At each step:
+    1. Check if the first element of the deque is still in the window. If it is not, remove it.
+    2. Check if the current element is larger than the last element of the deque. If it is, remove the last element of the deque.
+    3. Append the current element to the deque.
+    4. Append the first element of the deque to the result array.
+ 3. Return the result array.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: There are 4 cases for the input array:
+1. The array is strictly increasing: At the first step, we will pop from the initialized deque $k$ times before appending. In subsequent steps, we will pop once and append once. This takes $O(n)$ time in total.
+2. The array is monotonically decreasing: At each step, we will need to pop once and append once. This takes $O(n)$ time in total.
+3. The array is mixed: Intuitively, we can think that since the two cases above the runtime is $O(n)$, the runtime for this mixed case is also $O(n)$. However, we did not factor in the cost of switching. The worst case is the next value increases after a monotonically decreasing window, or decreases after a strictly increasing window. In either case, we will need to pop $k$ times before appending, plus filling up the queue $k$ times before. This can happen at most $\frac{n}{k}$ times, leading to a runtime of $O((k+k)\frac{n}{k})$ or $O(n)$.
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(k)$: We are storing the indices of the elements in the window in the deque.
+
+#### Code
+```python
+from collections import deque
+
+class Solution:
+    def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+        if len(nums) == k:
+            return [max(nums)]
+
+        window = deque()
+        result = []
+        
+        for i in range(k):
+            self._clean(i, window, nums)
+            window.append(i)
+        result.append(nums[window[0]])
+
+        for i in range(k, len(nums)):
+            self._clean(i, window, nums)
+            if window and window[0] <= (i-k):
+                window.popleft()
+            window.append(i)
+            result.append(nums[window[0]])
+        
+        return result
+    def _clean(self, i, window, nums):
+        while window and nums[i] >= nums[window[-1]]:
+            window.pop()
+```
+NeetCode version: He used two explicit pointers to iterate the array. The runtime is the same.
+```python
+# Quoted verbatim from NeetCode
+from collections import deque
+
+class Solution:
+    def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+        output = []
+        q = collections.deque()  # index
+        l = r = 0
+        # O(n) O(n)
+        while r < len(nums):
+            # pop smaller values from q
+            while q and nums[q[-1]] < nums[r]:
+                q.pop()
+            q.append(r)
+
+            # remove left val from window
+            if l > q[0]:
+                q.popleft()
+
+            if (r + 1) >= k:
+                output.append(nums[q[0]])
+                l += 1
+            r += 1
+
+        return output
 ```
