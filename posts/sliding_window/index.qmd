@@ -92,3 +92,73 @@ class Solution:
                 maxSum = curSum
         return maxSum
 ```
+
+### 3. Repeated DNA Sequences
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+The problem requires us to check for repeated 10-character substrings in a string. An immediate solution is checking every pair of substrings and append the repeated ones to a list and return. It takes $O(n^2)$ time in this case (whether we check every pair, or discard the previous pairs of substrings that we have checked).
+
+To do better, we ca think of *hashing*, which was invented to reduce search time from $O(n)$ to $O(1)$. We can hash every substring of length 10, and store them in a hash map. We return every substrings that that appear more than 1. This way, we can reduce the time complexity to $O(n)$. We can optimize this further by dropping the hash map and use one hash set to store the substrings and one hash set to store the repeated values.
+
+In this case, we use Python built-in data structure. We can implement the hashing function ourselves. The most suitable one for this problem is the polynomial rolling hash algorithm. You can read more about it [here](https://cp-algorithms.com/string/string-hashing.html).
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+1. Initialize two hash sets: one to store the substrings, one to store the repeated substrings.
+2. Traverse the string, and at each index, check if the substring of length 10 starting from that index is in the hash set of substrings. If it is, add it to the hash set of repeated substrings. If it is not, add it to the hash set of substrings.
+3. Return the list of repeated substrings.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: We are traversing the string once.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$: We are storing the substrings in the hash set.
+
+#### Code
+```python
+class Solution:
+    def findRepeatedDnaSequences(self, s: str) -> List[str]:
+        store, result = set(), set()
+        for i in range(len(s)-9):
+
+            segment = s[i:i+10]
+
+            if segment in store:
+                result.add(segment)
+            else:
+                store.add(segment)
+        return list(result)
+```
+Rolling hashes
+```python
+from typing import List
+
+class Solution:
+    def findRepeatedDnaSequences(self, s: str) -> List[str]:
+        # Initialize variables
+        base = 4
+        window_size = 10
+        mapping = {'A': 1, 'C': 2, 'G': 3, 'T': 4}
+        highest_value = pow(base, window_size-1)
+        store, result = set(), set()
+        hashing = 0
+
+        # Convert the string into an array of number:
+        numbers = [mapping[nuc] for nuc in s]
+        
+        for start in range(len(s) - window_size + 1):
+            if start != 0:
+                hashing = (hashing - numbers[start - 1] * highest_value) * base \
+                    + numbers[start + window_size - 1]
+            else:
+                for end in range(window_size):
+                    hashing = hashing * base + numbers[end]
+            if hashing in store:
+                result.add(s[start:start + window_size])
+            store.add(hashing)
+        return result
+```
