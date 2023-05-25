@@ -304,17 +304,27 @@ class Solution:
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
-There are questions meant to be solved in an order. This is one of them.
+There are questions meant to be solved in an order. This is one of them. The problem resembles the one above. The idea is the same: slide a window until the second string is contained inside that window, and then iterate backward to find the minimum subarray. Here, the condition is all characters present and unordered, so a dictionary or (`collections.Counter`) is perfect.
+
+However, it is inefficient to check the two dictionaries for every increment. Instead, it is better if we check just the character we make change, and have another variable storing the number of chracters with requirement met in the window.
+
+We can optimize a bit with the filtering trick from LeetCode where we filter `s` for relevant characters only.
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
+1. Initialize: a character count dictionary for `t`, a filtered list of `s`, two pointers, a character count dictionary for a window, two variables to check for satisfaction between the window and string `t`, and a tuple to store the return variable
+2. Iterate the filter list by incrementing the right pointer. At each character, we update the window dictionary accordingly.
+3. Once condition is met, we repeatedly update answer and shrink the window until condition is no longer met.
+4. Return the answer.
 
 #### Complexity
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(m+n)$: For $m$ and $n$ the length of each string.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$: Both dictionaries store the character count in string `t`.
 
 #### Code
 ```python
