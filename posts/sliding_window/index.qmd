@@ -247,3 +247,113 @@ class Solution:
 
         return output
 ```
+
+### 5. Minimum Window Subsequence
+
+#### Intuition
+The problem asked us to find the shortest or earliest-occurred *substring* of a longer string `s` where a shorter string `t` appears as a *subsequence* (substring is contiguous, subsequence does not have to). The idea is we iterate `s` until we find the last character of `t` as the right pane. Here, we go back and iterate in reverse the window slide and t to find the real left pane. If the length of this substring is smaller than the current minimum substring, we update it.
+
+#### Algorithm
+
+1. Initialize: one pointer for each string, one variable to keep track of the minimum length, one variable to keep track of the subsequence
+2. Iterate string `s` until we find the last character of string `t`. Upon finding, we iterate backward string `s` and compare until we find the first character of string `t`. This is a subsequence.
+3. We check for the length of the current subsequent and update if necessary (because we iterate from left to right, we do not need to care about the earliest-occurred condition).
+4. At the end, return the minimum subsequence
+ 
+#### Complexity
+
+- Time complexity: $O(n \times m)$: With `n` and `m` the length of each string. This is due to the nested loop.
+- Space complexity: $O(1)$: We only need to store pointers.
+
+#### Code
+
+Lintcode version - because LeetCode's is premium
+```python
+class Solution:
+    """
+    @param s: a string
+    @param t: a string
+    @return: the minimum substring of S
+    """
+    def min_window(self, s: str, t: str) -> str:
+        # Write your code here
+        minimum_subsequence = ''
+        min_sub_len = float('inf')
+        index_s = index_t = 0
+        while index_s < len(s):
+            if s[index_s] == t[index_t]:
+                index_t += 1
+                if index_t == len(t):
+                    start = end = index_s
+                    index_t -= 1
+                    while index_t >= 0:
+                        if s[start] == t[index_t]:
+                            index_t -= 1
+                        start -= 1
+                    start += 1
+                    if end - start < min_sub_len:
+                        min_sub_len = end - start
+                        minimum_subsequence = s[start:end + 1]
+                    index_s = start
+                    index_t = 0
+            index_s += 1
+        return minimum_subsequence
+```
+
+### 6. Minimum Window Substring
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+There are questions meant to be solved in an order. This is one of them.
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+
+#### Code
+```python
+from collections import Counter
+
+class Solution:
+    def minWindow(self, s: str, t: str) -> str:
+        if len(t) > len(s):
+            return ''
+        
+        t_count = Counter(t)
+        required = len(t_count)
+        filtered_s = [(index, char) for index, char in enumerate(s) if char in t_count]
+
+        window_count = {}
+        formed = 0
+        left = right = 0
+        ans = float('inf'), None, None
+
+        while right < len(filtered_s):
+            char = filtered_s[right][1]
+            window_count[char] = window_count.get(char, 0) + 1
+
+            if window_count[char] == t_count[char]:
+                formed += 1
+
+            while left <= right and formed == required:
+                char = filtered_s[left][1]
+
+                end = filtered_s[right][0]
+                start = filtered_s[left][0]
+                if end - start + 1 < ans[0]:
+                    ans = (end - start + 1, start, end)
+                
+                window_count[char] -= 1
+                if window_count[char] < t_count[char]:
+                    formed -= 1
+                left += 1
+            
+            right += 1
+        return '' if ans[0] == float('inf') else s[ans[1]: ans[2] + 1]
+```
