@@ -367,3 +367,46 @@ class Solution:
             right += 1
         return '' if ans[0] == float('inf') else s[ans[1]: ans[2] + 1]
 ```
+
+### 7. Longest Substring Without Repeating Characters
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+"Repeating" suggests that this problem has something to do with Hash Map/Hash Table. Couple that with sliding window, we can think of sliding the pointers from left to right, storing the characters found into a Hash Table. When a repeated character is found at the right pointer, shift the left pointer to right until past the repeated character, discarding elements from the Hash Table in the process.
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+1. Initialize two pointers, character Hash Table, and `longest` variable.
+2. Iterate the array with the right pointer, adding character to the Hash Table if it is not inside. Upon encountering a repeated character, update `longest` and shift the left pointer while discarding elements from the Hash Table.
+3. Update `longest` and return.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: Exactly is $O(2n)$, as each pointer iterates the string at most once.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(\min)$: 
+#### Code
+```python
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        if len(s) < 2:
+            return len(s)
+        longest = 0
+        char_set = set()
+        left = 0
+        for right in range(len(s)):
+            if s[right] not in char_set:
+                char_set.add(s[right])
+            else:
+                longest = max(longest, right - left)
+                while s[left] != s[right]:
+                    char_set.discard(s[left])
+                    left += 1
+                left += 1
+        
+        return max(longest, right - left)
+
+```
