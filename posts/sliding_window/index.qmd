@@ -429,3 +429,61 @@ class Solution:
 
         return ans
 ```
+
+### 8. Minimum Size Subarray Sum
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+Another sliding window problem. We can slide the window (iterate the array) and calculate the its sum `total` until `total >= target` and then record the length if it is the smallest so far. We can then slide the window forward, and repeat the steps.
+
+There are two ways to slide the window. We need one pointer to increment with the array, while the other being pushed or dragged along. Both implementations are below, but they are fundamentally the same.
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+1. Initialize two pointers, a variable to store window sum, a variable to store the minimum length.
+2. Iterate the array. At each step, extend the window if necessary. If `total >= target`, update the minimum if necessary. Subtract the element from the intermediate sum as we slide the window.
+3. Return answer accordingly.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: Each pointer iterates the array at most once.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$: We only store 3 numbers.
+
+#### Code
+```python
+class Solution:
+    def minSubArrayLen(self, target: int, nums: List[int]) -> int:
+        total = right = 0
+        ans = float('inf')
+        for left in range(len(nums)):
+            while right < len(nums) and total < target:
+                total += nums[right]
+                right += 1
+            if total < target:
+                break
+            ans = min(ans, right - left)
+            total -= nums[left]
+        return ans if ans != float('inf') else 0
+```
+LeetCode:
+```python
+class Solution:
+    def minSubArrayLen(self, target: int, nums: List[int]) -> int:
+        left = 0
+        sumOfCurrentWindow = 0
+        res = float('inf')
+
+        for right in range(0, len(nums)):
+            sumOfCurrentWindow += nums[right]
+
+            while sumOfCurrentWindow >= target:
+                res = min(res, right - left + 1)
+                sumOfCurrentWindow -= nums[left]
+                left += 1
+
+        return res if res != float('inf') else 0
+```
