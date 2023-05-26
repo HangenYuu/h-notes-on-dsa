@@ -383,11 +383,12 @@ class Solution:
 #### Complexity
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
-$O(n)$: Exactly is $O(2n)$, as each pointer iterates the string at most once.
+$O(n)$: Exactly is $O(2n)$, as each pointer iterates the string at most once. LeetCode suggests a better runtime solution with Hash Map, which helps by being able to shift the left pointer all the way to the right. The key is storing the the index of the next element for every value as the key.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
-$O(\min)$: 
+$O(\min (m,n))$: For $m$ the length of the alphabet and $n$ the length of the string. This determines the size of the Hash Table.
+
 #### Code
 ```python
 class Solution:
@@ -408,5 +409,23 @@ class Solution:
                 left += 1
         
         return max(longest, right - left)
+```
+LeetCode:
+```python
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        longest = 0
+        # mp stores the current index of a character
+        mp = {}
 
+        i = 0
+        # try to extend the range [i, j]
+        for j in range(len(s)):
+            if s[j] in mp:
+                i = max(mp[s[j]], i)
+
+            ans = max(ans, j - i + 1)
+            mp[s[j]] = j + 1
+
+        return ans
 ```
