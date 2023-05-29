@@ -7,8 +7,56 @@ date-format: long
 draft: false
 toc: true
 ---
-Merge intervals is applicable to problems that entail overlapping intervals. Each interval is represented by a start and an end time. This typically involves a scheduling problem. The best way to think about this is noticing the 3 ways 2 intervals can interact:
+# Merge Intervals
+
+## Definition
+
+Merge intervals is applicable to problems that entail overlapping intervals. Each interval is represented by a start and an end time. This typically involves a scheduling problem. The best way to think about this is noticing the 3 ways 2 intervals can interact.
 
 ![](interval 1.png)
 
-Some sorting is also usually required to reduce the number of comparisons to make.
+To reduce the number of comparisons to make, the list of intervals is usually required to be sorted. Afterwards, it is about iterating the list and compare the elements.
+
+The pattern is usually tested by companies with system scheduling problems, such as TikTok/ByteDance. 
+
+## Problems
+
+### 1. Merge Intervals
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+As mentioned, first, we need to sort the array. But how exactly should we sort it? The hint for me are the examples - the array there is sorted based on the start time. The problem then is about *updating the end of each interval*. If the interval with a smaller start time is 1 and the next one is 2, append 2 as is to the return array first if they are non-overlapping. If 1 envelops 2, do nothing. If 2 ends later than 1, update the entry in the return array.
+
+The question comes to "Can I think of such a thing on my own from first principles in an interview?" I think that I can, but it may take some time. I don't think that I will encounter this problem in an interview though - if anything, it will be Merge Intervals II or Meeting Room II at least.
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+1. Sort the input array `intervals`.
+2. Initialize the return array `sorted_intervals` with the first element of the sorted input array.
+3. Iterate the rest of the input array, updating or appending to the return array each time.
+4. Return the result.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n\log n)$: The usual time required for sorting.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$: Python `.sort()` uses Timsort, which uses between n//2 to no extra memory (on top of the heap, which is related to heapsort, and is another matter).
+
+> timsort can require a temp array containing as many as N//2 pointers, which means as many as 2*N extra bytes on 32-bit boxes.  It can be expected to require a temp array this large when sorting random data; on data with significant structure, it may get away without using any extra heap memory.
+
+#### Code
+```python
+class Solution:
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+        intervals.sort(key=lambda x:x[0]) # Not really necessary
+        sorted_intervals = [intervals[0]]
+        for interval in intervals[1:]:
+            if interval[0] > sorted_intervals[-1][1]:
+                sorted_intervals.append(interval)
+            else:
+                sorted_intervals[-1][1] = max(interval[1], sorted_intervals[-1][1])
+        return sorted_intervals
+```
