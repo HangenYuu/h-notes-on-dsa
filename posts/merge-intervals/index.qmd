@@ -1,0 +1,14 @@
+---
+title: "Merge Intervals"
+description: ""
+author: "Pham Nguyen Hung"
+date: last-modified
+date-format: long
+draft: false
+toc: true
+---
+Merge intervals is applicable to problems that entail overlapping intervals. Each interval is represented by a start and an end time. This typically involves a scheduling problem. The best way to think about this is noticing the 3 ways 2 intervals can interact:
+
+![](interval 1.png)
+
+Some sorting is also usually required to reduce the number of comparisons to make.
