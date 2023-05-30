@@ -65,16 +65,24 @@ class Solution:
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
-I got overwhelmed at first. In such a case, it is important to relax and deconstruct. Firstly, . For any interval in the input array `intervals`, the new interval can come before it, can come after it, or overlaps with it. 
-#### Approach
+I got overwhelmed at first. In such a case, it is important to relax and deconstruct. Firstly, modifying the array in place is hard - it may be better to just create a new output array. Next, for any interval in the input array `intervals`, the new interval can come before it, can come after it, or overlaps with it. The first two cases are trivial, while the third case requires modification. I was just thinking about modifying the output array, *while I can modify the new interval instead.*
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
+1. Initialize the output array `answer`.
+2. Iterate the input array `intervals`. For three cases:
+   1. If the new interval comes after the current one, append it to `answer` and return.
+   2. If the new interval comes before the current one, append the current one to `answer`.
+   3. Else, update new interval with the earlier start time and the later end time between the new interval and the current one.
+3. Append the new interval into the output array and return.
 
 #### Complexity
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: We need to iterate the input array once.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$: We need to store the output array. If it is not counted as part of the extra memory used, it is $O(1)$.
 
 #### Code
 ```python
@@ -95,4 +103,58 @@ class Solution:
         
         answer.append(newInterval)
         return answer
+```
+
+### 3. Meeting Rooms
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+Welcome to the Meeting Room series! This is a big series much tested by TikTok in merge intervals. The requirement is completing at least Meeting Rooms II. For this series, I use a different platform called [LintCode](https://www.lintcode.com/). It allows access to premium questions for free under certain circumstances.
+
+For the problem, it is straightforward. The person cannot attend the meetings if the end time of one is after the start time of another. Hence, if we sort the input array according to the start time, we can iterate and compare two adjacent arrays. If we encounter an overlapping pair, we return `False`. If we reach the end, we return `True`. 
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+1. Iterate the input array `intervals`, one adjacent pair at a time.
+2. If we encounter an overlapping, return `False`.
+3. If we reach the end, return `True`.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: We need to iterate the input array once.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$: We do not use any extra memory.
+
+#### Code
+```python
+from typing import (
+    List,
+)
+from lintcode import (
+    Interval,
+)
+
+"""
+Definition of Interval:
+class Interval(object):
+    def __init__(self, start, end):
+        self.start = start
+        self.end = end
+"""
+
+class Solution:
+    """
+    @param intervals: an array of meeting time intervals
+    @return: if a person could attend all meetings
+    """
+    def can_attend_meetings(self, intervals: List[Interval]) -> bool:
+        # Write your code here
+        intervals.sort(key=lambda x:x.start)
+        for i in range(len(intervals)-1):
+            if intervals[i].end > intervals[i+1].start:
+                return False
+        return True
 ```
