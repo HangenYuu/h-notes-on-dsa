@@ -60,3 +60,39 @@ class Solution:
                 sorted_intervals[-1][1] = max(interval[1], sorted_intervals[-1][1])
         return sorted_intervals
 ```
+
+### 2. Insert Interval
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+I got overwhelmed at first. In such a case, it is important to relax and deconstruct. Firstly, . For any interval in the input array `intervals`, the new interval can come before it, can come after it, or overlaps with it. 
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+
+#### Code
+```python
+class Solution:
+    def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
+        answer = []
+
+        for i in range(len(intervals)):
+            # Easy case: newInterval is non-overlapping the rest
+            if newInterval[1] < intervals[i][0]:
+                answer.append(newInterval)
+                return answer + intervals[i:]
+            elif newInterval[0] > intervals[i][1]:
+                answer.append(intervals[i])
+            else:
+                newInterval = [min(newInterval[0], intervals[i][0]),
+                               max(newInterval[1], intervals[i][1])]
+        
+        answer.append(newInterval)
+        return answer
+```
