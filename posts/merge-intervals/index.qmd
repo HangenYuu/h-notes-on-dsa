@@ -158,3 +158,109 @@ class Solution:
                 return False
         return True
 ```
+
+### 4. Meeting Rooms II
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+For Meeting Rooms II, it appears harder. The answer is the maximum number of meetings going on at a time. The problem appears hard. Frankly, I don't think I can do it should I encounter it for the first time in an interview. But well, that's why we need to practice.
+
+The problem can be solved in 2 ways: Min Heap, and "Scanning Line Algorithm" (扫描线). As far as I know, this algorithm is used in computer graphics to process images faster, line by line instead of pixel by pixel. In any case, for this particular problem, we will iterate the input array, storing the start and end time into an intermediate array. Afterwards, we scan the array, keep track of the meeting going on `count` and maximum number of meeting going on `max_count`. We can update `count` by incrementing every time we encounter a start time and decrementing every time we encounter an end time. Once done, we return `max_count`.
+
+Another solution for those who know is using min heap to store the end time of the array. 
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+1. Iterate the input array `intervals`, one adjacent pair at a time.
+2. If we encounter an overlapping, return `False`.
+3. If we reach the end, return `True`.
+
+#### Complexity
+
+Min Heap
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n\log n)$: We need to sort the input array, plus iterate through the array and push the element into a heap.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$: This is the worst size of the heap, for all the meetings go on at the same time.
+
+Scan Line
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: We need to iterate the input array equivalent to three times.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$: This is the size of the intermediate array.
+
+#### Code
+
+##### Min Heap solution
+```python
+from typing import (
+    List,
+)
+from lintcode import (
+    Interval,
+)
+import heapq
+"""
+Definition of Interval:
+class Interval(object):
+    def __init__(self, start, end):
+        self.start = start
+        self.end = end
+"""
+
+class Solution:
+    """
+    @param intervals: an array of meeting time intervals
+    @return: the minimum number of conference rooms required
+    """
+    def min_meeting_rooms(self, intervals: List[Interval]) -> int:
+        # Write your code here
+        intervals.sort(key=lambda x:x.start)
+        heap = []
+        heapq.heappush(heap, intervals[0].end)
+        for interval in intervals[1:]:
+            if heap[0] <= interval.start:
+                heapq.heappop(heap)
+            heapq.heappush(heap, interval.end)
+        return len(heap)
+```
+##### "Scanning Line Algorithm" (扫描线)
+```python
+from typing import (
+    List,
+)
+from lintcode import (
+    Interval,
+)
+"""
+Definition of Interval:
+class Interval(object):
+    def __init__(self, start, end):
+        self.start = start
+        self.end = end
+"""
+
+class Solution:
+    """
+    @param intervals: an array of meeting time intervals
+    @return: the minimum number of conference rooms required
+    """
+    def min_meeting_rooms(self, intervals: List[Interval]) -> int:
+        # Write your code here
+        times = []
+        for interval in intervals:
+            times.extend([(interval.start, 1), (interval.end, -1)])
+        times.sort(key=lambda x: (x[0], x[1]))
+
+        count = max_count = 0
+        for time in times:
+            count += time[1]
+            max_count = max(max_count, count)
+        return max_count
+```
