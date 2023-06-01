@@ -43,7 +43,7 @@ This is useful as we can use the `head` as a pointer to traverse the linked list
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
-This is what I call a **basic problem** - a problem that can be become a sub-problem for a bigger task in the future LeetCode problems. This is like a formula that you have no choice but to remember (coding interview is still closed-book at the moment, year 2023), and then exploit it over and over again.
+This is a **basic problem** - a problem that can be become a sub-problem for a bigger task in the future LeetCode problems. This is like a formula that you have to remember, and then exploit it over and over again.
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
@@ -75,299 +75,35 @@ class Solution:
         return cur
 ```
 
-### 2. Merge Two Sorted Lists
-
-Choose a new linked list. Move the two head pointers down the two lists, compare the nodes, and splice them accordingly.
+### 2. Reverse Nodes in k-Group
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
+The problem is twofold: getting the $k^{th}$ node from the linked list (which is easy) and reverse *just* $k$ *nodes* of the linked list, which is tricky.
 
+If we look at the algorithm to reverse the whole linked list, the hint is knowing the node right before the head of the group to point the tail to, and knowing the node right after the tail of the group to point the head to. The big problem is implementation.
+
+For implementation, the node right before can be initialized as a dummy node first pointing to the head of the input linked list. The purpose is two fold. After all operations, the head of the return linked list can be accessed as `dummy.next`. Furthermore, the head of a group can be accessed as `previous_to_group.next`, while the node right after the group is `next_to_group.next`.
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
+1. Initialize `dummy` node and `previous_to_group`.
+2. Iterate the linked list:
+   1. Get the $k^{th}$ i.e., the tail of a group and node right after it.
+   2. Reverse this k-node group.
+   3. Set `previous_to_group` for the next iteration.
+3. Return `dummy.next` i.e., the head of the new linked list
 
+Step 2. is implemented as a separate method.
 
 #### Complexity
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: We need to iterate the linked list twice.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
-
-#### Code
-```python
-class Solution:
-    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
-        # Easy case
-        if list1 is None:
-            return list2
-        if list2 is None:
-            return list1
-        
-        # General case
-        # Most straightforward way is to create a new linked list
-        # Utilize the sentinel head trick here
-        dummy = ListNode()
-        head = dummy
-
-        # One list will reach the end before the other, so it is divided into 2 steps:
-        # 1. Compare and splice the nodes in the two list
-        # 2. Add the rest of one list to the end of the result.
-        while list1 and list2:
-            if list1.val <= list2.val:
-                head.next = list1
-                list1 = list1.next
-            else:
-                head.next = list2
-                list2 = list2.next
-            head = head.next
-        
-        if list1:
-            head.next = list1
-        elif list2:
-            head.next = list2
-        
-        return dummy.next
-```
-### 5. Reorder List
-
-The task can be divided into 3 parts:
-
-1. Divide the original list into 2.
-2. Reverse the second half.
-3. Merge the two halves.
-
-Here we saw for the first time all the problems above come together into one problem. Here you see that I turned the second part into another hidden method within the `Solution` class. This is one way to do it. Another is to define the function *within* the function (nested function), which you will see many Python LeetCoders do. These two methods are equivalent in solving LeetCode problems. For outside world, I think that my current method is more appreciated, as of [here](https://realpython.com/inner-functions-what-are-they-good-for/).
-
-#### Intuition
-<!-- Describe your first thoughts on how to solve this problem. -->
-
-
-#### Algorithm
-<!-- Describe your approach to solving the problem. -->
-
-
-#### Complexity
-- Time complexity:
-<!-- Add your time complexity here, e.g. $$O(n)$$ -->
-
-- Space complexity:
-<!-- Add your space complexity here, e.g. $$O(n)$$ -->
-
-#### Code
-```python
-class Solution:
-    def _reverseList(self, head: ListNode):
-        pre, cur, nex = None, head, head.next
-        while nex:
-            cur.next = pre
-            pre = cur
-            cur = nex
-            nex = nex.next
-        cur.next = pre
-        return cur
-    def reorderList(self, head: Optional[ListNode]) -> None:
-        """
-        Do not return anything, modify head in-place instead.
-        """
-        # Easy case:
-        if head.next is None or head.next.next is None:
-            return
-        
-        # General case:
-        fast = slow = temp1 = temp2 = head
-        while fast.next and fast.next.next:
-            fast = fast.next.next
-            slow = slow.next
-        temp2 = slow.next
-        slow.next = None
-        del slow, fast
-        temp2 = self._reverseList(temp2)
-        nex1, nex2 = temp1.next, temp2.next
-        while nex2:
-            temp1.next = temp2
-            temp2.next = nex1
-            temp1, temp2 = nex1, nex2
-            nex1, nex2 = nex1.next, nex2.next
-        temp1.next = temp2
-        if nex1:
-            temp2.next = nex1
-```
-
-### 6. Find the Duplicate Number
-
-This is not a Linked List question, but it utilizes the fast and slow pointers to turn it into a linked list question in the subtlest way possible. As noted in the editorial, this is similar to [Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/description/). In the original one, fast and slow pointer is used to detect the cycle. Now the objective is to return the cycle entrance. Fast and slow pointers can be proved mathematically to work for that problem, by having the fast pointer starts at the intersection and the slow pointer starts at the start, they will meet each other at the entrance!
-
-#### Intuition
-<!-- Describe your first thoughts on how to solve this problem. -->
-
-
-#### Algorithm
-<!-- Describe your approach to solving the problem. -->
-
-
-#### Complexity
-- Time complexity:
-<!-- Add your time complexity here, e.g. $$O(n)$$ -->
-
-- Space complexity:
-<!-- Add your space complexity here, e.g. $$O(n)$$ -->
-
-#### Code
-```python
-class Solution:
-    def findDuplicate(self, nums: List[int]) -> int:
-        # Phase 1: Intersection point
-        fast = slow = nums[0]
-        while True:
-            fast = nums[nums[fast]]
-            slow = nums[slow]
-            if fast == slow:
-                break
-        
-        # Phase 2: Find the cycle entrance
-        slow = nums[0]
-        while slow != fast:
-            fast = nums[fast]
-            slow = nums[slow]
-        
-        return slow
-```
-
-### 7. Copy List with Random Pointer
-
-Sometimes overthinking is a big problem. This question is super hard - if you try to do it in one go. The secret is to not do so. You do it in 2 passes. And use a HashMap to keep track of the copy.
-
-#### Intuition
-<!-- Describe your first thoughts on how to solve this problem. -->
-
-
-#### Algorithm
-<!-- Describe your approach to solving the problem. -->
-
-
-#### Complexity
-- Time complexity:
-<!-- Add your time complexity here, e.g. $$O(n)$$ -->
-
-- Space complexity:
-<!-- Add your space complexity here, e.g. $$O(n)$$ -->
-
-#### Code
-```python
-"""
-# Definition for a Node.
-class Node:
-    def __init__(self, x: int, next: 'Node' = None, random: 'Node' = None):
-        self.val = int(x)
-        self.next = next
-        self.random = random
-"""
-
-class Solution:
-    def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
-        # The first key in the dictionary to deal with the pointer to 
-        # None of a node.
-        oldToCopy = {None: None}
-
-        # 1st pass: Create all the nodes only
-        cur = head
-        while cur:
-            oldToCopy[cur] = Node(cur.val)
-            cur = cur.next
-        
-        # 2nd pass: Create the links within the list
-        cur = head
-        while cur:
-            copy = oldToCopy[cur]
-            copy.next = oldToCopy[cur.next]
-            copy.random = oldToCopy[cur.random]
-            cur = cur.next
-        
-        return oldToCopy[head]
-```
-
-### 8. Palindrome Linked List
-
-Here we see the reverse linked list sub-problem becomes relevant again. The algorithm is:
-
-1. Go to the middle of the linked list and divide it in 2 halves.
-2. Reverse the second half.
-3. Check each pair of nodes of two halves and return result.
-
-#### Intuition
-<!-- Describe your first thoughts on how to solve this problem. -->
-
-
-#### Algorithm
-<!-- Describe your approach to solving the problem. -->
-
-
-#### Complexity
-- Time complexity:
-<!-- Add your time complexity here, e.g. $$O(n)$$ -->
-
-- Space complexity:
-<!-- Add your space complexity here, e.g. $$O(n)$$ -->
-
-#### Code
-```python
-class Solution:
-    def _reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        pre, cur, nex = None, head, head.next
-        while nex:
-            cur.next = pre
-            pre = cur
-            cur = nex
-            nex = nex.next
-        cur.next = pre
-        return cur
-
-    def isPalindrome(self, head: Optional[ListNode]) -> bool:
-        # Easy case:
-        if head is None or head.next is None:
-            return True
-        
-        # General case:
-        slow, fast = head, head.next
-        while fast.next and fast.next.next:
-            slow = slow.next
-            fast = fast.next.next
-        if not fast.next:
-            temp = slow.next
-            slow.next = None
-        else:
-            temp = slow.next.next
-            slow.next.next = None
-        temp = self._reverseList(temp)
-        while temp:
-            if temp.val != head.val:
-                return False
-            temp, head = temp.next, head.next
-        return True
-```
-
-### 9. Add Two Numbers
-
-The second problem added to LeetCode, after [Two Sum](https://leetcode.com/problems/two-sum/). The digits are arranged in reverse order, which makes it easier to add them. The algorithm can be represented as:
-
-1. While both heads not yet hit the end, traverse and add each pair of digit (remember to log the remaining).
-2. When a head hits the end, check if the remaining list has any node left and add them to the result.
-
-#### Intuition
-<!-- Describe your first thoughts on how to solve this problem. -->
-
-
-#### Algorithm
-<!-- Describe your approach to solving the problem. -->
-
-
-#### Complexity
-- Time complexity:
-<!-- Add your time complexity here, e.g. $$O(n)$$ -->
-
-- Space complexity:
-<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$: We only need to store pointers.
 
 #### Code
 ```python
@@ -377,59 +113,33 @@ The second problem added to LeetCode, after [Two Sum](https://leetcode.com/probl
 #         self.val = val
 #         self.next = next
 class Solution:
-    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
-        dummy = ListNode()
-        head = dummy
-        remain = 0
-        while l1 and l2:
-            raw_sum = l1.val + l2.val + remain
-            remain = raw_sum // 10
-            temp_sum = raw_sum % 10
-            head.next = ListNode(temp_sum)
-            head = head.next
-            l1, l2 = l1.next, l2.next
-        
-        while l1:
-            if remain == 0:
-                head.next = l1
+    def reverseKGroup(self, head: ListNode, k: int) -> ListNode:
+        dummy = ListNode(0, head)
+        previous_to_group = dummy # Node right before the group
+
+        while True:
+            kth_node = self.getKthNode(previous_to_group, k)
+            if not kth_node:
                 break
-            raw_sum = l1.val + remain
-            remain = raw_sum // 10
-            temp_sum = raw_sum % 10
-            head.next = ListNode(temp_sum)
-            head = head.next
-            l1 = l1.next
-        
-        while l2:
-            if remain == 0:
-                head.next = l2
-                break
-            raw_sum = l2.val + remain
-            remain = raw_sum // 10
-            temp_sum = raw_sum % 10
-            head.next = ListNode(temp_sum)
-            head = head.next
-            l2 = l2.next
-        if remain != 0:
-            head.next = ListNode(remain)
+            next_to_group = kth_node.next
+
+            # Reverse k nodes
+            prev, curr = kth_node.next, previous_to_group.next
+
+            while curr != next_to_group:
+                temp = curr.next
+                curr.next = prev
+                prev = curr
+                curr = temp
+            
+            temp = previous_to_group.next
+            previous_to_group.next = kth_node
+            previous_to_group = temp
         return dummy.next
+
+    def getKthNode(self, current_node, k):
+        while current_node and k > 0:
+            current_node = current_node.next
+            k -= 1
+        return current_node
 ```
-
-### 10. LRU Cache
-
-#### Intuition
-<!-- Describe your first thoughts on how to solve this problem. -->
-
-
-#### Algorithm
-<!-- Describe your approach to solving the problem. -->
-
-
-#### Complexity
-- Time complexity:
-<!-- Add your time complexity here, e.g. $$O(n)$$ -->
-
-- Space complexity:
-<!-- Add your space complexity here, e.g. $$O(n)$$ -->
-
-#### Code
