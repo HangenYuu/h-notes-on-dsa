@@ -28,14 +28,14 @@ class ListNode:
 
 ### 1. Sentinel head (also tail):
 
-We create a dummy head first, modify everything after, and then return the actual head with `dummy.next`
+I create a dummy head first, modify everything after, and then return the actual head with `dummy.next`
 ```python
 dummy = ListNode(None)
 head = dummy
 # Do a lot of stuff with head
 return dummy.next
 ```
-This is useful as we can use the `head` as a pointer to traverse the linked list while still need to return the head of the linked list in result. 
+This is useful as I can use the `head` as a pointer to traverse the linked list while still need to return the head of the linked list in result. 
 
 ## Problems:
 
@@ -47,7 +47,7 @@ This is a **basic problem** - a problem that can be become a sub-problem for a b
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
-When dealing with Linked List, the king is pointer - ~~something as dangerous as pointing gun to your head~~an object that points to the particular position of a node in the list. The number of pointers a problem requires depend on the amount of information we need at when processing each node in the list. Here, we need to know 3 pieces: the current node (obviously), the previous node to point the current node to, and the next node to move the pointer. Hence, we will use three pointers - `pre`, `cur`, and `nex` to keep track while traversing the list.
+When dealing with Linked List, the king is pointer - ~~something as dangerous as pointing gun to your head~~an object that points to the particular position of a node in the list. The number of pointers a problem requires depend on the amount of information I need at when processing each node in the list. Here, I need to know 3 pieces: the current node (obviously), the previous node to point the current node to, and the next node to move the pointer. Hence, I will use three pointers - `pre`, `cur`, and `nex` to keep track while traversing the list.
 
 #### Complexity
 - Time complexity: $O(n)$: Traversing the whole list once.
@@ -81,7 +81,7 @@ class Solution:
 <!-- Describe your first thoughts on how to solve this problem. -->
 The problem is twofold: getting the $k^{th}$ node from the linked list (which is easy) and reverse *just* $k$ *nodes* of the linked list, which is tricky.
 
-If we look at the algorithm to reverse the whole linked list, the hint is knowing the node right before the head of the group to point the tail to, and knowing the node right after the tail of the group to point the head to. The big problem is implementation.
+I look at the algorithm to reverse the whole linked list, the hint is knowing the node right before the head of the group to point the tail to, and knowing the node right after the tail of the group to point the head to. The big problem is implementation.
 
 For implementation, the node right before can be initialized as a dummy node first pointing to the head of the input linked list. The purpose is two fold. After all operations, the head of the return linked list can be accessed as `dummy.next`. Furthermore, the head of a group can be accessed as `previous_to_group.next`, while the node right after the group is `next_to_group.next`.
 
@@ -99,11 +99,11 @@ Step 2. is implemented as a separate method.
 #### Complexity
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
-$O(n)$: We need to iterate the linked list twice.
+$O(n)$: I need to iterate the linked list twice.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
-$O(1)$: We only need to store pointers.
+$O(1)$: I only need to store pointers.
 
 #### Code
 ```python
@@ -142,4 +142,58 @@ class Solution:
             current_node = current_node.next
             k -= 1
         return current_node
+```
+
+### 3. Reverse Linked List II
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+I love the course "Grokking Coding Interview Pattern". However, I have a feeling I have been scared. Reverse Linked List turns out to be a subproblem for Reverse Nodes in k-Group. The problem gives you two limits and asks you to reverse the nodes between the limits. The implementation is different from Reverse Nodes in k-Group as I reverse with `range` now, but the principle is exactly the same.
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+1. Initialize `dummy` node.
+2. Iterate the linked list $left-1$ times to get the node right before the group.
+3. Get the left node of the group and reverse the connections of $right-left+1$ nodes in the group.
+4. Reconnect the new head and tail of the group to the nodes right before and right after.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: I iterate the linked list exactly once.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$: I only need to store pointers.
+
+#### Code
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def reverseBetween(self, head: Optional[ListNode], left: int, right: int) -> Optional[ListNode]:
+        # Edge case
+        if not head or left == right:
+            return head
+        
+        dummy = ListNode(0, head)
+        prev_of_group = dummy
+        for _ in range(left-1):
+            prev_of_group = prev_of_group.next
+        
+        # Reverse node
+        prev, curr = None, prev_of_group.next
+        for _ in range(right-left+1):
+            temp = curr.next
+            curr.next = prev
+            prev = curr
+            curr = temp
+        # Now prev is the head of the new group, and curr is the node right after the group
+        prev_of_group.next.next = curr
+        prev_of_group.next = prev
+        return dummy.next
+
 ```

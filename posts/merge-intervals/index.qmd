@@ -25,7 +25,7 @@ The pattern is usually tested by companies with system scheduling problems, such
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
-As mentioned, first, we need to sort the array. But how exactly should we sort it? The hint for me are the examples - the array there is sorted based on the start time. The problem then is about *updating the end of each interval*. If the interval with a smaller start time is 1 and the next one is 2, append 2 as is to the return array first if they are non-overlapping. If 1 envelops 2, do nothing. If 2 ends later than 1, update the entry in the return array.
+As mentioned, first, I need to sort the array. But how exactly should I sort it? The hint for me are the examples - the array there is sorted based on the start time. The problem then is about *updating the end of each interval*. If the interval with a smaller start time is 1 and the next one is 2, append 2 as is to the return array first if they are non-overlapping. If 1 envelops 2, do nothing. If 2 ends later than 1, update the entry in the return array.
 
 The question comes to "Can I think of such a thing on my own from first principles in an interview?" I think that I can, but it may take some time. I don't think that I will encounter this problem in an interview though - if anything, it will be Merge Intervals II or Meeting Room II at least.
 
@@ -78,11 +78,11 @@ I got overwhelmed at first. In such a case, it is important to relax and deconst
 #### Complexity
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
-$O(n)$: We need to iterate the input array once.
+$O(n)$: I need to iterate the input array once.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
-$O(n)$: We need to store the output array. If it is not counted as part of the extra memory used, it is $O(1)$.
+$O(n)$: I need to store the output array. If it is not counted as part of the extra memory used, it is $O(1)$.
 
 #### Code
 ```python
@@ -111,22 +111,22 @@ class Solution:
 <!-- Describe your first thoughts on how to solve this problem. -->
 Welcome to the Meeting Room series! This is a big series much tested by TikTok in merge intervals. The requirement is completing at least Meeting Rooms II. For this series, I use a different platform called [LintCode](https://www.lintcode.com/). It allows access to premium questions for free under certain circumstances.
 
-For the problem, it is straightforward. The person cannot attend the meetings if the end time of one is after the start time of another. Hence, if we sort the input array according to the start time, we can iterate and compare two adjacent arrays. If we encounter an overlapping pair, we return `False`. If we reach the end, we return `True`. 
+For the problem, it is straightforward. The person cannot attend the meetings if the end time of one is after the start time of another. Hence, if I sort the input array according to the start time, I can iterate and compare two adjacent arrays. If I encounter an overlapping pair, I return `False`. If I reach the end, I return `True`. 
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
 1. Iterate the input array `intervals`, one adjacent pair at a time.
-2. If we encounter an overlapping, return `False`.
-3. If we reach the end, return `True`.
+2. If I encounter an overlapping, return `False`.
+3. If I reach the end, return `True`.
 
 #### Complexity
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
-$O(n)$: We need to iterate the input array once.
+$O(n)$: I need to iterate the input array once.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
-$O(1)$: We do not use any extra memory.
+$O(1)$: I do not use any extra memory.
 
 #### Code
 ```python
@@ -163,24 +163,24 @@ class Solution:
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
-For Meeting Rooms II, it appears harder. The answer is the maximum number of meetings going on at a time. The problem appears hard. Frankly, I don't think I can do it should I encounter it for the first time in an interview. But well, that's why we need to practice.
+For Meeting Rooms II, it appears harder. The answer is the maximum number of meetings going on at a time. The problem appears hard. Frankly, I don't think I can do it should I encounter it for the first time in an interview. But well, that's why I need to practice.
 
-The problem can be solved in 2 ways: Min Heap, and "Scanning Line Algorithm" (扫描线). As far as I know, this algorithm is used in computer graphics to process images faster, line by line instead of pixel by pixel. In any case, for this particular problem, we will iterate the input array, storing the start and end time into an intermediate array. Afterwards, we scan the array, keep track of the meeting going on `count` and maximum number of meeting going on `max_count`. We can update `count` by incrementing every time we encounter a start time and decrementing every time we encounter an end time. Once done, we return `max_count`.
+The problem can be solved in 2 ways: Min Heap, and "Scanning Line Algorithm" (扫描线). As far as I know, this algorithm is used in computer graphics to process images faster, line by line instead of pixel by pixel. In any case, for this particular problem, I will iterate the input array, storing the start and end time into an intermediate array. Afterwards, I scan the array, keep track of the meeting going on `count` and maximum number of meeting going on `max_count`. I can update `count` by incrementing every time I encounter a start time and decrementing every time I encounter an end time. Once done, I return `max_count`.
 
 Another solution for those who know is using min heap to store the end time of the array. 
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
 1. Iterate the input array `intervals`, one adjacent pair at a time.
-2. If we encounter an overlapping, return `False`.
-3. If we reach the end, return `True`.
+2. If I encounter an overlapping, return `False`.
+3. If I reach the end, return `True`.
 
 #### Complexity
 
 Min Heap
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
-$O(n\log n)$: We need to sort the input array, plus iterate through the array and push the element into a heap.
+$O(n\log n)$: I need to sort the input array, plus iterate through the array and push the element into a heap.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
@@ -189,7 +189,7 @@ $O(n)$: This is the worst size of the heap, for all the meetings go on at the sa
 Scan Line
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
-$O(n)$: We need to iterate the input array equivalent to three times.
+$O(n)$: I need to iterate the input array equivalent to three times.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
