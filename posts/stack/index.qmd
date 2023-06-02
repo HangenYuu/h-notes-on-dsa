@@ -13,7 +13,7 @@ Firstly, See [About](https://h-notes-on-dsa.netlify.app/about.html) page.
 
 ## Definitions:
 
-A data structure with the trademark of LIFO (last in, first out). It has direct analogy to the list in Python, and we actually will use the built-in list as the stack. There are alternatives to have a stack (such as `queue.LifoQueue`), but normally, a python list suffices.
+A data structure with the trademark of LIFO (last in, first out). It has direct analogy to the list in Python, and I actually will use the built-in list as the stack. There are alternatives to have a stack (such as `queue.LifoQueue`), but normally, a python list suffices.
 
 ## Problems:
 
@@ -21,14 +21,14 @@ A data structure with the trademark of LIFO (last in, first out). It has direct 
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
-This is the [Two Sum](https://leetcode.com/problems/two-sum/) of stack. The problem requirements can be translated into the intuition that if we push the left parenthesis into a stack and pop them out whenever we encounter a right parenthesis, the correct parenthesis sequence will generate all matching pairs.
+This is the [Two Sum](https://leetcode.com/problems/two-sum/) of stack. The problem requirements can be translated into the intuition that if I push the left parenthesis into a stack and pop them out whenever I encounter a right parenthesis, the correct parenthesis sequence will generate all matching pairs.
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
 1. Initialize, including a HashMap for right and left parenthesis, and check that the array has an even number of elements.
 2. Traverse the array of parentheses.
-3. If we encounter a left parenthesis, push it to a stack.
-4. If we encounter a right parenthesis, compare it to the one we pop from the stack. If they do not match, return False immediately.
+3. If I encounter a left parenthesis, push it to a stack.
+4. If I encounter a right parenthesis, compare it to the one I pop from the stack. If they do not match, return False immediately.
 5. At the end, return True if the stack is empty, else False.
 
 #### Complexity
@@ -38,7 +38,7 @@ $O(n)$: Traversing the whole array once.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
-$O(n)$: At the worst case, we will need to store half of the array inside the stack.
+$O(n)$: At the worst case, I will need to store half of the array inside the stack.
 
 #### Code
 ```python
@@ -61,7 +61,7 @@ class Solution:
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
-The notation works perfectly with a stack. Basically, whenever you encounter an operand, you need to pop from the end of the stack and perform operation in the correct order before append the result to the stack. Otherwise, just append the numbers in the order we encounter them.
+The notation works perfectly with a stack. Basically, whenever you encounter an operand, you need to pop from the end of the stack and perform operation in the correct order before append the result to the stack. Otherwise, just append the numbers in the order I encounter them.
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
@@ -76,7 +76,7 @@ $O(n)$: Traversing the whole array once.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
-$O(n)$: At the worst case, we will need to store more than half of the array inside the stack.
+$O(n)$: At the worst case, I will need to store more than half of the array inside the stack.
 
 #### Code
 ```python
@@ -105,7 +105,7 @@ class Solution:
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
-The number of days to wait is the difference in the indices of the days. The stack comes in handy here by storing the value of the element sequentially, and then we pop from it when we encounter a day with larger temperature.
+The number of days to wait is the difference in the indices of the days. The stack comes in handy here by storing the value of the element sequentially, and then I pop from it when I encounter a day with larger temperature.
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
@@ -120,7 +120,7 @@ $O(n)$: Traversing the whole array once.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
-$O(n)$: At the worst case, we will need to store nearly the whole  array inside the stack.
+$O(n)$: At the worst case, I will need to store nearly the whole  array inside the stack.
 
 #### Code
 ```python
@@ -144,7 +144,7 @@ The trick is having another stack to store the *minimum so far*.
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
-With the minimum so far stack, we just need to update it along with the main stack. The main task will be the `push` operation, where we need to append the new value if it is the new minimum, or the same last value.
+With the minimum so far stack, I just need to update it along with the main stack. The main task will be the `push` operation, where I need to append the new value if it is the new minimum, or the same last value.
 
 #### Complexity
 - Time complexity:
@@ -153,7 +153,7 @@ As required by the problem, everything is in $O(1)$ time.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
-We are using two stacks, so it is double the memory. Nevertheless, it is $O(n)$.
+I am using two stacks, so it is double the memory. Nevertheless, it is $O(n)$.
 
 #### Code
 ```python
@@ -194,7 +194,7 @@ class MinStack:
 <!-- Describe your first thoughts on how to solve this problem. -->
 The problem gave me a taste of backtracking. It is time to realize that this is possible. Backtracking is built on recursion, which is built on the recursion call stack. So yeah, stack will be present in recursion problem.
 
-In recursion problem, we start with the base case. The base case here revolves around the condition to add left and right parentheses. Simply, we can validly add a left parenthesis if the number of left parentheses is smaller than $n$, while we can validly add a right parenthesis if the number of left parentheses is smaller than  the number of right parentheses. The base case is when the number of left and the number of right all hit $n$.
+In recursion problem, I start with the base case. The base case here revolves around the condition to add left and right parentheses. Simply, I can validly add a left parenthesis if the number of left parentheses is smaller than $n$, while I can validly add a right parenthesis if the number of left parentheses is smaller than  the number of right parentheses. The base case is when the number of left and the number of right all hit $n$.
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
@@ -244,18 +244,18 @@ class Solution:
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
-The trick revolves around the condition to extend the rectangle. We can extend the rectangle if the current height is larger than the previous height. If not, we need to pop from the stack, calculate the area of the rectangle and update the maximum area. The next bit is storing the index of *the last element* that the current height can extend back to instead of its own index.
+The trick revolves around the condition to extend the rectangle. I can extend the rectangle if the current height is larger than the previous height. If not, I need to pop from the stack, calculate the area of the rectangle and update the maximum area. The next bit is storing the index of *the last element* that the current height can extend back to instead of its own index.
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
 1. Initialize `maxArea` and `stack` array. One to return, one to keep track of the (index, height) pairs.
-2. Iterate the `heights` arrray. At each height, if it is smaller than the previous one and the stack is not empty, we pop from the stack, calculate the maximum height possible, update `maxArea` if necessary, and push `(index, height)` pair to the stack.
-3. Before return, we need to calculate the area of every rectangle left in the stack. The area is calculated by the height of the rectangle times the width, which is the difference between the current index and the index of the last element in the stack. Update `maxArea` if necessary and return.
+2. Iterate the `heights` arrray. At each height, if it is smaller than the previous one and the stack is not empty, I pop from the stack, calculate the maximum height possible, update `maxArea` if necessary, and push `(index, height)` pair to the stack.
+3. Before return, I need to calculate the area of every rectangle left in the stack. The area is calculated by the height of the rectangle times the width, which is the difference between the current index and the index of the last element in the stack. Update `maxArea` if necessary and return.
 
 #### Complexity
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
-$O(n)$: We iterate through the `heights` array once, and the stack once.
+$O(n)$: I iterate through the `heights` array once, and the stack once.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->

@@ -12,7 +12,7 @@ Firstly, See [About](https://h-notes-on-dsa.netlify.app/about.html) page.
 # Fast and slow pointers
 
 ## Definitions
-This is not a data structure, but a pattern of coding interview questions. This is something passed down from languages with pointers such as C++ or Java. The idea is that we will traverse the array with two pointers simultaneously, one of them will be "faster" than the other, in the sense of headstart (start at a further location while moving at the same speed) or speed (the fast one move faster e.g., two steps at a time, while the slow one will move one step at a time while starting at the same locaiton). This pattern is very useful for solving problems related to linked lists or arrays. Also known as the Floyd's "Hare and Tortoise Algorithm".
+This is not a data structure, but a pattern of coding interview questions. This is something passed down from languages with pointers such as C++ or Java. The idea is that I will traverse the array with two pointers simultaneously, one of them will be "faster" than the other, in the sense of headstart (start at a further location while moving at the same speed) or speed (the fast one move faster e.g., two steps at a time, while the slow one will move one step at a time while starting at the same locaiton). This pattern is very useful for solving problems related to linked lists or arrays. Also known as the Floyd's "Hare and Tortoise Algorithm".
 
 ## Problem
 
@@ -25,17 +25,17 @@ The hint lies at the problem statement: it is either going to 1, or going into a
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
 1. Initialize the two pointers `slow` and `fast` to `n` and the helper function to calculate sum of square of digits ($SS$).
-2. At each step, assign `slow` to the $SS$ of itself and `fast` to the $SS$ of $SS$ of itself. We check and then return accordingly when we go into loop or encounter 1.
+2. At each step, assign `slow` to the $SS$ of itself and `fast` to the $SS$ of $SS$ of itself. I check and then return accordingly when I go into loop or encounter 1.
 
 #### Complexity
 
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
-$O(\log n)$: The detailed analysis can be found [here](https://leetcode.com/problems/happy-number/editorial/). The first solution with HashSet is helpful as it explains how can we rule out the third possibility that is not mentioned in the problem statement: the number increases infinitely. Simply, it will all goes down below 243. The $\log$ appears here because it is the cost of processing every unit of a number. The full term is $O(243 \times 3 + \log n+\log \log n+\log \log \log n)... = O(\log n)$ but the $\log$ term dominates the sum. For our two pointers, the cost is $O(\log n)$ for each, but $2$ is a constant so omitted.
+$O(\log n)$: The detailed analysis can be found [here](https://leetcode.com/problems/happy-number/editorial/). The first solution with HashSet is helpful as it explains how can I rule out the third possibility that is not mentioned in the problem statement: the number increases infinitely. Simply, it will all goes down below 243. The $\log$ appears here because it is the cost of processing every unit of a number. The full term is $O(243 \times 3 + \log n+\log \log n+\log \log \log n)... = O(\log n)$ but the $\log$ term dominates the sum. For our two pointers, the cost is $O(\log n)$ for each, but $2$ is a constant so omitted.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
-$O(1)$: We only need to store pointers.
+$O(1)$: I only need to store pointers.
 
 #### Code
 ```python
@@ -72,8 +72,8 @@ If I am not told about the problem, I don't think I can come up with the solutio
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
 1. Initialize the two pointers `fast` and `slow` to `head`.
-2. At each step, assign `fast` to the next of the next of itself and `slow` to the next of itself. We check and then return accordingly when we go into loop i.e., the two pointers meet.
-3. If we reach the end of the list, we return `False`.
+2. At each step, assign `fast` to the next of the next of itself and `slow` to the next of itself. I check and then return accordingly when I go into loop i.e., the two pointers meet.
+3. If I reach the end of the list, I return `False`.
 
 #### Complexity
 - Time complexity:
@@ -82,7 +82,7 @@ $O(n)$: Both pointers traverse the list at least once.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
-$O(1)$: We only need to store pointers.
+$O(1)$: I only need to store pointers.
 
 #### Code
 ```python
@@ -104,11 +104,11 @@ class Solution:
 
 ### 3. Remove Nth Node From End of List
 
-The idea is to initialize two fast and slow pointers, but started at different positions while moving at the same speed. We want that when the fast pointer hits the end, the slow pointer is at the node before the to-be-removed node to rearrange the connection.
+The idea is to initialize two fast and slow pointers, but started at different positions while moving at the same speed. I want that when the fast pointer hits the end, the slow pointer is at the node before the to-be-removed node to rearrange the connection.
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
-This is the second type of fast and slow pointers: they move at the same speed but start at different positions. The idea is that we want the fast pointer to hit the end of the list, while the slow pointer is at the node before the to-be-removed node. Then we can rearrange the connection.
+This is the second type of fast and slow pointers: they move at the same speed but start at different positions. The idea is that I want the fast pointer to hit the end of the list, while the slow pointer is at the node before the to-be-removed node. Then I can rearrange the connection.
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
@@ -124,7 +124,7 @@ $O(n)$: Both pointers traverse the list at most once.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
-$O(1)$: We only need to store pointers.
+$O(1)$: I only need to store pointers.
 
 #### Code
 ```python
@@ -142,9 +142,9 @@ class Solution:
                 fast = fast.next
             else:
             # If fast pointer is already None before the end, there is just one
-            # case and it is the head needs removing, so we return the next element
+            # case and it is the head needs removing, so I return the next element
                 return head.next
-        # If not, we start to move the slow and fast pointers to the end.
+        # If not, I start to move the slow and fast pointers to the end.
         while fast:
             slow, fast = slow.next, fast.next
         
@@ -172,7 +172,7 @@ $O(n)$: Both pointers traverse the list at most once.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
-$O(1)$: We only need to store pointers.
+$O(1)$: I only need to store pointers.
 
 #### Code
 ```python
@@ -200,9 +200,9 @@ class Solution:
 <!-- Describe your first thoughts on how to solve this problem. -->
 Let's ignore the instruction to solve in $O(n)$ time complexity for now ($O(1)$ space complexity is achieved with pointers).
 
-For every element, we need to check if it is a part of a cycle. If it is, we need to check if the cycle is valid. If it is, we return `True`. Otherwise, we continue to check the next element. A cycle is invalid if there exist elements with different signs in the cycle. This means that at least one product between a pair of elements is negative. The direction direction condition can be tracked with a variable, and the terminating condition can be signaled by setting the pointer to $-1$. A cycle also needs to have more than one element. This means that an element with value divisible by the length of the array is invalid. This solution is $O(n^2)$ time complexity, as we will have a nested loop each iterating through the array in the worst case.
+For every element, I need to check if it is a part of a cycle. If it is, I need to check if the cycle is valid. If it is, I return `True`. Otherwise, I continue to check the next element. A cycle is invalid if there exist elements with different signs in the cycle. This means that at least one product between a pair of elements is negative. The direction direction condition can be tracked with a variable, and the terminating condition can be signaled by setting the pointer to $-1$. A cycle also needs to have more than one element. This means that an element with value divisible by the length of the array is invalid. This solution is $O(n^2)$ time complexity, as I will have a nested loop each iterating through the array in the worst case.
 
-To move on to the $O(n)$ solution, we can keep track of the elements we have visited. The most straightforward is having an array or a HashMap, but it violates the $O(1)$ space complexity. Hence, this means modifying the array in place into 0.
+To move on to the $O(n)$ solution, I can keep track of the elements I have visited. The most straightforward is having an array or a HashMap, but it violates the $O(1)$ space complexity. Hence, this means modifying the array in place into 0.
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
@@ -215,11 +215,11 @@ To move on to the $O(n)$ solution, we can keep track of the elements we have vis
 #### Complexity
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
-$O(n^2)$ or $O(n)$: Depend on the implementation and condition whether we can modify the array in place.
+$O(n^2)$ or $O(n)$: Depend on the implementation and condition whether I can modify the array in place.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
-$O(1)$: We only need to store pointers.
+$O(1)$: I only need to store pointers.
 
 #### Code
 ```python
@@ -289,20 +289,20 @@ class Solution:
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
-Dirichlet's principle will help you to prove that there must be a duplicate in the array. Next, because of the constraints of numbers from $1$ to $n$ inside an array of length $n+1$, we can see that we can access every element of the array with the function `nums[index]`. This means that the array can be turned into a linked list, where the value is the index and the next pointer is the value of the element. In this linked list, the duplicate element *creates a cycle*, as there are at least two elements pointing to it, making it the entrance of a cycle.
+Dirichlet's principle will help you to prove that there must be a duplicate in the array. Next, because of the constraints of numbers from $1$ to $n$ inside an array of length $n+1$, I can see that I can access every element of the array with the function `nums[index]`. This means that the array can be turned into a linked list, where the value is the index and the next pointer is the value of the element. In this linked list, the duplicate element *creates a cycle*, as there are at least two elements pointing to it, making it the entrance of a cycle.
 
 ![](6-1.png)
 
-However, the problem is not *Is there a cycle?* but *Where is the cycle?*. In other words, we need to find the entrance to the cycle. This bears similarity to [Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/description/). The solution is to use fast and slow pointers as before, with some insights from math to find the entrance.
+However, the problem is not *Is there a cycle?* but *Where is the cycle?*. In other words, I need to find the entrance to the cycle. This bears similarity to [Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/description/). The solution is to use fast and slow pointers as before, with some insights from math to find the entrance.
 
 ![](6-2.png)
 
-We define the following variables (see diagram above):
+I define the following variables (see diagram above):
 - $F$: the distance from the start of the array to the entrance of the cycle
 - $a$: the distance from the entrance of the cycle to the meeting point of the fast and slow pointers
 - $C$: the length of the cycle
 
-At the intersection point i.e., where two pointers meet, we have the following equations:
+At the intersection point i.e., where two pointers meet, I have the following equations:
 $$2 \times \text{distance slow pointer moves} = \text{distance fast pointer moves}$$
 
 Which is equivalent to:
@@ -313,7 +313,7 @@ This gives us an interesting equation:
 $$
 F = (n-1)C + (C - a)
 $$
-In plain English, this means that if the two pointers both start at first element, the distance from the intersection point found to the cycle entrance is equal to the distance from that first element to the cycle entrance. This means that if we move one pointer back to the first element and move both pointers one step at a time, they will meet at the cycle entrance.
+In plain English, this means that if the two pointers both start at first element, the distance from the intersection point found to the cycle entrance is equal to the distance from that first element to the cycle entrance. This means that if I move one pointer back to the first element and move both pointers one step at a time, they will meet at the cycle entrance.
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
@@ -326,10 +326,10 @@ In plain English, this means that if the two pointers both start at first elemen
 #### Complexity
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
-$O(n)$: We need to traverse the array a number of time.
+$O(n)$: I need to traverse the array a number of time.
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
-$O(1)$: We only need to store pointers.
+$O(1)$: I only need to store pointers.
 
 #### Code
 ```python
@@ -356,7 +356,7 @@ class Solution:
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
-Obviously, the first way is to copy the linked list over to an array, and then use two pointers to check for palindrome. However, to satisfy the $O(1)$ space complexity, we need to check for palindrome in place. The intuition is if a linked list is a palindrome, the second half reversed will be the same as the first half. We can use two pointers to find the middle of the linked list, and then reverse the second half. Finally, we can compare the first half and the second half to check for palindrome. Of course, this will modify the linked list in place, so we need to restore the second half if the linked list is involved in another problem. 
+Obviously, the first way is to copy the linked list over to an array, and then use two pointers to check for palindrome. However, to satisfy the $O(1)$ space complexity, I need to check for palindrome in place. The intuition is if a linked list is a palindrome, the second half reversed will be the same as the first half. I can use two pointers to find the middle of the linked list, and then reverse the second half. Finally, I can compare the first half and the second half to check for palindrome. Of course, this will modify the linked list in place, so I need to restore the second half if the linked list is involved in another problem. 
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
@@ -369,11 +369,11 @@ Obviously, the first way is to copy the linked list over to an array, and then u
 #### Complexity
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
-$O(n)$: We need to traverse the linked list a number of time.
+$O(n)$: I need to traverse the linked list a number of time.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
-$O(1)$: We only need to store pointers.
+$O(1)$: I only need to store pointers.
 
 #### Code
 ```python

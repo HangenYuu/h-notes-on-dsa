@@ -26,7 +26,7 @@ The **basic of basic problem**, the first problem everybody encounters when he/s
 
 <!-- Describe your first thoughts on how to solve this problem. -->
 
-Traversing the list seems like the most logical thing to do. The brute-force way is to check every pair of numbers. The time complexity is O(n\^2). To optimize this, it is better to store the information we have already encountered when we traverse the list. We need to use a data structure that supports fast searching - HashMap. Either way works, but the HashMap can be used for storing the index of the element as well. If we store an element as the key and the index as the value, we can quickly search and return the indices.
+Traversing the list seems like the most logical thing to do. The brute-force way is to check every pair of numbers. The time complexity is O(n\^2). To optimize this, it is better to store the information I have already encountered when I traverse the list. I need to use a data structure that supports fast searching - HashMap. Either way works, but the HashMap can be used for storing the index of the element as well. If I store an element as the key and the index as the value, I can quickly search and return the indices.
 
 #### Algorithm
 
@@ -43,7 +43,7 @@ The algorithm can be described as:
 
 -   Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> $O(n)$: Traversing the whole list once.
 
--   Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> $O(n)$: In the worst case, we will have a dictionary with a size equal to the array.
+-   Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> $O(n)$: In the worst case, I will have a dictionary with a size equal to the array.
 
 #### Code
 
@@ -64,7 +64,7 @@ class Solution:
 
 <!-- Describe your first thoughts on how to solve this problem. -->
 
-Again, traverse the array, storing information about what we have encountered. This time, we only need to store the element itself, so a HashSet suffices.
+Again, traverse the array, storing information about what I have encountered. This time, I only need to store the element itself, so a HashSet suffices.
 
 #### Algorithm
 
@@ -72,13 +72,13 @@ Again, traverse the array, storing information about what we have encountered. T
 
 1.  Traverse the array.
 2.  Check if the current element is in the HashSet. If it is, return True for duplicate.
-3.  If we reach the end of the array, return False for no duplicate.
+3.  If I reach the end of the array, return False for no duplicate.
 
 #### Complexity
 
 -   Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> $O(n)$: Traversing the whole list once.
 
--   Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> $O(n)$: In the worst case, we will have a set with a size equal to the array.
+-   Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> $O(n)$: In the worst case, I will have a set with a size equal to the array.
 
 #### Code
 
@@ -99,7 +99,7 @@ class Solution:
 
 <!-- Describe your first thoughts on how to solve this problem. -->
 
-Again, traverse the array, storing information about what we have encountered. This time, we only need to store the element itself, so a HashSet suffices.
+Again, traverse the array, storing information about what I have encountered. This time, I only need to store the element itself, so a HashSet suffices.
 
 #### Algorithm
 
@@ -107,13 +107,13 @@ Again, traverse the array, storing information about what we have encountered. T
 
 1.  Traverse the array.
 2.  Check if the current element is in the HashSet. If it is, return True for duplicate.
-3.  If we reach the end of the array, return False for no duplicate.
+3.  If I reach the end of the array, return False for no duplicate.
 
 #### Complexity
 
 -   Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> $O(n)$: Traversing the whole list once.
 
--   Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> $O(n)$: In the worst case, we will have a set with a size equal to the array.
+-   Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> $O(n)$: In the worst case, I will have a set with a size equal to the array.
 
 #### Code
 
@@ -142,20 +142,20 @@ There are many approaches to the problem. The simplest way except brute-force th
 
 <!-- Describe your approach to solving the problem. -->
 
-This is a named algorithm: Boyer-Moore Voting Algorithm. The procedure is this: while we traverse the array, if we choose the first element as a candidate and consider three things:
+This is a named algorithm: Boyer-Moore Voting Algorithm. The procedure is this: while I traverse the array, if I choose the first element as a candidate and consider three things:
 
 1.  An encounter with the same element a vote for the candidate
 2.  An encounter with a difference element a vote against the candidate
 3.  Change the candidate to the current element if it is different than the candidate and the vote for the candidate has become 0
 
-then at the end, we should be left with the candidate.
+then at the end, I should be left with the candidate.
 
 This is because the majority element will occur more than `n//2` times with `n` the length of the array. Because of this, the majority element will be the only possible candidate with a positive vote at the end.
 
 #### Complexity
 
--   Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> $O(n)$: We need to traverse the array once.
--   Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> $O(1)$: We only need to keep track of the count and the candidate, which requires constant memory.
+-   Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> $O(n)$: I need to traverse the array once.
+-   Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> $O(1)$: I only need to keep track of the count and the candidate, which requires constant memory.
 
 #### Code
 
@@ -177,7 +177,7 @@ class Solution:
 
 #### Intuition
 
-From [Valid Anagram](https://leetcode.com/problems/valid-anagram/), we know that one word is an anagram of another if character frequencies are the same. We can check everything in one go with a dictionary. The key information is *lowercase letter only*. This means that character frequency can be capture in a tuple of 26 number, each one the number of character a, b, etc. in the word. We can append each word to the correct key in the dictionary. Afterwards, we simply return the values of the dictionary.
+From [Valid Anagram](https://leetcode.com/problems/valid-anagram/), I know that one word is an anagram of another if character frequencies are the same. I can check everything in one go with a dictionary. The key information is *lowercase letter only*. This means that character frequency can be capture in a tuple of 26 number, each one the number of character a, b, etc. in the word. I can append each word to the correct key in the dictionary. Afterwards, I simply return the values of the dictionary.
 
 #### Algorithm
 
@@ -188,7 +188,7 @@ From [Valid Anagram](https://leetcode.com/problems/valid-anagram/), we know that
 
 #### Complexity
 
--   Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> $O(nk)$: We need to traverse the array once. $k$ is the maximum length of a string in the array.
+-   Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> $O(nk)$: I need to traverse the array once. $k$ is the maximum length of a string in the array.
 -   Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> $O(nk)$: The information stored in the dictionary. 
 
 #### Code
@@ -211,7 +211,7 @@ class Solution:
 
 To satisfy the $O(nlogn)$ time constraint, computer science students will think of Quickselect. If you know how to implement Quickselect, it's fine.
 
-For someone who doesn't, the approach is to use a dictionary the frequency as the key, and the value an array of elements with that key. To return, we can just iterate the dictionary from the maximum value to the minimum, append the value to an array and return the k elements. \#### Algorithm
+For someone who doesn't, the approach is to use a dictionary the frequency as the key, and the value an array of elements with that key. To return, I can just iterate the dictionary from the maximum value to the minimum, append the value to an array and return the k elements. \#### Algorithm
 
 1.  Take frequency count of the elements in the array, better with Python `Counter`
 2.  Initialize a dictionary, better with Python `defaultdict`.
@@ -220,8 +220,8 @@ For someone who doesn't, the approach is to use a dictionary the frequency as th
 
 #### Complexity
 
--   Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> $O(n)$: We need to traverse the array once and the dictionary once. Worst-case, the dictionary has the same size as the array.
--   Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> $O(n)$: Worst-case, we will need to store triple the memory of the original array.
+-   Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> $O(n)$: I need to traverse the array once and the dictionary once. Worst-case, the dictionary has the same size as the array.
+-   Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> $O(n)$: Worst-case, I will need to store triple the memory of the original array.
 
 #### Code
 ``` python
@@ -286,8 +286,8 @@ General:
 
 #### Complexity
 
-- Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> $O(n)$: We need to traverse the array and string once for each.
-- Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> $O(1)$: We will need to store some pointers for both functions.
+- Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> $O(n)$: I need to traverse the array and string once for each.
+- Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> $O(1)$: I will need to store some pointers for both functions.
 
 #### Code
 
@@ -358,8 +358,8 @@ To get to the $O(1)$ memory solution, it is about converting one array into just
 
 #### Complexity
 
-- Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> $O(n)$: We need to traverse the original array twice.
-- Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> $O(1)$: We will need to store the postfix product while calculating.
+- Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> $O(n)$: I need to traverse the original array twice.
+- Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> $O(1)$: I will need to store the postfix product while calculating.
 
 #### Code
 ```python
@@ -392,8 +392,8 @@ The nested for loop to check every element is inevitable. The trick is to realiz
 
 #### Complexity
 
-- Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> $O(n^2)$: We need to traverse the original array with a nested for loop. Of course, if we are dealing with a standard Sudoku every time then it is $O(1)$.
-- Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> $O(n)$: We will need to store 3 dictionaries with worse case the same size as the board.
+- Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> $O(n^2)$: I need to traverse the original array with a nested for loop. Of course, if I am dealing with a standard Sudoku every time then it is $O(1)$.
+- Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> $O(n)$: I will need to store 3 dictionaries with worse case the same size as the board.
 
 #### Code
 ```python
@@ -420,7 +420,7 @@ class Solution:
 
 #### Intuiton
 
-We need to perform a lot of searches and there is the possibility of duplicates. Hence, it is better if we convert the array to a set. We can also create safeguard by NOT counting the number in the sequence if the one preceding it is in the set.
+I need to perform a lot of searches and there is the possibility of duplicates. Hence, it is better if I convert the array to a set. I can also create safeguard by NOT counting the number in the sequence if the one preceding it is in the set.
 
 #### Algorithm
 
@@ -430,8 +430,8 @@ We need to perform a lot of searches and there is the possibility of duplicates.
 
 #### Complexity
 
-- Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> $O(n)$: We need to traverse the original array once
-- Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> $O(n)$: We will need to store a set with the same size as the array.
+- Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> $O(n)$: I need to traverse the original array once
+- Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> $O(n)$: I will need to store a set with the same size as the array.
 
 #### Code
 ```python

@@ -13,7 +13,7 @@ Firstly, See [About](https://h-notes-on-dsa.netlify.app/about.html) page.
 
 ## Definitions:
 
-This is not a data structure, but a pattern of coding interview questions. This is something passed down from languages with pointers such as C++ or Java. The idea is that we will traverse the array in both direction. This operation has use in some problems, particularly palindrome checking.
+This is not a data structure, but a pattern of coding interview questions. This is something passed down from languages with pointers such as C++ or Java. The idea is that I will traverse the array in both direction. This operation has use in some problems, particularly palindrome checking.
 
 ## Problem
 
@@ -27,8 +27,8 @@ The **basic problem** of two pointers. The problem can be solved by many ways (s
 <!-- Describe your approach to solving the problem. -->
 1. Initialize two pointers.
 2. Traverse the array from both ends.
-3. For both pointers, if we encounter a non-alphanumeric characters, we increment or decrement further.
-4. If we encounter a differing pair, return False immediately.
+3. For both pointers, if I encounter a non-alphanumeric characters, I increment or decrement further.
+4. If I encounter a differing pair, return False immediately.
 5. At the end, return True if the right end (or the left end, depending on which pointer is moved first) has moved, else False (this is to resolve edge cases suchas `".,"`).
 
 #### Complexity
@@ -68,7 +68,7 @@ class Solution:
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
-If we set up  two pointers at the start and the end, if the sum of the two numbers is larger, the *only* way to make it smaller is to decrement the right pointer. Likewise, the *only* way to make it larger is to increment the left pointer.
+If I set up  two pointers at the start and the end, if the sum of the two numbers is larger, the *only* way to make it smaller is to decrement the right pointer. Likewise, the *only* way to make it larger is to increment the left pointer.
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
@@ -103,7 +103,7 @@ class Solution:
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
-If we sort the array, the problem can be turned into a two-pointer problem, where we fix the first value and then use two pointers to search for the remaining two values. There arises a bigger problem though: dealing with duplicates. The best approach is to deal with duplicates after we have found a satisfying triplet. 
+If I sort the array, the problem can be turned into a two-pointer problem, where I fix the first value and then use two pointers to search for the remaining two values. There arises a bigger problem though: dealing with duplicates. The best approach is to deal with duplicates after I have found a satisfying triplet. 
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
@@ -114,11 +114,11 @@ If we sort the array, the problem can be turned into a two-pointer problem, wher
 #### Complexity
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
-$O(n^2)$: We use a nested for loop to traverse the array.
+$O(n^2)$: I use a nested for loop to traverse the array.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
-$O(1)$: If we ignore the returning array. If not, the complexity is $O(k)$ for k the number of triplets.
+$O(1)$: If I ignore the returning array. If not, the complexity is $O(k)$ for k the number of triplets.
 
 #### Code
 ```python
@@ -129,7 +129,7 @@ class Solution:
         nums.sort()
         cur, res = 0, []
         while cur < len(nums) - 2:
-            # A nice little improvement: once the smallest value is positive, we
+            # A nice little improvement: once the smallest value is positive, I
             # can safely conclude the search.
             if nums[cur] > 0:
                 break
@@ -143,7 +143,7 @@ class Solution:
                     right -= 1
                 elif nums[left] + nums[right] == remain:
                     res.append([nums[left], nums[right], nums[cur]])
-                    # This is where we decrement and increment the pointers to deal with duplicates. 
+                    # This is where I decrement and increment the pointers to deal with duplicates. 
                     while left < len(nums)-1 and nums[left+1] == nums[left]:
                         left += 1
                     while left < len(nums)-1 and nums[right-1] == nums[right]:
@@ -159,20 +159,20 @@ class Solution:
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
-The trick is the idea of *maximum so far*. This appears a lot in problems where we need to iterate the array and update an extremum as we go along. The rule for moving the pointer comes from the question: *How do I potentially increase the value of maximum area so far?*. The answer is by moving the *smaller* pointer, the bottleneck in calculating the amount of water the container can hold.
+The trick is the idea of *maximum so far*. This appears a lot in problems where I need to iterate the array and update an extremum as I go along. The rule for moving the pointer comes from the question: *How do I potentially increase the value of maximum area so far?*. The answer is by moving the *smaller* pointer, the bottleneck in calculating the amount of water the container can hold.
 
-An improvement on the solution is a simple check-up. Taking the width constant, the best container is the one with the maximum height. Therefore, at any moment the volume of the best container possible with the current width cannot surpass the maximum so far, we can safely break out of the for loop. 
+An improvement on the solution is a simple check-up. Taking the width constant, the best container is the one with the maximum height. Therefore, at any moment the volume of the best container possible with the current width cannot surpass the maximum so far, I can safely break out of the for loop. 
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
 1. Initialize: 2 pointers, maximum so far, and maximum height.
-2. Traverse the array with two pointers. Update the maximum height as we go along.
+2. Traverse the array with two pointers. Update the maximum height as I go along.
 3. Once the terminating condition is met, return the maximum so far.
 
 #### Complexity
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
-$O(n)$: We need to traverse the array once...
+$O(n)$: I need to traverse the array once...
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
 $O(1)$: ... and store a bunch of integers.
@@ -203,7 +203,7 @@ class Solution:
 - Need to keep the maximum left and right heights.
 - The water trapped depends on the smaller maximum height.
 - Let's say the maximum left height is smaller. The water trapped is the difference between the maximum left height and the current left height, which is >= 0.
-- We need to increment the side with the smaller maximum height. 
+- I need to increment the side with the smaller maximum height. 
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
@@ -214,7 +214,7 @@ class Solution:
 #### Complexity
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
-$O(n)$: We need to traverse the array once...
+$O(n)$: I need to traverse the array once...
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
 $O(1)$: ... and store a bunch of integers.
@@ -246,9 +246,9 @@ class Solution:
 <!-- Describe your first thoughts on how to solve this problem. -->
 Let's forget about the Python one-liner despite its performance - you can take a look at it at the end. It will not help you learn anything besides the power of reading the documentation. 
 
-Back to the problem. If we are not in Python, we will need to convert the string into a mutable array, reverse *every* character in the array, and then iterate and reverse *every* character in word, which came before a white space or at the end. The last bit can be done with two pointers.
+Back to the problem. If I am not in Python, I will need to convert the string into a mutable array, reverse *every* character in the array, and then iterate and reverse *every* character in word, which came before a white space or at the end. The last bit can be done with two pointers.
 
-(We can also define a function to reverse every element in a list. I don't want to go that far so I will just use the built-in Python one.)
+(I can also define a function to reverse every element in a list. I don't want to go that far so I will just use the built-in Python one.)
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
@@ -260,11 +260,11 @@ Back to the problem. If we are not in Python, we will need to convert the string
 #### Complexity
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
-$O(n)$: We need to iterate the list of characters two times. Note that the two times are not nested.
+$O(n)$: I need to iterate the list of characters two times. Note that the two times are not nested.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
-$O(n)$: We need to create the list of characters
+$O(n)$: I need to create the list of characters
 #### Code
 ```python
 import re
@@ -313,7 +313,7 @@ class Solution:
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
-This problem builds upon [Valid Palindrome I](https://leetcode.com/problems/valid-palindrome/). The intuition is this: if we iterate the string with two pointers as before, at the first pair where two characters are different, the string is valid if the substring from *the element right next to the right of the left character in the pair* to *the right character in the pair* is a valid palindrome, or the substring from *the left character in the pair* to *the element right next to the left of the right character in the pair* is a valid palindrome.
+This problem builds upon [Valid Palindrome I](https://leetcode.com/problems/valid-palindrome/). The intuition is this: if I iterate the string with two pointers as before, at the first pair where two characters are different, the string is valid if the substring from *the element right next to the right of the left character in the pair* to *the right character in the pair* is a valid palindrome, or the substring from *the left character in the pair* to *the element right next to the left of the right character in the pair* is a valid palindrome.
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
@@ -327,11 +327,11 @@ There are two ways to write solutions: **hidden class method** and `nonlocal` **
 
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
-$O(n)$: We need to iterate through the input string once in both cases.
+$O(n)$: I need to iterate through the input string once in both cases.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
-$O(1)$: We only need to store pointers.
+$O(1)$: I only need to store pointers.
 
 #### Code
 

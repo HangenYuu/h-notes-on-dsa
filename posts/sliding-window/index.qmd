@@ -13,7 +13,7 @@ Firstly, See [About](https://h-notes-on-dsa.netlify.app/about.html) page.
 
 ## Definitions
 
-Sliding window at its core is processing the data in an array in chunk, with limits set by 2 pointers at both sides. Sliding window is particularly suitable if we need to performf repeated operations on a sub-array. Instead of going crazy over all of the possible chunks, we can just change the result (e.g. sum of elements in the window) by discarding the leaving and accounting for the entering element(s).
+Sliding window at its core is processing the data in an array in chunk, with limits set by 2 pointers at both sides. Sliding window is particularly suitable if I need to performf repeated operations on a sub-array. Instead of going crazy over all of the possible chunks, I can just change the result (e.g. sum of elements in the window) by discarding the leaving and accounting for the entering element(s).
 
 ## Problems
 
@@ -21,26 +21,26 @@ Sliding window at its core is processing the data in an array in chunk, with lim
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
-The first problem in sliding window. The brute-force way of doing this is to check every single pair fo number for the largest right-left pair. The time complexity will be $O(n^2)$. How do we modify this solution to be easier?
+The first problem in sliding window. The brute-force way of doing this is to check every single pair fo number for the largest right-left pair. The time complexity will be $O(n^2)$. How do I modify this solution to be easier?
 
-First, the brute-force algorithm involves keeping track of the maximum number so far. This is a good thing that we can keep.
+First, the brute-force algorithm involves keeping track of the maximum number so far. This is a good thing that I can keep.
 
-Second, let's assume this array of `[2, ..., 1]`. Let's say that the maximum of the subarray between 2 and 1 is 6: `[2, ...6..., 1]` (it does not matter where the 6 is as long as it occurs before 1). The max profit we can get so far is $6-2=4$. To increase the profit, there are two ways: shift the buy date to a day with smaller price, or shift the sell date to a day with a larger price. Let's say there is a 7 after 1. We can increase the profit if we shift the sell date from 6 to 7: `[2, ...6..., 1, ...7...]`. However, the best profit is when we shift the buy date from 2 to 1 as well. Now, because we already keep track of the max profit so far, so it cannot be worse if *we shift the buy date every single time we find a better buy date*. 
+Second, let's assume this array of `[2, ..., 1]`. Let's say that the maximum of the subarray between 2 and 1 is 6: `[2, ...6..., 1]` (it does not matter where the 6 is as long as it occurs before 1). The max profit I can get so far is $6-2=4$. To increase the profit, there are two ways: shift the buy date to a day with smaller price, or shift the sell date to a day with a larger price. Let's say there is a 7 after 1. I can increase the profit if I shift the sell date from 6 to 7: `[2, ...6..., 1, ...7...]`. However, the best profit is when I shift the buy date from 2 to 1 as well. Now, because I already keep track of the max profit so far, so it cannot be worse if *I shift the buy date every single time I find a better buy date*. 
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
 The algorithm:
 1. Initialize the left and right sides of the window + the max profit so far.
 2. Traverse the array with the right side.
-3. If we encounter a better buy date (right < left), update the buy date. If we encounter a potential sell date (right >= left), check and update the profit so far.
+3. If I encounter a better buy date (right < left), update the buy date. If I encounter a potential sell date (right >= left), check and update the profit so far.
 4. Return the max profit at the end.
 #### Complexity
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
-$O(n)$: We are traversing the array once.
+$O(n)$: I am traversing the array once.
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
-$O(1)$: We are only keeping track of a bunch of integers.
+$O(1)$: I am only keeping track of a bunch of integers.
 #### Code
 ```python
 class Solution:
@@ -62,13 +62,13 @@ class Solution:
 <!-- Describe your first thoughts on how to solve this problem. -->
 This is one problem in the class of "if you know, you know", though of course you can discover for yourself from keen observation.
 
-The named algorithm is Kadane's algorithm. I did not know the exact formal definition for it, but its pattern is that of sliding window (though the class will be dynamic programming). The intuition here is that if we keep track of the sum of a subarray, one that sum reaches a negative number, *the whole subarray can be discarded from consideration*, because whatever the value of the next element, the subarray sum will always be worse if we include the negative-sum subarray. Incredible intuition, though I could not see this in the first time I did it.
+The named algorithm is Kadane's algorithm. I did not know the exact formal definition for it, but its pattern is that of sliding window (though the class will be dynamic programming). The intuition here is that if I keep track of the sum of a subarray, one that sum reaches a negative number, *the whole subarray can be discarded from consideration*, because whatever the value of the next element, the subarray sum will always be worse if I include the negative-sum subarray. Incredible intuition, though I could not see this in the first time I did it.
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
 1. Traverse the array, keeping track of the current sum `curSum` and the maximum sum so far `maxSum` of the array.
-2. At each element, if `curSum` becomes negative, we reset it to 0 first. Then we add the element to `curSum`. If `curSum` becomes larger than `maxSum`, we update `maxSum`. 
-3. If we reach the end of the array, return `maxSum`.
+2. At each element, if `curSum` becomes negative, I reset it to 0 first. Then I add the element to `curSum`. If `curSum` becomes larger than `maxSum`, I update `maxSum`. 
+3. If I reach the end of the array, return `maxSum`.
 
 #### Complexity
 - Time complexity:
@@ -77,7 +77,7 @@ $O(n)$: Traversing the whole array once.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
-$O(1)$: We just need to keep track of a bunch of integers.
+$O(1)$: I just need to keep track of a bunch of integers.
 
 #### Code
 ```python
@@ -97,11 +97,11 @@ class Solution:
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
-The problem requires us to check for repeated 10-character substrings in a string. An immediate solution is checking every pair of substrings and append the repeated ones to a list and return. It takes $O(n^2)$ time in this case (whether we check every pair, or discard the previous pairs of substrings that we have checked).
+The problem requires us to check for repeated 10-character substrings in a string. An immediate solution is checking every pair of substrings and append the repeated ones to a list and return. It takes $O(n^2)$ time in this case (whether I check every pair, or discard the previous pairs of substrings that I have checked).
 
-To do better, we ca think of *hashing*, which was invented to reduce search time from $O(n)$ to $O(1)$. We can hash every substring of length 10, and store them in a hash map. We return every substrings that that appear more than 1. This way, we can reduce the time complexity to $O(n)$. We can optimize this further by dropping the hash map and use one hash set to store the substrings and one hash set to store the repeated values.
+To do better, I ca think of *hashing*, which was invented to reduce search time from $O(n)$ to $O(1)$. I can hash every substring of length 10, and store them in a hash map. I return every substrings that that appear more than 1. This way, I can reduce the time complexity to $O(n)$. I can optimize this further by dropping the hash map and use one hash set to store the substrings and one hash set to store the repeated values.
 
-In this case, we use Python built-in data structure. We can implement the hashing function ourselves. The most suitable one for this problem is the polynomial rolling hash algorithm. You can read more about it [here](https://cp-algorithms.com/string/string-hashing.html).
+In this case, I use Python built-in data structure. I can implement the hashing function ourselves. The most suitable one for this problem is the polynomial rolling hash algorithm. You can read more about it [here](https://cp-algorithms.com/string/string-hashing.html).
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
@@ -112,11 +112,11 @@ In this case, we use Python built-in data structure. We can implement the hashin
 #### Complexity
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
-$O(n)$: We are traversing the string once.
+$O(n)$: I am traversing the string once.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
-$O(n)$: We are storing the substrings in the hash set.
+$O(n)$: I am storing the substrings in the hash set.
 
 #### Code
 ```python
@@ -167,7 +167,7 @@ class Solution:
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
-The problem is explicitly sliding window. The brute-force solution is calculating the maximum of each window. This takes $O(nk)$ time, where $n$ is the length of the array and $k$ is the size of the window. We can do better by using a data structure that can keep track of the maximum of each window in $O(1)$ time. This data structure is called *deque* (double-ended queue). We can use a deque to store the indices of the elements in the window in the descending order. At each step, we check if the first element of the deque is still in the window. If it is not, we remove it. Then we check if the current element is larger than the last element of the deque. If it is, we remove the last element of the deque. Then we append the current element to the deque. The first element of the deque is the index of the maximum element in the window. We append it to the result array.
+The problem is explicitly sliding window. The brute-force solution is calculating the maximum of each window. This takes $O(nk)$ time, where $n$ is the length of the array and $k$ is the size of the window. I can do better by using a data structure that can keep track of the maximum of each window in $O(1)$ time. This data structure is called *deque* (double-ended queue). I can use a deque to store the indices of the elements in the window in the descending order. At each step, I check if the first element of the deque is still in the window. If it is not, I remove it. Then I check if the current element is larger than the last element of the deque. If it is, I remove the last element of the deque. Then I append the current element to the deque. The first element of the deque is the index of the maximum element in the window. I append it to the result array.
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
@@ -183,12 +183,12 @@ The problem is explicitly sliding window. The brute-force solution is calculatin
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
 $O(n)$: There are 4 cases for the input array:
-1. The array is strictly increasing: At the first step, we will pop from the initialized deque $k$ times before appending. In subsequent steps, we will pop once and append once. This takes $O(n)$ time in total.
-2. The array is monotonically decreasing: At each step, we will need to pop once and append once. This takes $O(n)$ time in total.
-3. The array is mixed: Intuitively, we can think that since the two cases above the runtime is $O(n)$, the runtime for this mixed case is also $O(n)$. However, we did not factor in the cost of switching. The worst case is the next value increases after a monotonically decreasing window, or decreases after a strictly increasing window. In either case, we will need to pop $k$ times before appending, plus filling up the queue $k$ times before. This can happen at most $\frac{n}{k}$ times, leading to a runtime of $O((k+k)\frac{n}{k})$ or $O(n)$.
+1. The array is strictly increasing: At the first step, I will pop from the initialized deque $k$ times before appending. In subsequent steps, I will pop once and append once. This takes $O(n)$ time in total.
+2. The array is monotonically decreasing: At each step, I will need to pop once and append once. This takes $O(n)$ time in total.
+3. The array is mixed: Intuitively, I can think that since the two cases above the runtime is $O(n)$, the runtime for this mixed case is also $O(n)$. However, I did not factor in the cost of switching. The worst case is the next value increases after a monotonically decreasing window, or decreases after a strictly increasing window. In either case, I will need to pop $k$ times before appending, plus filling up the queue $k$ times before. This can happen at most $\frac{n}{k}$ times, leading to a runtime of $O((k+k)\frac{n}{k})$ or $O(n)$.
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
-$O(k)$: We are storing the indices of the elements in the window in the deque.
+$O(k)$: I am storing the indices of the elements in the window in the deque.
 
 #### Code
 ```python
@@ -251,19 +251,19 @@ class Solution:
 ### 5. Minimum Window Subsequence
 
 #### Intuition
-The problem asked us to find the shortest or earliest-occurred *substring* of a longer string `s` where a shorter string `t` appears as a *subsequence* (substring is contiguous, subsequence does not have to). The idea is we iterate `s` until we find the last character of `t` as the right pane. Here, we go back and iterate in reverse the window slide and t to find the real left pane. If the length of this substring is smaller than the current minimum substring, we update it.
+The problem asked us to find the shortest or earliest-occurred *substring* of a longer string `s` where a shorter string `t` appears as a *subsequence* (substring is contiguous, subsequence does not have to). The idea is I iterate `s` until I find the last character of `t` as the right pane. Here, I go back and iterate in reverse the window slide and t to find the real left pane. If the length of this substring is smaller than the current minimum substring, I update it.
 
 #### Algorithm
 
 1. Initialize: one pointer for each string, one variable to keep track of the minimum length, one variable to keep track of the subsequence
-2. Iterate string `s` until we find the last character of string `t`. Upon finding, we iterate backward string `s` and compare until we find the first character of string `t`. This is a subsequence.
-3. We check for the length of the current subsequent and update if necessary (because we iterate from left to right, we do not need to care about the earliest-occurred condition).
+2. Iterate string `s` until I find the last character of string `t`. Upon finding, I iterate backward string `s` and compare until I find the first character of string `t`. This is a subsequence.
+3. I check for the length of the current subsequent and update if necessary (because I iterate from left to right, I do not need to care about the earliest-occurred condition).
 4. At the end, return the minimum subsequence
  
 #### Complexity
 
 - Time complexity: $O(n \times m)$: With `n` and `m` the length of each string. This is due to the nested loop.
-- Space complexity: $O(1)$: We only need to store pointers.
+- Space complexity: $O(1)$: I only need to store pointers.
 
 #### Code
 
@@ -306,15 +306,15 @@ class Solution:
 <!-- Describe your first thoughts on how to solve this problem. -->
 There are questions meant to be solved in an order. This is one of them. The problem resembles the one above. The idea is the same: slide a window until the second string is contained inside that window, and then iterate backward to find the minimum subarray. Here, the condition is all characters present and unordered, so a dictionary or (`collections.Counter`) is perfect.
 
-However, it is inefficient to check the two dictionaries for every increment. Instead, it is better if we check just the character we make change, and have another variable storing the number of chracters with requirement met in the window.
+However, it is inefficient to check the two dictionaries for every increment. Instead, it is better if I check just the character I make change, and have another variable storing the number of chracters with requirement met in the window.
 
-We can optimize a bit with the filtering trick from LeetCode where we filter `s` for relevant characters only.
+I can optimize a bit with the filtering trick from LeetCode where I filter `s` for relevant characters only.
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
 1. Initialize: a character count dictionary for `t`, a filtered list of `s`, two pointers, a character count dictionary for a window, two variables to check for satisfaction between the window and string `t`, and a tuple to store the return variable
-2. Iterate the filter list by incrementing the right pointer. At each character, we update the window dictionary accordingly.
-3. Once condition is met, we repeatedly update answer and shrink the window until condition is no longer met.
+2. Iterate the filter list by incrementing the right pointer. At each character, I update the window dictionary accordingly.
+3. Once condition is met, I repeatedly update answer and shrink the window until condition is no longer met.
 4. Return the answer.
 
 #### Complexity
@@ -372,7 +372,7 @@ class Solution:
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
-"Repeating" suggests that this problem has something to do with Hash Map/Hash Table. Couple that with sliding window, we can think of sliding the pointers from left to right, storing the characters found into a Hash Table. When a repeated character is found at the right pointer, shift the left pointer to right until past the repeated character, discarding elements from the Hash Table in the process.
+"Repeating" suggests that this problem has something to do with Hash Map/Hash Table. Couple that with sliding window, I can think of sliding the pointers from left to right, storing the characters found into a Hash Table. When a repeated character is found at the right pointer, shift the left pointer to right until past the repeated character, discarding elements from the Hash Table in the process.
 
 #### Approach
 <!-- Describe your approach to solving the problem. -->
@@ -434,14 +434,14 @@ class Solution:
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
-Another sliding window problem. We can slide the window (iterate the array) and calculate the its sum `total` until `total >= target` and then record the length if it is the smallest so far. We can then slide the window forward, and repeat the steps.
+Another sliding window problem. I can slide the window (iterate the array) and calculate the its sum `total` until `total >= target` and then record the length if it is the smallest so far. I can then slide the window forward, and repeat the steps.
 
-There are two ways to slide the window. We need one pointer to increment with the array, while the other being pushed or dragged along. Both implementations are below, but they are fundamentally the same.
+There are two ways to slide the window. I need one pointer to increment with the array, while the other being pushed or dragged along. Both implementations are below, but they are fundamentally the same.
 
 #### Approach
 <!-- Describe your approach to solving the problem. -->
 1. Initialize two pointers, a variable to store window sum, a variable to store the minimum length.
-2. Iterate the array. At each step, extend the window if necessary. If `total >= target`, update the minimum if necessary. Subtract the element from the intermediate sum as we slide the window.
+2. Iterate the array. At each step, extend the window if necessary. If `total >= target`, update the minimum if necessary. Subtract the element from the intermediate sum as I slide the window.
 3. Return answer accordingly.
 
 #### Complexity
@@ -451,7 +451,7 @@ $O(n)$: Each pointer iterates the array at most once.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
-$O(1)$: We only store 3 numbers.
+$O(1)$: I only store 3 numbers.
 
 #### Code
 ```python

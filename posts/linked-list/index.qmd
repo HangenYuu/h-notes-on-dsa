@@ -195,5 +195,81 @@ class Solution:
         prev_of_group.next.next = curr
         prev_of_group.next = prev
         return dummy.next
+```
 
+### 4. Reorder List
+
+#### Intuition
+
+As I am on a roll with linked list reversal, it is easy to think of the naive algorithm: just reverse the whole remaining linked list every time as I iterate from the second node to the end. This is of course a bad solution, with a time complexity of $O(n^2)$. To do better, I realized that the result list *looks as if its later half has been reversed, and then merged one by one with the first half.* This is interesting as the problem can be divided into 3 subproblems, ones I already know the answer:
+
+1. Find the middle of the linked list - fast and slow pointers.
+2. Reverse a linked list - with 3 pointers.
+3. Merge two linked list node by node - not mentioned before, but I showed you below (it *appears* simple in Python).
+
+#### Algorithm
+
+1. Get to the start of the second half of the linked list. For this problem, I need the exact start for linked list with an even number of nodes, and pass the exact middle for odd one.
+2. Reverse the second half of the linked list.
+3. Splice the two linked lists into one.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: I iterate the linked list several times, but never nestedly.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$: I only need to store pointers.
+
+#### Code
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def reorderList(self, head: Optional[ListNode]) -> None:
+        """
+        Do not return anything, modify head in-place instead.
+        """
+        # Edge case - the list is guaranteed to be non-empty
+        if not head.next:
+            return head
+        
+        # General case
+        slow, fast = head, head
+        while fast.next and fast.next.next:
+            slow = slow.next
+            fast = fast.next.next
+        
+        # I use the Pythonic way to exchange variable. The real one
+        # going on is included to demonstrate
+        slow.next, slow = None, slow.next
+        # temp = slow.next
+        # slow.next = None
+        # slow = temp
+        slow = self._reverseList(slow)
+
+        while slow and head:
+            head.next, head = slow, head.next
+            slow.next, slow = head, slow.next
+            # temp = head.next
+            # head.next = slow
+            # head = temp
+            # temp = slow.next
+            # slow.next = head
+            # slow = temp
+    
+    def _reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        pre, cur, nex = None, head, head.next
+
+        while nex:
+            cur.next = pre
+            pre = cur
+            cur = nex
+            nex = nex.next
+        cur.next = pre
+        return cur
 ```
