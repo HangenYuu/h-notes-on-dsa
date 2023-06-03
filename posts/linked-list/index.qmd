@@ -273,3 +273,94 @@ class Solution:
         cur.next = pre
         return cur
 ```
+
+### 5. Swapping Nodes in a Linked List
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+I got sidetracked into thinking how to do this optimally again, and cannot come up with the obvious solution: transcribe the linked list into an array, swap in the array (which is easier), and then reconstruct the linked list. The memory complexity is $O(n)$. I want to do so in-place, since we are in the in-place pattern of linked list. Another obvious one is iterating the linked list 2 times: first to find the $k^{th}$ node from the start and the total number of nodes in the linked list, second to find the $k^{th}$ node from the end. However, I was informed of an one-pass approach, using which has now came to be obvious: fast and slow pointer. So iterate the array to find the $k^{th}$ node from the start. Now I have a pair of nodes $k$-nodes apart. If one pointer is placed here and one is placed at the beginning, when I increment both of them together, the later will be the $k^{th}$ node from the end when the former goes to the end. Afterwards, swap the *values* the nodes (not the connections) and return the original head.
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+##### Two pass
+
+1. Initialize `kth_from_begin` and `kth_from_end` to `head`. 
+2. Iterate the linked list with a pointer `temp` and count the number of node. Assign `kth_from_begin` at the correct node.
+3. Subtract `k` from the node count to get the position of `kth_from_end`. Iterate the linked list to assign `kth_from_end` correctly.
+4. Swap just the values and return the head.
+
+##### One pass
+
+1. Iterate the linked list with a pointer `temp` and count the number of node. Assign `kth_from_begin` at the correct node.
+2. Initialize `kth_from_begin` to head.
+3. Continue iterating with `temp` and `kth_from_begin` at the same time. As `temp` hits the first node, `kth_from_begin` is pointed to the correct node.
+4. Swap just the values and return the head.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: I iterate the linked list several times.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$: I only need to store pointers.
+
+#### Code
+
+##### Two pass
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def swapNodes(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
+        # Key: Swap the values
+        # Edge case - guaranteed linked list non-empty 
+        if not head.next:
+            return head
+        count = 0
+        kth_from_begin = kth_from_end = head
+        temp = head
+        while temp:
+            if count == k - 1:
+               kth_from_begin = temp 
+            temp = temp.next
+            count += 1
+        
+        # count will be 1 larger than the actual number of nodes
+        node_from_end = count - k
+        while node_from_end > 0:
+            node_from_end -= 1
+            kth_from_end = kth_from_end.next
+        kth_from_begin.val, kth_from_end.val = kth_from_end.val, kth_from_begin.val
+        return head
+```
+##### One pass
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def swapNodes(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
+        # Key: Swap the values
+        # Edge case - guaranteed linked list non-empty 
+        if not head.next:
+            return head
+        count = 0
+        temp = head
+        
+        while count < k - 1:
+            temp = temp.next
+            count += 1
+        
+        kth_from_begin, kth_from_end = temp, head
+        while temp.next:
+            kth_from_end, temp = kth_from_end.next, temp.next
+
+        kth_from_begin.val, kth_from_end.val = kth_from_end.val, kth_from_begin.val
+        return head
+```
