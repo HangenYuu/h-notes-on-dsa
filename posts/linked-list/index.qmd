@@ -364,3 +364,116 @@ class Solution:
         kth_from_begin.val, kth_from_end.val = kth_from_end.val, kth_from_begin.val
         return head
 ```
+
+### 6. Reverse Nodes in Even Length Groups
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+I immediately thought of using a fast and slow pointers + keeping count of the current number of nodes in the group and the maximum number of nodes in the group. The later was correct, but the former was misguided. The objectives are the position of the last element of the previous group and the last element of the current group, which are needed for reversing. In that sense, it is sliding window, with the one side fixed at the last element of the previous group, while the other is dragged out to the last element of the current group. At each window, we check the oddity of the current number of nodes and reverse if necessary.
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+1. Initialize the left pointer and max group length.
+2. Iterate the linked list starting at `head.next` (the first element does not need to be reversed), one window up to the max group length at a time.
+3. If there are even number of nodes in the window, reverse it. Else, do nothing.
+4. Return `head` after modification.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: Iterate the linked list less than two times.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$: Store only some integers.
+
+#### Code
+
+The shorthand reversal in Python is included in comments. While it looks awesome, I think that I should avoid it here as it makes debugging impossible and is certain to confuse my colleagues.
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def reverseEvenLengthGroups(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        group_prev = head
+        curr_max_length = 2
+
+        while group_prev.next:
+            curr = group_prev
+            count = 0
+            
+            for _ in range(curr_max_length):
+                if not curr.next:
+                    break
+                count += 1
+                curr = curr.next
+
+            if count % 2: # Odd, do nothing
+                group_prev = curr
+            else:         # Even, reverse
+                group_next = curr.next
+                curr = group_prev.next
+                
+                for _ in range(count):
+                    # curr.next, curr, group_next = group_next, curr.next, curr
+                    curr_next = curr.next
+                    curr.next = group_next
+                    group_next = curr
+                    curr = curr_next
+                # group_prev.next.next, group_prev.next, group_prev = curr, group_next, group_prev.next
+                prev_next = group_prev.next
+                group_prev.next = group_next
+                group_prev = prev_next
+            curr_max_length += 1
+        return head
+```
+
+### 7. Swap Nodes in Pairs
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+The problem is straight-forward: I just need to iterate two nodes at a time and swap them. I need the right previous node and right after node to do so, so I keep track of it.
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+1. Initialize a dummy head, and `previous` + `left_pointer` from it.
+2. Iterate the linked list and reverse each pair of nodes.
+3. Once `left_pointer` reaches or goes past the end, return.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: Iterate the linked list twice.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$: Store only pointers.
+
+#### Code
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def swapPairs(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        # Edge case
+        if not head:
+            return head
+        
+        # General case
+        dummy = ListNode(0, head)
+        prev_to_group, left_pointer = dummy, dummy.next
+        while left_pointer and left_pointer.next:
+            right_pointer = left_pointer.next
+            next_to_group = right_pointer.next
+            prev_to_group.next = right_pointer
+            left_pointer.next = next_to_group
+            right_pointer.next = left_pointer
+            prev_to_group, left_pointer = left_pointer, left_pointer.next
+        return dummy.next
+```
