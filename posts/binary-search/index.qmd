@@ -516,3 +516,57 @@ class Solution:
                 right = mid - 1
         return left
 ```
+
+### 10. Single Element in a Sorted Array
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+Some math is required - that was what I though when I first saw the problem. And indeed, you need some math. In an array of pairs, `array[i] == array[i+1]` for `i` an even index. If a single element is inserted before `i`, this observation does not hold. Hence, I will know that the single element exists to the left of `i` and I need to reduce the searching window leftward to `i`.
+
+Developing this idea, the problem says that the array is sorted, and the time complexity required is $O(\log n)$. This means binary search. However, there are three modifications:
+
+1. `mid` needs to fall on an even index. Hence, I decrement it if it is odd.
+2. When the pattern breaks at `mid`, `mid` should also be considered as a candidate. Hence, `right` is updated to `mid` only.
+3. When the pattern is encountered, the pair can be dropped, so `left` is updated to `mid + 2`.
+
+Note that these are my specific implementation details. There are other ways.
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+1. Perform modified binary search:
+   1. For odd `mid` pointer, decrement it to even.
+   2. Check `array[i] == array[i+1]`. If this is true, `left` is updated to `mid + 2`. Else, `right` is updated to `mid`.
+2. Return `left`'s value.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(\log n)$
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$
+
+#### Code
+```python
+class Solution:
+    def singleNonDuplicate(self, nums: List[int]) -> int:
+        # Edge case
+        if len(nums) < 2 or nums[0] < nums[1]:
+            return nums[0]
+        elif nums[-2] < nums[-1]:
+            return nums[-1]
+        
+        # General case
+        left, right = 2, len(nums) - 3
+
+        while left < right:
+            mid = (right + left) // 2
+            if mid % 2:
+                mid -= 1
+            if nums[mid] != nums[mid+1]:
+                right = mid
+            else:
+                left = mid + 2
+        return nums[left]
+```
