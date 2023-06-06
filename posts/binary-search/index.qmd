@@ -82,11 +82,11 @@ For any call `isBadVersion(version)`, if the version is good, it means that the 
 #### Complexity
 - Time complexity: 
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
-$O(log(n))$: The default time complexity of binary search.
+$O(log(n))$
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
-$O(1)$: Pointers are essentially integers.
+$O(1)$
 
 #### Code
 ```python
@@ -283,10 +283,11 @@ In an array with $n+1$ elements from $1$ to $n$, the number of elements smaller 
 #### Complexity
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
-$O(n \log n)$: At each iteration of the binary search, I need to iterate through the array to calculate the number of elements smaller or equal to the middle element.
+$O(n \log n)$
+
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
-$O(1)$: I only need to store pointers.
+$O(1)$
 
 #### Code
 
@@ -305,4 +306,138 @@ class Solution:
                 left += 1
         
         return left
+```
+
+### 7. Search in Rotated Sorted Array
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+The rotated sorted list is best illustrated below
+
+![](bin sea 1.svg)
+
+I saw that the array is divided into two sorted portion, with the smallest element of the first greater than the largest element of the second. This doubles the consideration when I need to update one of the pointers.
+
+Before updating, I need to find the portion the `mid` pointer is currently at by comparing its value to `left` pointer's value. If `mid` is in the left portion, I move `left` to the right if `target` is larger than `mid`'s value (`target` is further to the right of the left portion) or if `target` is smaller than `left`'s value (`target` is in the right portion). Otherwise, update `right`. The same analysis can be used when `mid` is in the right portion.
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+1. Initialize the left and right pointers.
+2. Perform binary search on `num`. At each iteration, check the portion `mid` is currently at before updating `left` or `right` according to the rules.
+3. Return `mid` if `target` is found else `-1`.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+
+$O(n \log n)$
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$
+
+#### Code
+
+Update: The solution cannot pass the time limit check on LeetCode. The solution is correct, but it is not efficient enough.
+```python
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        left, right = 0, len(nums) - 1
+        
+        while left <= right:
+            mid = (left+right)//2
+            if nums[mid] == target:
+                return mid
+            
+            # Left sorted part
+            if nums[left] <= nums[mid]:
+                if target > nums[mid] or target < nums[left]:
+                    left = mid + 1
+                else:
+                    right = mid - 1
+            # Right sorted part
+            else:
+                if target < nums[mid] or target > nums[right]:
+                    right = mid - 1
+                else:
+                    left = mid + 1
+        return -1        
+```
+
+### 8. Random Pick with Weight
+
+#### Intuition
+
+This is a question in statistics. I did not realize it at first but then my mind was blown. It was statistics.
+
+The question asks me to implement a method to return the an index randomly. If uniform distribution, `random.randint`, easy enough. But hey, each index is assigned a *weight* to it, making it relatively more likely to be picked and I need to take this into account. Here's an example:
+
+![](bin sea 2.png)
+
+For this example:
+
+- Index 0 has a probability of $\frac{10}{10+200+30+40}=\frac{10}{280}$ to be picked at any turn.
+- Index 1 has a probability of $\frac{200}{280}$ to be picked at any turn.
+- Index 2 has a probability of $\frac{30}{280}$ to be picked at any turn.
+- Index 3 has a probability of $\frac{40}{280}$ to be picked at any turn.
+
+To achieve this in reality, I can put 10 pieces of paper with $0$ on it + 200 pieces of paper with $1$ on it + 30 pieces of paper with $2$ on it + 40 pieces of paper with $3$ on it all in a jar, and then had a blind person pick from the jar and read the number to me at each turn. In code, this means creating an array of 10 $0$, 200 $1$, ... concatenated or at random position, and then use `random.randint` to sample from a uniform distribution in range $[0, \text{len(array)}-1]$ (the "blind person" part). But hey, this will consume a lot of space. Statistics has this nice thing called *cumulative distribution*. Simply, it is a function when you give it a value $X$ and then you go on to sample the value from the distribution, it will tell you the probability that you will receive a value less than or equal to $X$. This has an interesting property: if you have a random number chosen from $[0,1]$ with a uniform distribution, the probability that a value $X$ has the *smallest cumulative probability that is larger than this number* is equal $X$'s *probability of being picked when you sample the distribution*. This interesting property still holds when that random number is picked from a *uniform discrete* or *uniform continuous* distribution. To illustrate, I have this array of running cumulative weights from above: `[10, 210, 240, 280]`. Let's pick a random integer from 1 to 280. If the goal is to find the index when the cumulative weight first less than or equal to that integer:
+
+- Index 0 covers 1 to 10, has an effective probability of $\frac{10}{280}$ to be picked at any turn.
+- Index 1 covers 11 to 210, has an effective probability of $\frac{200}{280}$ to be picked at any turn.
+- Index 2 covers 211 to 240, has an effective probability of $\frac{30}{280}$ to be picked at any turn.
+- Index 3 covers 241 to 280, has an effective probability of $\frac{40}{280}$ to be picked at any turn.
+  
+Which is the same as above.
+
+For binary search to come into play, the key is that the running cumulative weight array is naturally sorted in the ascending order. Hence, I can search for the index with binary search instead of iterating from left to right. 
+
+#### Algorithm
+
+The answer is asked to be implemented as a data structure.
+1. Store the input array `w` when initialized. Calculate the running sum if the array has more than one element.
+2. If the array has more than one element, pick a random integer and search for the index when the running sum first less than or equal that number (or first less than in my implementation - the difference is the range to pick the random number).
+3. Return the result.
+
+#### Complexity
+
+- Time complexity:
+  - `__init__()`: $O(n)$ - Iterate the array to calculate the running sum of weights.
+  - `pickIndex()`: $O(\log n)$ - Perform binary search to pick the index.
+- Memory complexity:
+  - `__init__()`: $O(n)$ - The size of the running sum of weights array.
+  - `pickIndex()`: $O(1)$ - Store the pointers.
+
+#### Code
+```python
+from random import randint
+
+class Solution:
+
+    def __init__(self, w: List[int]):
+        self.weights = w
+        if len(w) > 1:
+            self.prefix_totals = []
+            prefix_total = 0
+            for weight in self.weights:
+                prefix_total += weight
+                self.prefix_totals.append(prefix_total)
+        
+    def pickIndex(self) -> int:
+        if len(self.weights) < 2:
+            return 0
+        random_number = randint(0, self.prefix_totals[-1] - 1)
+        left, right = 0, len(self.prefix_totals)     
+        res = float('inf')
+        while left <= right:
+            mid = (left + right) // 2
+            if self.prefix_totals[mid] > random_number:
+                res = min(res, mid)
+                right = mid - 1
+            else:
+                left = mid + 1
+        return res
+
+# Your Solution object will be instantiated and called as such:
+# obj = Solution(w)
+# param_1 = obj.pickIndex()
 ```
