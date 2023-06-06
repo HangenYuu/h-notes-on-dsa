@@ -441,3 +441,78 @@ class Solution:
 # obj = Solution(w)
 # param_1 = obj.pickIndex()
 ```
+
+### 9. Find K Closest Elements
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+The baseline solution is $O(n\log n)$ in Python: sort the array according to the criteria, slice the array, sort the slice, and return.
+```python
+class Solution:
+    def findClosestElements(self, arr: List[int], k: int, x: int) -> List[int]:
+        # Edge case
+        if k == len(arr):
+            return arr
+
+        # You will be kicked out of the company soon enough
+        return sorted(sorted(arr, key=lambda num:(abs(num-x), num))[:k])
+```
+I know immediately I can do better: efficiently search for the closest element that is larger than `x` with binary search Afterwards it is the question of expanding from this element. I was thinking about expanding and appending and sorting, which makes it $O(k\log k)$. However, with sliding window, I can do even better by just keeping the left and right pointers and then return the correct slice, which is already sorted. The time complexity is reduced to $O(\max(\log n, k))$.
+
+One thing that requires a bit of thinking to realize is the left pointer returned by binary search is always more than or equal to `x` (the reverse is the case if the right pointer is returned). Working immediately with this returned pointer is a bit awkward - it's better to use the one right before (or right after) that is the closest and smaller (or larger) to `x`. You can see it in the implementation below.
+
+(I actually may be wrong, and the above is just nonsensical rationalization that I may spout during an interview.)
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+1. Use binary search to assign the position of the largest element that is smaller than `x` to `left` and `right` to `left+1`. The objective slice to return is `arr[left+1:right]`.
+2. While the window has not grown enough, move the right pointer rightward if the right value is closer than the left value and vice versa. Note that if either pointer reach the end of the array, the return slice is meant to start from the begin for the end. Hence, return immediately.
+3. Return the correct slice.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(\max(\log n, k))$
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$
+
+#### Code
+```python
+class Solution:
+    def findClosestElements(self, arr: List[int], k: int, x: int) -> List[int]:
+        # Edge case
+        if k == len(arr):
+            return arr
+        
+        # General case
+        left = self.binarySearch(arr, x) - 1
+        right = left + 1
+
+        while right - left - 1 < k:
+            # Start from first element case
+            if left < 0:
+                return arr[:k]
+            # Start from the end case
+            elif right == len(arr): 
+                return arr[-k:]
+            # Normal update case
+            elif abs(arr[right] - x) < abs(arr[left] - x):
+                right += 1
+            else:
+                left -= 1
+        return arr[left + 1:right]
+
+    def binarySearch(self, arr: List[int], target: int) -> int:
+        left, right = 0, len(arr) - 1
+        while left <= right:
+            mid = (left + right) // 2
+            if arr[mid] == target:
+                return mid
+            elif arr[mid] < target:
+                left = mid + 1
+            else:
+                right = mid - 1
+        return left
+```
