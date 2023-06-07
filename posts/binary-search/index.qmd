@@ -15,6 +15,24 @@ Firstly, See [About](https://h-notes-on-dsa.netlify.app/about.html) page.
 
 In a sorted array, there exists a faster way to search for a specific element than visiting each element. The intuition is if I find an element that is smaller than expected, all of the elements before it are also smaller and can be discarded from the search and likewise if it is larger. The optimal way to take advantage of this property is striking in the middle every time, hence the name binary search.
 
+## Four levels of binary search
+
+### 1. Binary search on totally sorted array
+
+[Binary Search](https://leetcode.com/problems/binary-search/) and [Firs Bad Version](https://leetcode.com/problems/first-bad-version/) fit the issue. In this level, I just need to make sure that there will be no infinite loop and I am good. The problem can more complex, but [Search a 2D Matrix](https://leetcode.com/problems/search-a-2d-matrix/) is the limit.
+
+### 2. Binary search on partially sorted array
+
+This is the (OOXX) pattern. The most straightforward way to achieve such an array is rotation of a sorted array i.e., `[1, 2, 3, 4, 5, 6, 7]` &rarr; `[5, 6, 7, 1, 2, 3, 4]`. Here, the first 3 are Os, the last 4 are Xs. Examples are [Search in Rotated Sorted Array](https://leetcode.com/problems/search-in-rotated-sorted-array/), [Find Minimum in Rotated Sorted Array](https://www.lintcode.com/problem/159/). Here, the key is paying attention to the update condition.
+
+### 3. Binary search on unsorted array
+
+Distilled to its core, binary search is about finding a half that must contain the solution after each iteration. Hence, it the data is unsorted but have some conditions that enable this, binary search can be performed. Examples are [Find Peak Element](https://leetcode.com/problems/find-peak-element/description/). The array is not sorted, but it has a rule: the left side up to the peak is increasing, the right side from the peak is decreasing. **Hence, if the mid pointer is larger than the previous one, there must be a peak from it rightward. If the mid pointer is smaller than the previous one, there must be a peak from it leftward.**
+
+### 4. Binary search on possible answer range
+
+As it is a range, it is necessarily sorted. The problem requires you to come up with the search range for answer yourself. Examples are [Koko Eating Bananas](https://leetcode.com/problems/koko-eating-bananas/) or [Wood Cut](https://www.lintcode.com/problem/183/).
+
 ## Problem
 
 ### 1. Binary serach
@@ -569,4 +587,89 @@ class Solution:
             else:
                 left = mid + 2
         return nums[left]
+```
+
+### 11. Find Peak Element
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+
+#### Code
+```python
+class Solution:
+    def findPeakElement(self, nums: List[int]) -> int:
+        # Edge case
+        if len(nums) < 2:
+            return 0
+        
+        # General case
+        left, right = 0, len(nums) - 1
+        while left < right:
+            mid = (left + right) // 2
+            if nums[mid] < nums[mid + 1]:
+                left = mid + 1
+            else:
+                right = mid 
+        return left
+```
+
+### 12. Wood Cut
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+
+#### Code
+```python
+from typing import (
+    List,
+)
+
+class Solution:
+    """
+    @param l: Given n pieces of wood with length L[i]
+    @param k: An integer
+    @return: The maximum length of the small pieces
+    """
+    def wood_cut(self, l: List[int], k: int) -> int:
+        # write your code here
+        # Edge case
+        if not l:
+            return 0
+
+        # General case
+        left, right = 1, sum(l) // k
+        max_length = 0
+        while left <= right:
+            mid_length = (left + right) // 2
+            num_pieces = 0
+            for piece in l:
+                num_pieces += piece // mid_length
+            if num_pieces >= k:
+                max_length = max(max_length, mid_length)
+                left = mid_length + 1
+            else:
+                right = mid_length - 1
+        return max_length
 ```
