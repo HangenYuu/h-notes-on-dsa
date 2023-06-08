@@ -593,7 +593,7 @@ class Solution:
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
-
+This is level 3 binary search: the input array is not sorted, but there exists a rule to bisect the array each time. The intuition is as if you are on a mountain: at a position, if the value is smaller than the next one, there must be a peak to the right of it; if the value is larger than the enxt one, there must be a peak to the left of it. Hence, by checking the middle value one at a time, 
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
@@ -672,4 +672,42 @@ class Solution:
             else:
                 right = mid_length - 1
         return max_length
+```
+
+### 13. Find Minimum in Rotated Sorted Array
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+
+#### Code
+```python
+class Solution:
+    def findMin(self, nums: List[int]) -> int:
+        # Edge case
+        if not nums:
+            return -1
+        
+        # General case
+        left, right = 0, len(nums) - 1
+        curr_min = float('inf')
+        while left <= right:
+            mid = (left + right) // 2
+            curr_min = min(curr_min, nums[mid])
+
+            if nums[mid] > nums[right]:
+                left = mid + 1
+            else:
+                right = mid - 1
+        
+        return min(curr_min, nums[left])
 ```
