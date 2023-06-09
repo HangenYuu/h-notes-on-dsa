@@ -58,9 +58,64 @@ class TreeNode:
 
 ## Notes:
 
-### 1. Depth-first search
+### 1. Breadth-first search
+**Breadth-first search** is first heavily used technique. Here's the template adapted from [LeetCode Explore](https://leetcode.com/explore/learn/card/queue-stack/231/practical-application-queue/1372/):
+```python
+from collections import deque
 
-**Depth-first search** is the first heavily used technique. It is essentially *pre-order traversal* of a tree. All traversal types are given here:
+def BFS(root, target):
+    queue = deque() # store all nodes which are waiting to be processed
+    visited = set() # store all the nodes that we've visited
+    step = 0 # number of steps needed from root to current node
+    # initialize
+    queue.append(root)
+    visited.add(root)
+    # BFS
+    while queue:
+        # iterate the nodes which are already in the queue
+        size = len(queue)
+        for i in range(size):
+            cur = queue.popleft()
+            if cur == target:
+                return step
+            for next in cur.neighbors:
+                if next not in visited:
+                    queue.append(next)
+                    visited.add(next)
+        step += 1
+    return -1 # there is no path from root to target
+```
+This template uses a set to track the node visited. In a graph, as a cycle is possible, this is necessary. However, because a tree is acyclic, it is not necessary
+
+```python
+from collections import deque
+
+def BFS(root, target):
+    queue = deque() # store all nodes which are waiting to be processed
+    # visited = set() # store all the nodes that we've visited
+    step = 0 # number of steps needed from root to current node
+    # initialize
+    queue.append(root)
+    # visited.add(root)
+    # BFS
+    while queue:
+        # iterate the nodes which are already in the queue
+        size = len(queue)
+        for i in range(size):
+            cur = queue.popleft()
+            if cur == target:
+                return step
+            if cur.left:
+                queue.append(cur.left)
+            if cur.right:
+                queue.append(cur.right)
+        step += 1
+    return -1 # there is no path from root to target
+```
+
+### 2. Depth-first search
+
+**Depth-first search** is the second heavily used technique. It is essentially *pre-order traversal* of a tree. All traversal types are given here:
 ```python
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
@@ -86,6 +141,21 @@ class TreeNode:
             post_order_traversal(root.right)
             print(root.val)
 ```
+Here's the template from AlgoMonster:
+```python
+def dfs(root, target):
+    if root is None:
+        return None
+
+    if root.val == target:
+        return root
+    left = dfs(root.left, target)
+
+    if left is not None:
+        return left
+    return dfs(root.right, target)
+```
+
 Depth-first search is often implemented in recursion. In thinking in recursion, the most important thing is visualization of the call stack. 
 
 In thinking in recursion, one must forget the whole picture and start thinking about each node. For each node, decide how the information there should be processed, then recurse on the children. When you are a node, the only thing you know are 1. node value and 2. how to get to children. The recursive function should manipulate these things.
@@ -131,6 +201,7 @@ $O(1)$: The tree is modified in-place.
 #         self.val = val
 #         self.left = left
 #         self.right = right
+
 class Solution:
     def flatten(self, root: Optional[TreeNode]) -> None:
         """
@@ -154,4 +225,75 @@ class Solution:
                 current.left = None
             
             current = current.right
+```
+
+### 2. Binary Tree Level Order Traversal
+
+#### Intuition
+
+The question asks you and me to implement breadth-first search. So let's do it.
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+1. Initialize a queue to store all nodes of each level, start with `root`.
+2. Take the current `level_length` and operates on the queue for `level_length` time:
+   1. Pop from the left of the queue and add the value to a list for the level.
+   2. Add the children to the queue.
+3. Add the list of values of each level to the return list.
+4. Return.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: Iterate the binary tree.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$: The size of the queue is `n // 2` in the worst case.
+
+#### Code
+```python
+from typing import (
+    List,
+)
+from lintcode import (
+    TreeNode,
+)
+from collections import deque
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left, self.right = None, None
+"""
+
+class Solution:
+    """
+    @param root: A Tree
+    @return: Level order a list of lists of integer
+    """
+    def level_order(self, root: TreeNode) -> List[List[int]]:
+        # write your code here
+        # Edge case
+        if not root:
+            return []
+        
+        # General case
+        queue = deque()
+        result = []
+        queue.append(root)
+
+        while queue:
+            level = []
+            level_length = len(queue)
+            for _ in range(level_length):
+                node = queue.popleft()
+                level.append(node.val)
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+            result.append(level)
+        return result
 ```
