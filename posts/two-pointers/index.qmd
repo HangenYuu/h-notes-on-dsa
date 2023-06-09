@@ -380,3 +380,51 @@ class Solution:
 ```
 The hidden class function is preferred as it adheres to the **single responsibility** principle, bringing the benefits including readability, maintainability, and modularity.
 
+### 8. Two Sum III - Data Structure Design
+
+#### Intuition
+
+The question asks for a data structure that supports adding elements and checking if there exists a pair of number adding up to a sum. The problem may look straight forward as if it is just refactoring of the code for two sums, but there are nuances.
+
+The most straightforward way is to use a list to store the elements, appending it in `add()`, and `find()` is just normal Two Sum solution. However, this means that every time `find()` is called, a new set or dictionary has to be created. This could be saved by storing the elements inside a dictionary instead. To account for the case of the sum being double the element (say, keys currently `[2, 3]` but sum asks for 4), the value will be the number of elements of each key.
+
+#### Algorithm
+
+1. `add()`: Store or increment the count of that element inside a dictionary.
+2. `find()`: Iterate the dictionary to find the required sum.
+
+#### Complexity
+
+- `add()`:
+  - Time complexity: $O(1)$
+- `find()`:
+  - Time complexity: $O(n)$ 
+
+#### Code
+```python
+class TwoSum:
+    """
+    @param: nothing
+    @return: nothing
+    """
+    def __init__(self):
+        self.numbers = {}
+    """
+    @param number: An integer
+    @return: nothing
+    """
+    def add(self, number):
+        # write your code here
+        self.numbers[number] = self.numbers.get(number, 0) + 1
+    """
+    @param value: An integer
+    @return: Find if there exists any pair of numbers which sum is equal to the value.
+    """
+    def find(self, value):
+
+        for number in self.numbers:
+            if value - number in self.numbers and \
+                (value - number != number or self.numbers[number] > 1):
+                return True
+        return False
+```
