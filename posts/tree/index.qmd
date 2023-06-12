@@ -297,3 +297,127 @@ class Solution:
             result.append(level)
         return result
 ```
+
+### 3. Binary Tree Zigzag Level Order Traversal
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+Sounds like Level order traversal plus reversing the level-wise traversal every two levels. One incorecct answer is reversing the order of appending children nodes to the levelwise traversal but it is wrong as it does not fully reverse the order of traversal.
+
+A better solution is using a double-ended queue i.e., deque. This one supports `appendleft()`, so if the current level should be reversed, the operations can be switched from `popleft()` then `append()` to `pop` then `appendleft()`.
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+1. Perform level order traversal. Reverse the levelwise traversal every two levels.
+2. Return the traversal.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: Some level is effectively traversed twice, but the overall is still $O(n)$
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$: THe size of the queue.
+
+#### Code
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+from collections import deque
+
+class Solution:
+    def zigzagLevelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        # Edge case
+        if not root:
+            return []
+        
+        # General case
+        queue = deque([root])
+        level = 1
+        zigzag_traversal = []
+        while queue:
+            level_traversal = []
+            level_length = len(queue)
+
+            if level % 2:
+                for _ in range(level_length):
+                    node = queue.popleft()
+                    level_traversal.append(node.val)
+
+                    if node.left:
+                        queue.append(node.left)
+                    if node.right:
+                        queue.append(node.right)
+            else:
+                for _ in range(level_length):
+                    node = queue.pop()
+                    level_traversal.append(node.val)
+
+                    if node.right:
+                        queue.appendleft(node.right)
+                    if node.left:
+                        queue.appendleft(node.left)
+                    
+            if level % 2:
+                level_traversal = level_traversal[::-1]
+            zigzag_traversal.append(level_traversal)
+            level += 1
+        return zigzag_traversal
+```
+
+### 4. Populating Next Right Pointers in Each Node
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+Breadth-first search makes the most sense in this problem. However, the question is how to do the problem in $O(1)$ extra memory. That means using only pointers and do away with the queue. How?
+
+I remember from the introduction that the purpose of the `next` pointer is to do away with the queue in level order traversal. And the (only) way I connect them is connecting the child level of a node i.e., pointing the left child to the right child. This means that when I arrive at a level, all the nodes should already be connected and I can just traverse with `next` pointer. And as said above, connecting the left child of a node to the right child is trivial. To connect the right child of a node the next left child, I need to use the `next` pointer of the current node. Implementation was straightforward, but coming up with the concept is crazy.
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+1. Initialize a pointer pointing to the current node and a pointer pointing to the first node of a level.
+2. Traverse the current level, connecting the node of the next level.
+3. Once having reached the end, move to the next level and update pointers.
+4. Return at the end.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: Traverse every node in the tree.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$: Only use pointers to connect new nodes together.
+
+#### Code
+```python
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, val: int = 0, left: 'Node' = None, right: 'Node' = None, next: 'Node' = None):
+        self.val = val
+        self.left = left
+        self.right = right
+        self.next = next
+"""
+class Solution:
+    def connect(self, root: 'Optional[Node]') -> 'Optional[Node]':
+        current_node, start_next_level = root, root.left if root else None
+
+        while current_node and start_next_level:
+            current_node.left.next = current_node.right
+            if current_node.next:
+                current_node.right.next = current_node.next.left
+            
+            current_node = current_node.next
+            if not current_node:
+                current_node = start_next_level
+                start_next_level = current_node.left
+        
+        return root
+```
