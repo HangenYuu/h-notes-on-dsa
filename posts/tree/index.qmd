@@ -117,29 +117,78 @@ def BFS(root, target):
 
 **Depth-first search** is the second heavily used technique. It is essentially *pre-order traversal* of a tree. All traversal types are given here:
 ```python
+from typing import Optional, List
+
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
         self.val = val
         self.left = left
         self.right = right
 
-    def pre_order_traversal(self, root: TreeNode):
-        if root is not None:
-            print(root.val)
-            pre_order_traversal(root.left)
-            pre_order_traversal(root.right)
+   def preorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+        # Edge case
+        if not root:
+            return []
 
-    def in_order_traversal(self, root: TreeNode):
-        if root is not None:
-            in_order_traversal(root.left)
-            print(root.val)
-            in_order_traversal(root.right)
+        # General case
+        result, stack = [], [root]
+        while stack:
+            node = stack.pop()
+            result.append(node.val)
+            if node.right:
+                stack.append(node.right)
+            if node.left:
+                stack.append(node.left)
+        return result
+
+    def inorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+        result, stack = [], []
+        current = root
+        
+        while current or stack:
+            while current:
+                stack.append(current)
+                current = current.left
+            
+            current = stack.pop()
+            result.append(current.val)
+            current = current.right
+        
+        return result
     
-    def post_order_traversal(self, root: TreeNode):
-        if root is not None:
-            post_order_traversal(root.left)
-            post_order_traversal(root.right)
-            print(root.val)
+    def postorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+        # Better memory
+        ## Edge case
+        if not root:
+            return []
+        
+        ## General case
+        result, stack = [], [root]
+        while stack:
+            node = stack.pop()
+            result.append(node.val)
+            if node.left:
+                stack.append(node.left)
+            if node.right:
+                stack.append(node.right)
+        return result[::-1]
+
+        # Better runtime
+        visited = [False]
+
+        while stack:
+            current, visit_already = stack.pop(), visited.pop()
+            if visit_already:
+                result.append(current.val)
+            else:
+                stack.append(current)
+                visited.append(True)
+                stack.append(current.right)
+                visit.append(False)
+                stack.append(current.left)
+                visit.append(False)
+        
+        return result
 ```
 Here's the template from AlgoMonster:
 ```python
