@@ -421,3 +421,69 @@ class Solution:
         
         return root
 ```
+
+### 5. Vertical Order Traversal of a Binary Tree
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+Breadth-first search will guaranteed that nodes at the top i.e., at higher row will be visited first. The column can become the key to store the list of node values in a HashMap. These were my immediate sketches.
+
+The problem specifies that the values should be sorted by row, and then by value. This means that I need to be able to access the position values of a node at each iteration. That means that I need to store the row and column of a node in the queue when I enqueue the node.
+
+It's amazing - I used to doubt if I can come up with a chain of thought such as this. Now at some moment I can. Maybe this is the meaning of growth.
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+1. Initialize the queue with the root node, row, and column all in one tuple + the HashMap to map column to list of values.
+2. Traverse the tree with breadth-first search. For each element in the current level:
+   1. Add the current node value and row to the corresponding list (using the column as the key) in the HashMap.
+   2. Add the left child and right child together with its respective position to the queue.
+3. Sort the keys of the HashMap.
+4. Access each list of values in the HashMap, sort the list according to the row and then the node value.
+5. Return the final list.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n \log n)$: The dominating operation is sorting of columns. The number of different columns is as many as the number of leaf nodes, which can reach $\lfloor n/2 \rfloor$ in a perfect binary tree.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$: In a perfect binary tree, the queue will need to hold $\lfloor n/2 \rfloor$ elements.
+
+#### Code
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+from collections import deque, defaultdict
+from typing import Optional, List
+
+class Solution:
+    def verticalTraversal(self, root: Optional[TreeNode]) -> List[List[int]]:
+        queue = deque([(root, 0, 0)])
+        position_map = defaultdict(list)
+
+        while queue:
+            level_length = len(queue)
+            for _ in range(level_length):
+                node, row, column = queue.popleft()
+                position_map[column].append((node.val, row))
+                if node.left:
+                    queue.append((node.left, row + 1, column - 1))
+                if node.right:
+                    queue.append((node.right, row + 1, column + 1))
+        
+        result = []
+        all_columns = list(position_map.keys())
+        all_columns.sort()
+        for column in all_columns:
+            column_values = position_map[column]
+            column_values.sort(key = lambda x:(x[1], x[0]))
+            result.append([value[0] for value in column_values])
+        
+        return result
+```
