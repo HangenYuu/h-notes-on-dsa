@@ -157,12 +157,11 @@ class TreeNode:
         return result
     
     def postorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
-        # Better memory
-        ## Edge case
+        # Edge case
         if not root:
             return []
         
-        ## General case
+        # Approach 1
         result, stack = [], [root]
         while stack:
             node = stack.pop()
@@ -173,7 +172,8 @@ class TreeNode:
                 stack.append(node.right)
         return result[::-1]
 
-        # Better runtime
+        # Approach 2
+        result, stack = [], [root]
         visited = [False]
 
         while stack:
@@ -205,16 +205,26 @@ def dfs(root, target):
     return dfs(root.right, target)
 ```
 
-Depth-first search is often implemented in recursion. In thinking in recursion, the most important thing is visualization of the call stack. 
+Depth-first search is often implemented in recursion (you can go hardcore and implement it with a stack as above).
 
-In thinking in recursion, one must forget the whole picture and start thinking about each node. For each node, decide how the information there should be processed, then recurse on the children. When you are a node, the only thing you know are 1. node value and 2. how to get to children. The recursive function should manipulate these things.
+### 3. Recursion
 
-In defining the recursive functions, there are two things to decide when we define:
+In thinking in recursion, one must forget the whole picture and start thinking about each node. There are two ways to implement recursive depth-first search in tree: top-down and bottom-up, a.k.a from root to leaves or from leaves to root.
+
+In the top-down approach, check if the children's answer can be figured out knowing the value and answer of the root. That means checking for ways to update the answer, and checking if the implementation is good, or at least better than in bottom up.
+
+In the bottom-up approach, check if the children's answer can be used to update the node's answer. The criteria are as above.
+
+There are problems where one approach makes more sense than the other in terms of runtime and/or memory. But always check both.
+
+> Bottom-up seems more intuitive to me.
+
+I care about the two variables:
 
 1. `return` value - the value the child passes to the parent. For example, for the max depth problem this is the max depth for the current node's subtree.
 2. state - the value the parent passes to the child. For example, to know if the current node's value is larger than its parent we have to maintain the parent's value as a state.
 
-Another way to solve the problem is to replace `return` value with a global variable.
+Another way to implement is to replace the `return` value with a nonlocal variable. This is usually coupled with using a nested function. This makes the code hard to read and hard to debug so avoid.
 
 ## Problems
 
@@ -535,4 +545,94 @@ class Solution:
             result.append([value[0] for value in column_values])
         
         return result
+```
+
+### 5. Maximum Depth of Binary Tree
+
+#### Intuition
+
+The introductory problem in depth-first search and thinking in recursion. The most intuitive way is bottom-up: the depth of a leaf is 0 as I am counting from the leaf, and the depth of a node is 1 plus the maximum depth of its child(ren). You can certainly do this in a top-down manner: the depth of 0 now is for the root, and the depth of each child is the depth of its parent plus 1. In the end, both return the maximum depth.
+
+#### Algorithm
+
+For bottom-up:
+
+1. Define the base case: return 0 for a null node and the terminal case: return 1 plus the larger depth between the two children.
+2. Call the function recursively on the left and right subtrees of each node and get the answer.
+3. Return the final answer.
+
+For top-down:
+
+1. For this one, a helper function is better, with the current depth also passed in as a parameter. Again, define the base case: return the depth passed in as is for null nodes, and the terminal case: the maximum depth of the two substrees.
+2. Call the function recursively on the left and right subtrees of each node and get the answer.
+3. Return the final answer.
+
+#### Complexity
+
+- Time complexity: $O(n)$: Visit every node once.
+- Memory complexity: $O(1)$: Both cases only store some integers.
+
+#### Code
+
+Bottom-up
+```python
+from lintcode import (
+    TreeNode,
+)
+
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left, self.right = None, None
+"""
+
+class Solution:
+    """
+    @param root: The root of binary tree.
+    @return: An integer
+    """
+    def max_depth(self, root: TreeNode) -> int:
+        # write your code here
+        if not root:
+            return 0
+
+        left_depth = self.max_depth(root.left)
+        right_depth = self.max_depth(root.right)
+
+        return 1 + max(left_depth, right_depth)
+```
+
+Top-down
+```python
+from lintcode import (
+    TreeNode,
+)
+
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left, self.right = None, None
+"""
+
+class Solution:
+    """
+    @param root: The root of binary tree.
+    @return: An integer
+    """
+    def max_depth(self, root: TreeNode) -> int:
+        # write your code here
+        return self._max_depth(root, 0)
+
+    def _max_depth(self, root: TreeNode, depth: int) -> int:
+        if not root:
+            return depth
+        
+        left_depth = self._max_depth(root.left, depth + 1)
+        right_depth = self._max_depth(root.right, depth + 1)
+
+        return max(left_depth, right_depth)
 ```
