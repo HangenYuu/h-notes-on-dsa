@@ -636,3 +636,233 @@ class Solution:
 
         return max(left_depth, right_depth)
 ```
+
+### 6. Symmetric Tree
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+I thought of this in a top-down manner. The symmetry can be checked by going down the level, start with the left and right children of `root`. The conditions for symmetric are:
+
+1. The two nodes having the same value.
+2. The *alternating* children having the same value.
+
+and then going down to the leaves.
+
+One note on implementation. The most important aspects of coding interview is not getting the optimal solution. It is also not just explaining your solution. You can use a sub-optimal solution that passes the test cases if your coding quality is good. Good code quality means:
+
+1. Spacing: Add one space after unary operators and on both sides of binary operators such as `=`. Add one space after comma. Add one blank line between different logical blocks.
+2. Naming: Descriptive names for functions and variables. Limit to 1-2 words.
+3. Indentation: No more than 3 levels. Use less `if` statements. The moment you become tired of the number of `if` statements you have to put in, that means this is the wrong direction.
+4. Separateness: Use more subfunctions to reduce the codes in the entry function.
+5. Exception handling: Always check for exceptions of the entry parameters. Check if an object is null when access. Make sure the index of an array is not out of bound. Do not use global variable.
+
+In the recursion problem, this means "redundant" function calls and assignments to two variables before return.
+
+The problem can be solved iteratively using DFS or BFS. In DFS, it is checking the preorder traversal of the tree is the same as the preorder traversal of the reversed tree. In BFS, it is checking whether each level is a palindrome. The solutions are included.
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+1. Top-down recursion. Define the base case: return `True` if both nodes are null, and `False` is only one nodes are null and the terminal case: the values of two nodes and alternating children are the same.
+2. Call the function and return the result.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: Each node is visited once.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$: This is the size of the recursive call stack, which momentarily stores all nodes of the tree.
+
+#### Code
+
+Recursion
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def isSymmetric(self, root: Optional[TreeNode]) -> bool:
+        return self.isEqual(root.left, root.right)
+
+    def isEqual(self, root1: Optional[TreeNode], root2: Optional[TreeNode]) -> bool:
+        if not root1 and not root2:
+            return True
+        if not root1 or not root2:
+            return False
+        
+        left_result = self.isEqual(root1.left, root2.right)
+        right_result = self.isEqual(root2.left, root1.right)
+
+        return root1.val == root2.val and left_result and right_result
+```
+Iterative DFS
+```python
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left, self.right = None, None
+"""
+import collections
+class Solution:
+    """
+    @param root: root of the given tree
+    @return: whether it is a mirror of itself 
+    """
+    def isSymmetric(self, root):
+        order = self.preorder(root, reverse=False)
+        reverse_order = self.preorder(root, reverse=True)
+        return order == reverse_order
+
+    def get_left(self, node: TreeNode, reverse: bool):
+        if reverse:
+            return node.right
+        return node.left
+
+    def get_right(self, node: TreeNode, reverse: bool):
+        if reverse:
+            return node.left
+        return node.right
+
+    def preorder(self, root: TreeNode, reverse: bool):
+        order = []
+        if not root:
+            return order
+        stack = collections.deque([])
+        stack.append(root)
+        while stack:
+            node = stack.popleft()
+            if node == "#":
+                order.append("#")
+                continue
+            else:
+                order.append(node.val)
+            
+            left = self.get_left(node, reverse)
+            if left:
+                stack.append(left)
+            else:
+                stack.append("#")
+            
+            right = self.get_right(node, reverse)
+            if right:
+                stack.append(right)
+            else:
+                stack.append("#")
+        return order
+```
+
+BFS
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+from collections import deque
+
+class Solution:
+    def isSymmetric(self, root: Optional[TreeNode]) -> bool:
+        queue = deque([root])
+        while queue:
+            if not self.isMirror(queue):
+                return False
+            for i in range(len(queue)):
+                node = queue.popleft()
+                if not node:
+                    continue
+                queue.append(node.left)
+                queue.append(node.right)
+        return True
+    
+    def isMirror(self, queue: deque) -> bool:
+        left, right = 0, len(queue) - 1
+        while left < right:
+            if not self.isSame(queue[left], queue[right]):
+                return False
+            left += 1
+            right -= 1
+        return True
+
+    def isSame(self, node1: Optional[TreeNode], node2: Optional[TreeNode]) -> bool:
+        if node1 and node2:
+            return node1.val == node2.val
+        return node1 is None and node2 is None
+```
+
+### 7. Path Sum
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+Top-down recursion. I want to propagate the sum down the tree, and only check for condition at the leaves. This means that the current sum needs to be passed down as state of the previous level, and whether the current sum up to a leaf equals the target sum is the `return` of the function. An implementation issue is updating the `return` boolean value, as one path sum is enough to declare `True`, but I need to check up to the last path if all previous are `False`. This means the `return` value needs passing in as a parameter.
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+1. Top-down recursion. Define the base case: return `result or curSum == targetSum` if the node is a leaf node. Otherwise, move to the left child and/or right child if exist.
+2. Return the updated `result`
+
+Incredibly simple, yet hard to think up.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: At worst, visit every node in the tree.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$ - $\Omega (\log n)$: The recursive call stack stores one path at a time, which corresponds to the height of the tree. At worst, $n$, at best, $\log n$
+
+#### Code
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def hasPathSum(self, root: Optional[TreeNode], targetSum: int) -> bool:
+        # Edge case
+        if not root:
+            return False
+        
+        return self._hasPathSum(root, root.val, targetSum, False)
+                               
+    def _hasPathSum(self, root: Optional[TreeNode], curSum: int, targetSum: int, result: bool) -> None:
+
+        if not (root.left or root.right):
+            result = result or curSum == targetSum
+            return result
+        
+        if root.left:
+            result = self._hasPathSum(root.left, curSum + root.left.val, targetSum, result)
+        if root.right:
+            result = self._hasPathSum(root.right, curSum + root.right.val, targetSum, result)
+
+        return result
+```
+NeetCode's solution with a nested function
+```python
+class Solution:
+    def hasPathSum(self, root, sum):
+        if not root:
+            return False
+        de = [
+            (root, sum - root.val),
+        ]
+        while de:
+            node, curr_sum = de.pop()
+            if not node.left and not node.right and curr_sum == 0:
+                return True
+            if node.right:
+                de.append((node.right, curr_sum - node.right.val))
+            if node.left:
+                de.append((node.left, curr_sum - node.left.val))
+        return False
+```
