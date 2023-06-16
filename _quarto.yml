@@ -16,5 +16,6 @@ website:
 format:
   html:
     theme: zephyr
+    mainfont: Georgia, serif;
     css: styles.css
     highlight-style: solarized

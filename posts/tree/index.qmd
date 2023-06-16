@@ -866,3 +866,85 @@ class Solution:
                 de.append((node.left, curr_sum - node.left.val))
         return False
 ```
+
+### 8. Construct Binary Tree from Inorder and Postorder Traversal
+
+#### Intuition
+
+I noticed that the last value of the postorder traversal list must be the root, based on how the operation is defined. Hence, I know the root. I then noticed that the root will appear somewhere in the middle of the inorder traversal list, which can be used to separate the inorder traversal list: the left part will be the left subtree, the right part will be the right subtree. Interestingly enough, if the left subtree has $n$ elements, in the inorder or the postorder traversal, the left subtree will cover the exact same first $n$ elements. And here it gets interesting: the last value of the left subtree postorder traversal will be th root, which can be found in the middle of the corresponding inorder traversal, which can be used to separate the nodes into the left and right subtrees again! I have found a recursive a la fractal pattern.
+
+My first solution works, but it was slow and consumed too much memory. That was because the runtime complexity is $O(n^2)$ - in every call I perform a linear scan on the inorder traversal array to find the root. Worse, I created new subarrays with slicing on every call, making the memory inefficient. Although I might have still secured the job interview with the code quality, I reckon that I will have been pushed to a better solution. NeetCode proposed two things:
+
+1. **The indices are enough to slice the array. So pass indices between recursive calls instead of slicing the arrays.** This is retrospectively obvious given the definition of array. It is also useful. In fact, I now realize how to pass the OA from TikTok that I dreadfully failed because of memory inefficiency.
+2. **Use dictionary for repeated search**. The memory is still $O(n)$, but it saves $O(n)$ for the runtime complexity.
+
+Another note on implementation: the right subtree must be constructed first, according to the order of the postorder traversal. I attempted to construct the left subtree first, which leads to error.
+
+#### Algorithm
+
+1. Initialize the hash map to map values to indices.
+2. Define the helper function. Normally, I would condemn the practice of nested function but in this case it is justified as otherwise I will need to pass in the dictionary to the hidden method, incurring $O(n^2)$ memory.
+   1. The root has the value as last value of postorder traversal, which is popped from the array.
+   2. The right and left chilredn are constructed sequentially from recursive calls.
+   3. The two pointers to the position on the inorder traversal array are used as safeguards to return when conditions are met.
+3. Return the tree.
+
+#### Complexity
+- Time complexity: $O(n)$: Visit every node in the tree.
+- Memory complexity: $O(n)$: The maximum size of the recursive call stack and the size of the hash map.
+
+#### Code
+
+Initial
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def buildTree(self, inorder: List[int], postorder: List[int]) -> Optional[TreeNode]:
+        # Base case
+        if len(inorder) == 1:
+            return TreeNode(inorder[-1])
+        if len(inorder) == 0:
+            return 
+        
+        # General case
+        root = postorder[-1]
+        root_index = inorder.index(root)
+        left_inorder, right_inorder = inorder[:root_index], inorder[root_index + 1:]
+        left_postorder, right_postorder = postorder[:root_index], postorder[root_index:-1]
+        return TreeNode(root,
+                        self.buildTree(left_inorder, left_postorder),
+                        self.buildTree(right_inorder, right_postorder))
+```
+Optimized
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def buildTree(self, inorder: List[int], postorder: List[int]) -> Optional[TreeNode]:
+        inorderIdx = {value:index for index, value in enumerate(inorder)}
+    
+        def _buildTree(left, right):
+            # Base case
+            if not postorder or left > right:
+                return
+        
+            # General case
+            root = TreeNode(postorder.pop())
+        
+            root_index = inorderIdx[root.val]
+            
+            root.right = _buildTree(root_index + 1, right)
+            root.left = _buildTree(left, root_index - 1)
+            return root
+        
+        return _buildTree(0, len(inorder) - 1)
+```
