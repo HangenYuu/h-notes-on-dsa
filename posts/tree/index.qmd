@@ -847,7 +847,7 @@ class Solution:
 
         return result
 ```
-NeetCode's solution with a nested function
+NeetCode's solution
 ```python
 class Solution:
     def hasPathSum(self, root, sum):
@@ -885,7 +885,7 @@ Another note on implementation: the right subtree must be constructed first, acc
 1. Initialize the hash map to map values to indices.
 2. Define the helper function. Normally, I would condemn the practice of nested function but in this case it is justified as otherwise I will need to pass in the dictionary to the hidden method, incurring $O(n^2)$ memory.
    1. The root has the value as last value of postorder traversal, which is popped from the array.
-   2. The right and left chilredn are constructed sequentially from recursive calls.
+   2. The right and left children are constructed sequentially from recursive calls.
    3. The two pointers to the position on the inorder traversal array are used as safeguards to return when conditions are met.
 3. Return the tree.
 
@@ -947,4 +947,181 @@ class Solution:
             return root
         
         return _buildTree(0, len(inorder) - 1)
+```
+
+### 8. Construct Binary Tree from Inorder and Postorder Traversal
+
+#### Intuition
+
+A similar problem. I can't help noticing these two problems seem to be the cue for [Serialize and Deserialize Binary Tree](https://leetcode.com/problems/serialize-and-deserialize-binary-tree/). It is signaling that we need at least two traversals of a tree to construct it?
+
+Anyway, for this problem, the first element of inorder is the always the root. Cool. But the sticky issue arises: Python list cannot be popped from the front, so I have to make a new queue if I want to follow the lead of the previous problem. The other choice is to pass in  more pointers - now the pointers for both `preorder` and `inorder` need passing in.
+
+#### Algorithm
+
+1. Initialize the hash map to map values to indices.
+2. Define the helper function. Parameters are 4 pointers corresponding to the start and end of both arrays. 
+   1. The root has the value as first value of preorder traversal.
+   2. The size of the left subtree is calculated from the index of inorder root and inorder left. Note here: to guarantee correct access, inorder left has to be incremented at every call. Thus, the size of the left subtree is necessary to calculate the correct right pointer for preorder traversal.
+   3. The right and left children are constructed sequentially from recursive calls.
+   4. The two pointers on prenorder traversal array are used as safeguards to return when conditions are met.
+3. Return the tree.
+
+#### Complexity
+- Time complexity: $O(n)$: Visit every node in the tree.
+- Memory complexity: $O(n)$: The maximum size of the recursive call stack and the size of the hash map.
+
+#### Code
+
+Initial
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def buildTree(self, preorder: list[int], inorder: list[int]) -> Optional[TreeNode]:
+        if not preorder:
+            return None
+        
+        root = TreeNode(preorder[0])
+        mid = inorder.index(preorder[0])
+        root.left = self.buildTree(preorder[1:mid+1], inorder[:mid])
+        root.right = self.buildTree(preorder[mid+1:], inorder[mid+1:])
+        return root
+```
+Optimized
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+        # inorderIdx = dict(map(reversed, enumerate(inorder)))
+        inorderIdx = {value: index for index, value in enumerate(inorder)}
+        
+        def _buildTree(preorder_left, preorder_right, inorder_left, inorder_right):
+            if preorder_left > preorder_right:
+                return
+            
+            # Preorder root is always the preorder left a la the first element
+            root = TreeNode(preorder[preorder_left])
+            inorder_root = inorderIdx[root.val]
+            size_left_subtree = inorder_root - inorder_left
+            # left_inorder, right_inorder = inorder[:root_index], inorder[root_index + 1:]
+            # left_preorder, right_preorder = preorder[1:root_index+1], preorder[root_index + 1:]
+
+            root.left = _buildTree(preorder_left + 1, preorder_left + size_left_subtree,
+                                    inorder_left, inorder_root - 1)
+            root.right = _buildTree(preorder_left + size_left_subtree + 1, preorder_right,
+                                    inorder_root + 1, inorder_right)
+            return root
+
+        return _buildTree(0, len(preorder) - 1, 0, len(inorder) - 1)
+```
+
+### 9. Populating Next Right Pointers in Each Node II
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+I was thinking of how to extend from the first problem. I came up with a super convoluted attempt, only to realize that, hey, if the supposed next node is super far, I am dead. The solution is returning to the most simple one: breadth-first traversal. Okay, cool. But how can I make it $O(1)$ space?
+
+The trick turns out to go back to a data structure that also has `.val` and `.next`: Linked List. Yes, it is the dummy head trick. Each level will be treated as a linked list to be connected together, with a dummy node serving as the temporary head.
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+1. Initialize `dummy` and `head` pointer.
+2. For each level:
+   1. First, point `current` to `head`,  and `prev` to `dummy`.
+   2. Traverse the level, connecting each node in a manner quite similar to reverse linked list.
+3. Return the `root`.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: Visit every node in the array.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$: Only store pointers.
+
+#### Code
+
+Note that the solution is also applicable to the first problem in the series.
+```python
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, val: int = 0, left: 'Node' = None, right: 'Node' = None, next: 'Node' = None):
+        self.val = val
+        self.left = left
+        self.right = right
+        self.next = next
+"""
+
+class Solution:
+    def connect(self, root: 'Node') -> 'Node':
+        # Edge case
+        if not root:
+            return
+        
+        # General case
+        head = root
+        dummy = Node(-1)
+        while head:
+            current, prev = head, dummy
+            while current:
+                if current.left:
+                    prev.next = current.left
+                    prev = prev.next
+                if current.right:
+                    prev.next = current.right
+                    prev = prev.next
+                current = current.next
+            head = dummy.next
+            dummy.next = None
+        return root
+```
+
+### 10. Lowest Common Ancestor of a Binary Search Tree
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+
+#### Code
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+from collections import deque
+class Solution:
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        temp = root
+        small = p if p.val < q.val else q
+        large = p if p != small else q
+        while temp:
+            if temp.val > large.val:
+                temp = temp.left
+            elif temp.val < small.val:
+                temp = temp.right
+            else:
+                return temp
 ```
