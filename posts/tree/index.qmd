@@ -1092,16 +1092,23 @@ class Solution:
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
+Binary search tree is a special kind of binary tree, where every element in the left subtree is guaranteed to be smaller than the root, and every element in the right subtree is guaranteed to be larger than the root. Because of this problem, it is easy to see that the lowest common ancestor of two nodes will be the first node that is larger than the smaller node and smaller than the larger node.
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
+1. Initialize: `temp` to `root`, `small` and `large` to corresponding nodes.
+2. Traverse the tree with `temp`: 
+   1. If `temp` is larger than `large`, go left.
+   2. If `temp` is smaller than `small`, go right.
+   3. Otherwise, return `temp`.
 
 #### Complexity
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
-
+$O(\log n)$: I will need to traverse every level in the worst case.
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$: I only need to store pointers' values.
 
 #### Code
 ```python
@@ -1125,3 +1132,4 @@ class Solution:
             else:
                 return temp
 ```
+
