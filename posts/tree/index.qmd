@@ -1133,3 +1133,79 @@ class Solution:
                 return temp
 ```
 
+### 11. Serialize and Deserialize Binary Tree
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+I was thinking about the two problems above of constructing binary tree from preorder and inorder traversals. However, these two questions assume that the node values are unique, plus it is actually more complicated than necessary. The solution is actually obvious: one breadth-first search will do. However, it turns out that depth-first search will do just fine.
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+
+#### Code
+```python
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+# A better choice is breadth-first search
+class Codec:
+
+    def serialize(self, root):
+        """Encodes a tree to a single string.
+        
+        :type root: TreeNode
+        :rtype: str
+        """
+        result = []
+
+        def preorderTraversal(node):
+            if not node:
+                result.append('N')
+                return
+            result.append(str(node.val))
+            preorderTraversal(node.left)
+            preorderTraversal(node.right)
+
+        preorderTraversal(root)
+        return ','.join(result)
+        
+        
+
+    def deserialize(self, data):
+        """Decodes your encoded data to tree.
+        
+        :type data: str
+        :rtype: TreeNode
+        """
+        data = data.split(',')
+        _index = 0
+
+        def buildTree():
+            nonlocal _index
+            if data[_index] == 'N':
+                _index += 1
+                return
+            
+            node = TreeNode(int(data[_index]))
+            _index += 1
+            node.left = buildTree()
+            node.right = buildTree()
+            return node
+        
+        return buildTree()
+
+# Your Codec object will be instantiated and called as such:
+# ser = Codec()
+# deser = Codec()
+# ans = deser.deserialize(ser.serialize(root))
+```
