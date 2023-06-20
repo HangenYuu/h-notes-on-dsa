@@ -1137,17 +1137,32 @@ class Solution:
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
-I was thinking about the two problems above of constructing binary tree from preorder and inorder traversals. However, these two questions assume that the node values are unique, plus it is actually more complicated than necessary. The solution is actually obvious: one breadth-first search will do. However, it turns out that depth-first search will do just fine.
+I was thinking about the two problems above of constructing binary tree from preorder and inorder traversals. However, this approach has two weaknesses:
 
-#### Approach
+1. It assumes that the node values are unique.
+2. It is more complicated than necessary.
+ 
+My first thought is actually more intuitive: breadth-first search a.k.a constructing the binary tree layer by layer. However, I can't seem to be able to find a way to deserialize it properly. It turns out that the solution uses depth-first search - pre-order traversal to be specific.
+
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
+Serialize:
+1. Construct a string with preorder traversal, this time passing in an `'N'` for null nodes. The nodes in the final string are separated with a comma.
+
+Deserialize:
+1. Split the string into an array.
+2. Construct the tree,
+   1. The root of a tree (or subtree) is always the first element in the array.
+   2. When the value to construct a node is `'N'`, the node is constructed as null. This has the neat property that the children can always be constructed correctly in the recursive function simply by cosntructing the left subtree first (and use `nonlocal` keyword).
 
 #### Complexity
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: Same for both methods: visit every node once.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$: Same for both methods: a new string/array containgin every node must be constructed.
 
 #### Code
 ```python
