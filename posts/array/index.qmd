@@ -460,21 +460,24 @@ class Solution:
 
 First simple solution: I need the number of elements of each color. I can do that easily with a dictionary. Even better, because the number of colors i.e., the values of each element in the array is fixed, the memory cost is $O(1)$. After constructing the dictionary, I can reassign values to the original array one by one. This solution is good enough for an interview.
 
-In the follow-up question, the solution needs to modify the values in-place in just one pass instead of two, and memory complexity should be $O(1)$. This can be done with a *three-pointer* approach  a.k.a rainbow sort a.k.a Dutch national flag algorithm. The idea is having 3 pointers: `low` and `mid` initialized at the start, and `high` initialized at the end. `mid` will be used to traverse the array. The objective is keeping all 0s before `low` and all 2s after `high`.
+In the follow-up question, the solution needs to modify the values in-place in just one pass instead of two, and memory complexity should be $O(1)$. This can be done with a *three-pointer* approach  a.k.a rainbow sort a.k.a Dutch national flag algorithm. The idea is having 3 pointers: `low` and `mid` initialized at the start, and `high` initialized at the end. `mid` will be used to traverse the array. The objective is keeping all 0s before `low` and all 2s after `high`. Hence, at each iteration, values at `mid` and `low` will be switched if `mid` is pointing to a 0, and values at `mid` and `high` will be switched if `mid` is pointing to a 2. The thing that caught me off guard was the pointers only need decrementing/incrementing after switching the actual values. I confused this with switching the index.
+
 #### Algorithm
 
-1. Convert the whole array into a set.
-2. Traverse the set. For each element, count and update the longest consecutive sequence if the one preceding it is not in the array.
-3. Return the longest length.
+1. Initialize 3 pointers.
+2. Traverse the array.
+   1. If `mid` points to 1, increment `mid`.
+   2. If `mid` points to 0, switch values of `mid` and `low`. Increment both `mid` and `low`.
+   3. If `mid` points to 2, switch values of `mid` and `high`. Decrement only `high`.
 
 #### Complexity
 
 - Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> $O(n)$: I need to traverse the original array once
-- Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> $O(n)$: I will need to store a set with the same size as the array.
+- Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> $O(1)$: 
 
 #### Code
 
-Acceptable solution:
+Acceptable solution for an interview:
 ```python
 from collections import defaultdict
 
