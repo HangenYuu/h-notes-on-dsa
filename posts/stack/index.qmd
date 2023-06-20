@@ -282,3 +282,61 @@ class Solution:
         return maxArea
 ```
 
+### 7. Implement Queue using Stacks
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+Just as [Min Stack](https://leetcode.com/problems/min-stack/) needs two stacks to store the values, here two stacks are required to make sure that the queue can $O(1)$ performance for `.pop()`. Here, I learnt the meaning of *amortized* complexity i.e., incurring a debt at first so that subsequent call to the method enjoys discounted cost.
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+With the second stack, the `.pop()` method is implemented as followed: if the second stack is empty, elements from the first stack will be popped out one by one and then pushed one by one into the second stack before popping and returning the first element of the first stack. This has a cost of $O(n)$ and essentially reverse the order of the first stack. Now subsequent `.pop()` will pop from this second stack, which enjoys $O(1)$ runtime. For every $O(n)$ call, subsequent $n$ calls will enjoy $O(1)$ cost, which amounts to an amortized cost of $O(1)$.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(1)$: for every method.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$: for storing the two stacks.
+
+#### Code
+```python
+class MyQueue:
+
+    def __init__(self):
+        self.main_stack = []
+        self.head_stack = []
+
+    def push(self, x: int) -> None:
+        self.main_stack.append(x)
+
+    def pop(self) -> int:
+        if self.empty():
+            raise ValueError('The queue is empty!')
+        if not self.head_stack:
+            for _ in range(len(self.main_stack) - 1):
+                temp = self.main_stack.pop()
+                self.head_stack.append(temp)
+            return self.main_stack.pop()
+        return self.head_stack.pop()
+    
+    def peek(self) -> int:
+        if self.empty():
+            raise ValueError('The queue is empty!')
+        if not self.head_stack:
+            return self.main_stack[0]
+        return self.head_stack[-1]
+
+    def empty(self) -> bool:
+        return len(self.main_stack) == 0 and len(self.head_stack) == 0
+
+
+# Your MyQueue object will be instantiated and called as such:
+# obj = MyQueue()
+# obj.push(x)
+# param_2 = obj.pop()
+# param_3 = obj.peek()
+# param_4 = obj.empty()
+```

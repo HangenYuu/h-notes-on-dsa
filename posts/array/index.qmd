@@ -453,3 +453,62 @@ class Solution:
 
         return longest_streak
 ```
+
+### 11. Sort Colors
+
+#### Intuiton
+
+First simple solution: I need the number of elements of each color. I can do that easily with a dictionary. Even better, because the number of colors i.e., the values of each element in the array is fixed, the memory cost is $O(1)$. After constructing the dictionary, I can reassign values to the original array one by one. This solution is good enough for an interview.
+
+In the follow-up question, the solution needs to modify the values in-place in just one pass instead of two, and memory complexity should be $O(1)$. This can be done with a *three-pointer* approach  a.k.a rainbow sort a.k.a Dutch national flag algorithm. The idea is having 3 pointers: `low` and `mid` initialized at the start, and `high` initialized at the end. `mid` will be used to traverse the array. The objective is keeping all 0s before `low` and all 2s after `high`.
+#### Algorithm
+
+1. Convert the whole array into a set.
+2. Traverse the set. For each element, count and update the longest consecutive sequence if the one preceding it is not in the array.
+3. Return the longest length.
+
+#### Complexity
+
+- Time complexity: <!-- Add your time complexity here, e.g. $$O(n)$$ --> $O(n)$: I need to traverse the original array once
+- Space complexity: <!-- Add your space complexity here, e.g. $$O(n)$$ --> $O(n)$: I will need to store a set with the same size as the array.
+
+#### Code
+
+Acceptable solution:
+```python
+from collections import defaultdict
+
+class Solution:
+    def sortColors(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        color_counter = defaultdict(int)
+        for num in nums:
+            color_counter[num] += 1
+        ind = 0
+        for key in sorted(color_counter):
+            for _ in range(color_counter[key]):
+                nums[ind] = key
+                ind += 1
+```
+
+One-pass solution:
+```python
+class Solution:
+    def sortColors(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        low, mid, high = 0, 0, len(nums) - 1
+        while mid <= high:
+            if nums[mid] == 0:
+                nums[low], nums[mid] = nums[mid], nums[low]
+                low += 1
+                mid += 1
+            elif nums[mid] == 2:
+                nums[high], nums[mid] = nums[mid], nums[high]
+                high -= 1
+            else:
+                mid += 1
+```
