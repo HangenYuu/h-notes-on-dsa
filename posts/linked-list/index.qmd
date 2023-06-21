@@ -477,3 +477,138 @@ class Solution:
             prev_to_group, left_pointer = left_pointer, left_pointer.next
         return dummy.next
 ```
+### 8. Copy List with Random Pointer
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+Quick intuition: copy nodes first, copy links later. To achieve this, I need a data structure that can tell me the corresponding links that a copied node should have. The obvious one is a hash map. The rest is trivial.
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+1. Initializing a hash map to map old nodes to copied nodes. For convenience, initialize it with the first key-value pair of `None:None`.
+2. Traverse the linked list. Create the deep copy of each node.
+3. Traverse the hash map and create corresponding links for each node.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: Traverse the linked list twice.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$: The hash map needs to store the full linked list.
+
+#### Code
+```python
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, x: int, next: 'Node' = None, random: 'Node' = None):
+        self.val = int(x)
+        self.next = next
+        self.random = random
+"""
+
+class Solution:
+    def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
+        oldToNew = {None:None}
+
+        # 1st pass: construct nodes
+        cur = head
+        while cur:
+            oldToNew[cur] = Node(cur.val)
+            cur = cur.next
+        
+        # 2nd pass: construct links
+        for node in oldToNew:
+            if node is not None:
+                oldToNew[node].next = oldToNew[node.next]
+                oldToNew[node].random = oldToNew[node.random]
+        
+        return oldToNew[head]
+```
+
+### 9. LRU Cache
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+The data structure needs to store key-value pairs. Easy, that is a hash map. The data structure needs to sort the pairs by recent usage. Okay, a queue can help to maintain the order, with the top of the queue being least recently used and the tail being most recently used. If an element is operated on, that element can just be pulled out of the queue and join back at the end. However, this is a case when an element in the middle can be randomly pulled out and needs inserting back. The normal array queue does not support that in $O(1)$ time, so a different base data structure is needed i.e., doubly linked list, which supports removing and inserting at $O(1)$.
+
+Here the sentinel nodes also come in handy to prevent headache associated with capacity of 1. The `head` and `tail` pointers of the doubly linked list are initialized at these sentinel nodes instead.
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+Two helper methods `insert` and `remove` needs implementing. I am implementing it as a public method. If they need hiding from the users, they can be changed to hidden methods instead.
+
+- `ListNode`:
+  - `__init__`: Initialize with `key`, `value`, `prev`, and `next` pointer.
+- `LRUCache`: 
+  - `__init__`: Initialize with hashmap `cache`, `capacity`, `linkedlistsize` (to compare with `capacity`) and two sentinel nodes + pointers.
+  - `remove`: To simply remove a node from the linked list, move the destinations of the `prev` and `next` pointers of the previous and the next of a node.
+  - `insert`: Add a node to the end of the linked list. Again, here it is just pointer manipulation.
+  - `get`: If the node is found inside the hash map, before returning it needs removing and inserting into the queue. Else, return -1
+  - `put`: 
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(1)$: For all methods.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(\text{capacity})$: The maximum size of the hash map and the linked list.
+
+#### Code
+```python
+class ListNode:
+    def __init__(self, key, value):
+        self.key = key
+        self.value = value
+        self.prev = self.next = None
+
+class LRUCache:
+
+    def __init__(self, capacity: int):
+        self.cache = {}
+        self.capacity = capacity
+        self.linkedlistsize = 0
+        # head: least recently used, tail: most recently used
+        self.head, self.tail = ListNode(0, 0), ListNode(0, 0)
+        self.head.next, self.tail.prev = self.tail, self.head
+
+    # Insert node at tail
+    def insert(self, node):
+        pre, nxt = self.tail.prev, self.tail
+        node.prev, node.next = pre, nxt
+        pre.next = nxt.prev = node
+        self.linkedlistsize += 1
+
+    def remove(self, node):
+        pre, nxt = node.prev, node.next
+        pre.next, nxt.prev = nxt, pre
+        self.linkedlistsize -= 1
+
+    def get(self, key: int) -> int:
+        if key in self.cache:
+            self.remove(self.cache[key])
+            self.insert(self.cache[key])
+            return self.cache[key].value
+        return -1
+
+    def put(self, key: int, value: int) -> None:
+        if key in self.cache:
+            self.remove(self.cache[key])
+        
+        if self.linkedlistsize == self.capacity:
+            lru = self.head.next
+            self.remove(lru)
+            self.cache.pop(lru.key)
+
+        self.cache[key] = ListNode(key, value)
+        self.insert(self.cache[key])
+
+# Your LRUCache object will be instantiated and called as such:
+# obj = LRUCache(capacity)
+# param_1 = obj.get(key)
+# obj.put(key,value)
+```

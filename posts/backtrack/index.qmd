@@ -1,0 +1,34 @@
+---
+title: "Backtracking"
+author: "Pham Nguyen Hung"
+date: last-modified
+date-format: long
+draft: false
+toc: true
+---
+# Backtracking
+
+## Definitions
+
+{{< video https://www.youtube.com/embed/EM8IgIIiOdY >}}
+
+I found a video that gave 5 algorithms that are most frequently used in interview. The video seems to agree with [AlgoMonster](https://algo.monster/) or [Jiuzhang](https://www.jiuzhang.com/course/71). BFS and DFS are still the most frequently used, followed by Dynamic Programming and Backtracking. The next one is the class of two pointer (oppposite direction, sliding window, fast and slow). I have dealt with the first and the last. This time, I tackle Backtracking.
+
+Backtracking is a fancy name for improved brute-force algorithm. It attempts to check every candidate to find the correct solution, and do not check any candidate twice. That is the first improvement. The second improvement is making use of problem constraint(s) to abandon a candidate the moment it cannot possibly be completed to a valid solution.
+
+Backtracking is often implemented with **recursion** and **nested helper function**.
+
+The idea is intuitive, it is the problems that give the interviewees nightmare.
+
+## Problems
+
+### 1. Subsets
+
+#### Intuition
+My first solution was a dynamic programming one (accidentally). It can be observed that starting with an empty set, I can create the power set *up to an element* by adding that element to each copy of existing subsets. In other words, the number of subsets doubles with every iteration. That was an awful explanation: an image will be better:
+
+![](backtrack 1.png)
+
+This resulted in a good solution, but not the backtracking solution.
+
+For the backtracking solution, 
