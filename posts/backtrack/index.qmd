@@ -10,9 +10,7 @@ toc: true
 
 ## Definitions
 
-{{< video https://www.youtube.com/embed/EM8IgIIiOdY >}}
-
-I found a video that gave 5 algorithms that are most frequently used in interview. The video seems to agree with [AlgoMonster](https://algo.monster/) or [Jiuzhang](https://www.jiuzhang.com/course/71). BFS and DFS are still the most frequently used, followed by Dynamic Programming and Backtracking. The next one is the class of two pointer (oppposite direction, sliding window, fast and slow). I have dealt with the first and the last. This time, I tackle Backtracking.
+I found a [video](https://youtu.be/EM8IgIIiOdY) that gave 5 algorithms that are most frequently used in interview. The video agrees with [AlgoMonster](https://algo.monster/) or [Jiuzhang](https://www.jiuzhang.com/course/71). BFS and DFS are still the most frequently used, followed by Dynamic Programming and Backtracking. The next one is the class of two pointer (oppposite direction, sliding window, fast and slow). I have dealt with the first and the last. This time, I tackle Backtracking.
 
 Backtracking is a fancy name for improved brute-force algorithm. It attempts to check every candidate to find the correct solution, and do not check any candidate twice. That is the first improvement. The second improvement is making use of problem constraint(s) to abandon a candidate the moment it cannot possibly be completed to a valid solution.
 
@@ -31,4 +29,64 @@ My first solution was a dynamic programming one (accidentally). It can be observ
 
 This resulted in a good solution, but not the backtracking solution.
 
-For the backtracking solution, 
+For the backtracking solution, I need to define a new helper function that maintain a current subset, iteratively add an element into that subset, pop it out and then continue.
+
+> I appear to have no idea what I am talking about at this point. That's correct. This is the first time I do backtracking, and it is head-banging just as it is supposed to be. My subsequent explanations will be simpler.
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+For the backtracking solution:
+1. Parameters are pointer `k` to the current position in the array and also being the return constraint (return when `k` equal the length of the array) and a subset represented as an array `sol`.
+2. At each call, iterate over the subarray from `k` with a `for` loop:
+   1. Append the element from the array into `sol`
+   2. Append a copy of `sol` in the result array (the result array will be an array of arrays).
+   3. Call the function again on `i+1` with `i` the current position.
+   4. Pop `sol` which is equivalent to backtrack. The `for` loop will naturally direct the function to the next candidate.
+3. Call the recursive function and return `res`.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n \times 2^{n})$ for both. I have to generate all subsets and then copy them into output list.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n \times 2^{n})$ for dynamic programming, $O(n)$ for backtracking.
+
+#### Code
+
+Dynamic programming
+```python
+from typing import List
+
+class Solution:
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        result = [[]]
+
+        for num in nums:
+            for i in range(len(result)):
+                subset = result[i][:]
+                subset.append(num)
+                result.append(subset)
+        return result
+```
+Backtracking
+```python
+from typing import List
+
+class Solution:
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        res = [[]]
+
+        def backtrack(k, sol):
+            if k == len(nums):
+                return
+            
+            for i in range(k, len(nums)):
+                sol.append(nums[i])
+                res.append(sol[:])
+                backtrack(i+1, sol)
+                sol.pop()
+        backtrack(0, [])
+        return res
+```

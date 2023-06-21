@@ -15,7 +15,8 @@ website:
         href: https://twitter.com
 format:
   html:
-    theme: zephyr
-    mainfont: Georgia, serif;
+    theme:
+      - zephyr
+      - custom.scss
     css: styles.css
     highlight-style: solarized
