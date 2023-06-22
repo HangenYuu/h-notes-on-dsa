@@ -29,9 +29,9 @@ My first solution was a dynamic programming one (accidentally). It can be observ
 
 This resulted in a good solution, but not the backtracking solution.
 
-For the backtracking solution, I need to define a new helper function that maintain a current subset, iteratively add an element into that subset, pop it out and then continue.
+For the backtracking solution, at each iteration, for each current subset, I need to account for the choice to include that element, and the choice not to include it. There are $2$ choices at each elements for $n$ elements, hence the $2^n$ part in runtime complexity. To achieve this, I need to define a new helper function that maintain a current subset, iteratively add an element into that subset, pop it out and then continue.
 
-> I appear to have no idea what I am talking about at this point. That's correct. This is the first time I do backtracking, and it is head-banging just as it is supposed to be. My subsequent explanations will be simpler.
+There can be a follow-up question: "What if the input array does not necessarily contain only distinct elements?" For this question, the decision to be made becomes whether to include one or more instances of a number or not.
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
@@ -70,7 +70,30 @@ class Solution:
                 result.append(subset)
         return result
 ```
-Backtracking
+More "template" backtracking
+```python
+from typing import List
+
+class Solution:
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        subsets = []
+        self._backtrack(nums, 0, subsets, [])
+        return subsets
+    
+    def _backtrack(self, nums, current, subsets, subset):
+        if current >= len(nums):
+            subsets.append(subset.copy())
+            return
+        
+        subset.append(nums[current])
+        self._backtrack(nums, current + 1, subsets, subset)
+        subset.pop()
+
+        while current + 1 < len(nums) and nums[current] == nums[current + 1]:
+            current += 1
+        self._backtrack(nums, current + 1, subsets, subset)
+```
+Backtracking making use of `for` loop to avoid a second recursive call.
 ```python
 from typing import List
 
@@ -89,4 +112,117 @@ class Solution:
                 sol.pop()
         backtrack(0, [])
         return res
+```
+
+### 2. Combination Sum
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+Very similar to [Subsets](https://leetcode.com/problems/subsets/) if you ask me (I mean, they are all backtracking). As I know that this is a backtracking problem, the focus should be on designing the backtracking helper function.
+
+For the parameters, I obviously need `curSum` and `combination` to keep track of the current sum and current combination. To iteratively add element from `candidates` into `combination`, I will use a `for` loop (I said it is less obvious, but hey, I find it useful and don't need to wait for anyone to tell me when I can use `for` loop in recursion). The question then can be focused on the `for` loop. The end is obvious: the end of the array. How about the start? It is redundant to start at the beginning every time, so I should have a `current` parameter as starting point for the `for` loop. And different from [Subsets](https://leetcode.com/problems/subsets/) I don't want to increment every time as an element can appear more than once.
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+For helper function:
+1. Base cases: `current` goes pass the length (just return) and `curSum == target` (append and return)
+2. Recursion: For every element starting from `current`:
+   1. Append element to `combination`.
+   2. Call the helper function.
+   3. Backtrack by popping `combination`.
+3. Call the helper function and return.
+
+#### Complexity
+Define
+
+$t$: `target`
+
+$n$: length of `candidates`
+
+$m$: minimum value in `candidates`
+
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n^{(\frac{t}{m}+1)})$ - The number of all possible combinations of `candidates`.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(\frac{t}{m})$ - The maximum depth of the recursive call stack.
+
+#### Code
+```python
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        combinations = []
+
+        def backtrack(combination, current, curSum):
+            # Base cases
+            if current >= len(candidates):
+                return
+
+            if curSum >= target:
+                if curSum == target:
+                    combinations.append(combination.copy())
+                return
+            
+            # Recursion
+            for i in range(current, len(candidates)):
+                combination.append(candidates[i])
+                backtrack(combination, i, curSum + candidates[i])
+                combination.pop()
+        
+        backtrack([], 0, 0)
+        return combinations
+```
+
+### 3. Permutations
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+A permutation, at least as defined here, is an array containing all elements from the original array, but **order matters**. To build such an array, I start with modifying the solution for combinations. The first change I made was removing `current_index` - now I need to add every element. However, simply adding the element led to max recursion depth. Okay, I needed to add the length of the array as safe point. Now I receive a list full of the first element. Okay, it was better to add a set to check for repeating element. And suddenly I was done.
+
+> I can do away with the set and just use the permutation candidate to check for repeating element, trading sapce for time. Well, I chose time.
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+For the helper function:
+
+1. Parameters: a permutation candidate and the set containing elements of that candidate for faster checking. 
+2. Base case: the length of the candidate equals that of the original array (append and return).
+3. Recursive case: Iterate through `nums`:
+   1. If the current element is not yet in the permutation candidate, append it.
+   2. Call the helper function recursively.
+   3. Backtrack by popping from the array and set.
+4. Call the helper function and return.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n \times n!)$: There are $n!$ permutations for an array of length $n$, and copy the list takes $n$ time complexity every time. This is just an approximation, but good enough for this case given the use of a set to check for used element. The analytical complexity is more complex, and can be found [here](https://leetcode.com/problems/permutations/editorial/). For an interview, and especially for this implementation, $O(n \times n!)$ is good enough.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$: The recursive call stack, length of `permu_list`, and length of `permu_set` all point to $n$.
+
+#### Code
+```python
+class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        permutations = []
+
+        def backtrack(permu_list, permu_set):
+            if len(permu_list) == len(nums):
+                permutations.append(permu_list.copy())
+                return
+            
+            for num in nums:
+                if num not in permu_set:
+                    permu_list.append(num)
+                    permu_set.add(num)
+                    backtrack(permu_list, permu_set)
+                    permu_list.pop()
+                    permu_set.discard(num)
+
+        backtrack([], set())
+        return permutations
 ```
