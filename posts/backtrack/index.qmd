@@ -31,7 +31,7 @@ This resulted in a good solution, but not the backtracking solution.
 
 For the backtracking solution, at each iteration, for each current subset, I need to account for the choice to include that element, and the choice not to include it. There are $2$ choices at each elements for $n$ elements, hence the $2^n$ part in runtime complexity. To achieve this, I need to define a new helper function that maintain a current subset, iteratively add an element into that subset, pop it out and then continue.
 
-There can be a follow-up question: "What if the input array does not necessarily contain only distinct elements?" For this question, the decision to be made becomes whether to include one or more instances of a number or not.
+There can be a follow-up question: "What if the input array does not necessarily contain only distinct elements?" For this question, the decision to be made becomes whether to include one or more instances of a number or not. Actually, that's follow-up question is [Subsets II](https://leetcode.com/problems/subsets-ii/description/).
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
@@ -225,4 +225,167 @@ class Solution:
 
         backtrack([], set())
         return permutations
+```
+
+### 4. Letter Combinations of a Phone Number
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+This was a straightforward problem. For each `digit` in `digits`, I iterate through the corresponding letters stored inside a dictionary, append it, continue, and then pop it to append another one. Simple backtracking.
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+For the helper function
+1. Parameters: `letters`, array containing the letters and `current`, pointer to the position of the digit in `digits`.
+2. Base case: When `current >= len(digits)`, I have reached the end so I should return.
+3. Recursive case: for every letter in the current string corresponding to the current digit
+   1. Append that letter to `letters`.
+   2. Call the helper function again.
+   3. Pop the letter out to move on the next one.
+4. Call the helper function and return.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n \times 4^{n})$: I need to iterate through `digits`, and for every digit, I need to iterate through maximum 4 cases. That together makes the $4^{n}$ part. Turning the array to string to append it takes $O(n)$ times, and it is done inside the recursive loop, so they are multiplied together.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$: The height of the recursive call stack.
+
+#### Code
+```python
+import string
+
+class Solution:
+    def letterCombinations(self, digits: str) -> List[str]:
+        # Edge case
+        if not digits:
+            return []
+
+        lower_alphabet = string.ascii_lowercase
+        digitToLetter = {'2':'abc', '3':'def', '4':'ghi', '5':'jkl', '6':'mno', '7':'pqrs', '8':'tuv', '9':'wxyz'}
+        result = []
+        
+        def backtrack(letters, current):
+            # Base case
+            if current >= len(digits):
+                result.append(''.join(letters))
+                return
+            
+            current_digit = digits[current]
+            for letter in digitToLetter[current_digit]:
+                letters.append(letter) 
+                backtrack(letters, current + 1)
+                letters.pop()
+        
+        backtrack([], 0)
+        return result
+```
+
+### 5. Combinations
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+Another day, another backtracking problem. The thing that I need to pay attention to is base case. Of course, when the length of the list reaches the requirement, I need to return. However, as I iteratively add number to the array left to right, when I hit a point where the number of elements left are smaller than the number of elements I need more, I can return right away.
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+For the helper function
+1. Parameters: `combination`, the array of current combination, and `current_num`, the current number to be appended to the array.
+2. Base cases: length of `combination` equals that of the array (append and return).
+3. Recursion: First, calculate the number of nodes needed more, the number of remaining node, and the number of available nodes. The number of available nodes will be used as a safeguard in the `for` loop to abandon paths that do not lead to solution. Afterwards, it is a `for` loop with backtracking as always.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(\frac{n!}{(k-1)!(n-k)!})$: First, for those who paid attention during maths lessons, the number of combinations i.e., paths here is $O(\frac{n!}{k!(n-k)!})$. There are at most $k$ nodes in a path, but the actual number is way smaller because there are overlaps (consider `1` in $20 \choose 6$). However, the actual number is irrelevant as there is a $O(k)$ work of copying the array at each leaf. Hence, the time complexity $O(\frac{k\times n!}{k!(n-k)!}) = O(\frac{n!}{(k-1)!(n-k)!})$.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(k)$: Just the size of the recursive call stack.
+
+#### Code
+```python
+class Solution:
+    def combine(self, n: int, k: int) -> List[List[int]]:
+        result = []
+
+        def backtrack(combination, current_num):
+            print(combination)
+            # Base case
+            if len(combination) == k:
+                result.append(combination[:])
+                return
+            
+            need = k - len(combination)
+            remain = n - current_num + 1
+            available = remain - need
+            
+            # Recursion
+            for num in range(current_num, current_num + available + 1):
+                combination.append(num)
+                backtrack(combination, num + 1)
+                combination.pop()
+                
+        
+        backtrack([], 1)
+        return result
+```
+
+### 6. N-Queens
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+The most notorious problem.
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+
+#### Code
+```python
+from typing import List
+
+class Solution:
+    def solveNQueens(self, n: int) -> List[List[str]]:
+        column = set()
+        posDiag = set()
+        negDiag = set()
+
+        result = []
+        board = [['.' for _ in range(n)] for _ in range(n)]
+
+        def backtrack(row):
+            # Base case
+            if row == n:
+                final_board = [''.join(row) for row in board]
+                result.append(final_board)
+                return
+            
+            # Recursion
+            for col in range(n):
+                if col in column or (row + col) in posDiag or (row - col) in negDiag:
+                    continue
+
+                column.add(col)
+                posDiag.add(row + col)
+                negDiag.add(row - col)
+                board[row][col] = 'Q'
+
+                backtrack(row + 1)
+
+                column.remove(col)
+                posDiag.remove(row + col)
+                negDiag.remove(row - col)
+                board[row][col] = '.'
+        
+        backtrack(0)
+        return result
 ```
