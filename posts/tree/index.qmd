@@ -1224,3 +1224,219 @@ class Codec:
 # deser = Codec()
 # ans = deser.deserialize(ser.serialize(root))
 ```
+
+### 12. Invert Binary Tree
+
+#### Intuition
+
+Trivial problem. It is essentially swapping the place of the left and right children, and call the function recursively down the tree. This can be top-down or bottom-up, but the change is so trivial as to change the position of a line of code.
+
+#### Code
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        if not root:
+            return
+        
+        self.invertTree(root.left)
+        self.invertTree(root.right)
+        root.left, root.right = root.right, root.left
+        return root
+```
+
+### 13. Same Tree
+
+#### Intuition
+
+This is another trivial problem. However, it can become the building block for other interesting problems.
+
+In recursion, it is as simple as checking whether the two node values are equal, and then check recursively for the left and right subtrees.
+
+#### Code
+```python
+class Solution:
+    def isSameTree(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
+        if not p or not q:
+            return not p and not q
+            
+        if p.val != q.val:
+            return False
+        return self.isSameTree(p.left, q.left) and self.isSameTree(p.right, q.right)
+```
+
+### 14. Subtree of Another Tree
+
+#### Intuition
+
+Subtree of Another Tree... means that the tree from `subRoot` is **equal** to a subtree in `root`. The problem of [Same Tree](https://leetcode.com/problems/same-tree/) thus provides the hint to solving this question.
+
+However, the interesting does not stop here. The same tree, by definition, will have the same **serialization**, which bears itself to the problem of serialization and deserialization of a binary tree above. And this gives rise to another approach: serialization of trees to strings, and then use string matching solution to find it.
+
+Let's explore each in details.
+
+##### "Same Tree"-inspired Recursion
+
+###### Intuition
+
+The method `.isSameTree()` is defined again here and is called at each iteration of the `.isSubtree()` method to check the current root and sub-root. Note that `.isSubtree()` calls itself, not `.isSameTree()` recursively.
+
+###### Complexity
+
+Define:
+
+$m$: Number of nodes in `subRoot` tree.
+
+$n$: Number of nodes in `root` tree.
+
+- Time complexity: $O(mn)$ - For each of $n$ nodes in `root` tree, check whether that node is the root of a tree same as `subRoot` tree. Each check will take $O(m)$ operations. That looked terrible, but I then realized that in most of the case it will only take $O(1)$ operation as the root values are different. Plus, there is no avoiding iterating throught the whole `root` tree.
+
+- Space complexity: $O(m+n)$ - At most $O(n)$ recursive calls to `.isSubtree()`, with $O(m)$ more recursive calls to `.isSameTree()` on top of this.
+
+###### Code
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def isSubtree(self, root: Optional[TreeNode], subRoot: Optional[TreeNode]) -> bool:
+        if not root:
+            return False
+        
+        if self.isSameTree(root, subRoot):
+            return True
+
+        return (self.isSubtree(root.left, subRoot) or 
+                self.isSubtree(root.right, subRoot))
+         
+    def isSameTree(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
+        if not p or not q:
+            return not p and not q
+        return (p.val == q.val and
+                self.isSameTree(p.left, q.left) and
+                self.isSameTree(p.right, q.right))
+```
+
+##### String matching
+
+###### Intuition
+
+This solution consists of two steps: correctly serialize the tree, and then use a pattern matching algorithm (naive, Knuth-Morris-Pratt, Robin-Karp, etc.) to solve.
+
+I have no intention of learning KMP. Besides, a good implementation of naive, or, at max, Robin-Karp, is enough to pass an interview.
+
+###### Complexity:
+
+- Time complexity: $O(mn) \text{ to } O(m+n)$ - Rabin-Karp algorithm requires iterating through each string once.
+- Space complexity: $O(m)$ for both solutions.
+
+###### Code
+$O(mn)$ best practice
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def isSubtree(self, root: Optional[TreeNode], subRoot: Optional[TreeNode]) -> bool:
+        def serialize(node):
+            serialization, stack = [], [node]
+
+            while stack:
+                node = stack.pop()
+                if node:
+                    serialization.append(str(node.val))
+                    stack.append(node.right)
+                    stack.append(node.left)
+                else:
+                    serialization.append('#')
+            return serialization
+        
+        def string_match(source, target):
+            if source is None or target is None:
+                return False
+            
+            for i in range(len(source) - len(target) + 1):
+                for j in range(len(target)):
+                    if source[i + j] != target[j]:
+                        break
+                else:
+                    return True
+            
+            return False
+        
+        root_series = serialize(root)
+        subRoot_series = serialize(subRoot)
+
+        return string_match(root_series, subRoot_series)
+```
+Rabin-Karp algorithm
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+from typing import Optional, List
+
+class Solution:
+    def isSubtree(self, root: Optional[TreeNode], subRoot: Optional[TreeNode]) -> bool:
+        root_series = self.serialize(root)
+        subRoot_series = self.serialize(subRoot)
+
+        return self.stringMatch(root_series, subRoot_series)
+    
+    def serialize(self, node: Optional[TreeNode]) -> List[int]:
+            serialization, stack = [], [node]
+
+            while stack:
+                node = stack.pop()
+                if node:
+                    serialization.append(node.val)
+                    stack.append(node.right)
+                    stack.append(node.left)
+                else:
+                    serialization.append('#')
+            return serialization
+    
+    def computeHash(self, serialization: List[int], base: int = 13, prime_factor: int = 10**9 + 7) -> int:
+        window_size = len(serialization)
+        highest_value = pow(base, window_size - 1)
+        
+        current_hash = 0
+        for element in serialization:
+            element_value = element if element != '#' else (10**4 + 1)
+            current_hash = (current_hash * base + element_value) % prime_factor
+        return current_hash
+
+    def stringMatch(self, source: List[int], target: List[int], base: int = 13, prime_factor: int = 10**9 + 7) -> bool:
+        window_size = len(target)
+        source_hash = self.computeHash(source[:window_size])
+        target_hash = self.computeHash(target)
+        print('Initial source hash:', source_hash)
+        print('Target hash:', target_hash)
+        if source_hash == target_hash:
+            return True
+        
+        highest_value = pow(base, window_size - 1)
+        for i in range(window_size, len(source)):
+            removed_val = source[i - window_size] if source[i - window_size] != '#' else (10**4 + 1)
+            source_hash = (source_hash - highest_value * removed_val) % prime_factor
+            element_val = source[i] if source[i] != '#' else (10**4 + 1)
+            source_hash = (base * source_hash + element_val) % prime_factor
+            print('Source hash:',source_hash)
+            if source_hash == target_hash:
+                return True
+        return False
+```

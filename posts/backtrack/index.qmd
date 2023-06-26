@@ -337,17 +337,33 @@ class Solution:
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
-The most notorious problem.
+The most notorious problem in the world of backtracking. Belong to none of the Combination/Permutation/Subset pattern.
+
+I struggled to come up with a procedure to check the positions effectively. I know that first, I must put a queen on the board. Then I need to check for the diagonals, the row, and the column. For the row, because I increment, I can affort to not check the row. But I need to check the columns and the column.
+
+The incredible intuition is the fact that one diagonal can be represented by the sum of row and column, the other by the difference between row and column. With this, the columns and diagonals each can be represented by a single number, and that number can be used to check whether a queen has occupied it or not. Three sets can be used for this.
 
 #### Approach
 <!-- Describe your approach to solving the problem. -->
+Initialize the sets of column and both diagonals + the board for insertion and the return list.
+For the helper function:
+1. Parameter: the current row.
+2. Base case: When row passes the board size, append the board to return list.
+3. Recursion: For each column in the board:
+   1. If the corresponding position has been taken by a queen through the column or digonal, do nothing.
+   2. Else, try putting a queen there and add the position to the sets.
+   3. Call the helper function on the next row.
+   4. Backtrack by resetting the position and remove element from the sets.
+4. Call the helper function and return result list.
 
 #### Complexity
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n!)$: The first queen has $n$ options on the first row, the second queen has $n-1$ (pessimistically, usually just $n-2$ or $n-3$) options on the second row, and so on.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n!)$: The number of possible boards corresponds to the number of possible solutions stored inside the result list.
 
 #### Code
 ```python
