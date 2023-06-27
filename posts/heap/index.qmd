@@ -1,6 +1,38 @@
 ---
-draft: true
+title: "Heap"
+author: "Pham Nguyen Hung"
+date: last-modified
+date-format: long
+draft: false
+toc: true
 ---
+# Heap
+
+## Definition
+
+Heap, or priority queue, is a data structure that supports quick searching of the *prioritized* element such as the minimum or maximum in an array. It is commonly represented as a complete binary tree such as below
+
+![](heap 1.png)
+
+The tree has the following properties:
+
+1. Complete binary tree: All levels are filled except possibly the last layer. Nodes are placed as far to the left as possible.
+2. All descendants of a node are larger than the node itself. However, they do not need arranging in any further order.
+
+While heap is commonly represented as a binary tree, it is often implemented with an array containing the level-order traversal of the tree instead.
+
+![](heap 2.png)
+
+The first node is usually omitted - the heap is counted from 1 onwards. Because of the complete binary tree property, the heap has an interesting property that at every node with position $i$ in the array
+
+| Node | Position |
+| :--- | :--- |
+| Left child | $2*i$ |
+| Right child | $2*i+1$ |
+| Parent | $i//2$ |
+
+Here is an example implementation of Min Heap i.e. a heap that gives you the minimum element in $O(1)$ time complexity from [LeetCode](https://leetcode.com/explore/learn/card/heap/643/heap/4017/).
+
 ```python
 # Implementing "Min Heap"
 class MinHeap:
@@ -108,4 +140,47 @@ if __name__ == "__main__":
         minHeap.add(5)
         # [4,5]
         print(minHeap)
+```
+
+In Python, we usually just need to use the built-in `heapq` module to work with problem requiring a Min Heap.
+
+## Problems
+
+### 1. Kth Largest Element in a Stream
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+
+#### Code
+```python
+import heapq
+
+class KthLargest:
+
+    def __init__(self, k: int, nums: List[int]) -> None:
+        self.heap = []
+        self.limit = k
+        for num in nums:
+            self.add(num)
+
+    def add(self, val: int) -> int:
+        heapq.heappush(self.heap, val)
+        if len(self.heap) > self.limit:
+            heapq.heappop(self.heap)
+        return self.heap[0]
+
+
+# Your KthLargest object will be instantiated and called as such:
+# obj = KthLargest(k, nums)
+# param_1 = obj.add(val)
 ```

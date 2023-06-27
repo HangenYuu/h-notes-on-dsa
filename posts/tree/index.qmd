@@ -1,6 +1,5 @@
 ---
 title: "Tree"
-description: "Mostly binary tree"
 author: "Pham Nguyen Hung"
 date: last-modified
 date-format: long

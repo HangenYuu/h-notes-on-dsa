@@ -1,6 +1,5 @@
 ---
 title: "Sliding window"
-description: "A variation of two pointers"
 author: "Pham Nguyen Hung"
 date: last-modified
 date-format: long

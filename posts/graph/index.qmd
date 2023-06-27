@@ -1,6 +1,5 @@
 ---
 title: "Graph"
-description: "Graph"
 author: "Pham Nguyen Hung"
 date: last-modified
 date-format: long

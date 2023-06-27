@@ -1,6 +1,5 @@
 ---
 title: "Array"
-description: "Array"
 author: "Pham Nguyen Hung"
 date: last-modified
 date-format: long

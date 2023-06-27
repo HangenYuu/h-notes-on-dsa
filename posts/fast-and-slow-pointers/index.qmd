@@ -1,6 +1,5 @@
 ---
 title: "Fast and slow pointers"
-description: "Fast and slow pointers"
 author: "Pham Nguyen Hung"
 date: last-modified
 date-format: long

@@ -1,6 +1,5 @@
 ---
 title: "Stack"
-description: "Stack"
 author: "Pham Nguyen Hung"
 date: last-modified
 date-format: long

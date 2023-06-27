@@ -1,6 +1,5 @@
 ---
 title: "Merge Intervals"
-description: ""
 author: "Pham Nguyen Hung"
 date: last-modified
 date-format: long

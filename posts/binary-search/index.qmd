@@ -1,6 +1,5 @@
 ---
 title: "Binary search"
-description: "Binary search"
 author: "Pham Nguyen Hung"
 date: last-modified
 date-format: long
