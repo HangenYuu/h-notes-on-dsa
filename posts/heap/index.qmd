@@ -164,7 +164,7 @@ The meat is defining the `.add()` method. To implement this, I need to define `s
 #### Complexity
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
-$O(n \times log(k))$: Every call with `heapq.heappush()` or `heapq.heappushpop()` with `.add()` costs $O(log(k))$. In the constructor method, $n$ such calls happen - hence the time complexity.
+$O(n \times \log (k))$: Every call with `heapq.heappush()` or `heapq.heappushpop()` with `.add()` costs $O(\log(k))$. In the constructor method, $n$ such calls happen - hence the time complexity.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
@@ -202,13 +202,20 @@ This is a problem that cannot avoid max heap. Well, luckily it can be constructe
 
 #### Approach
 <!-- Describe your approach to solving the problem. -->
+1. Negating the value of every element in the inpyt array `stones`.
+2. Heapify `stones` (in-place, linear time complexity).
+3. While the length is larger than 1:
+   1. Pop from the heap two times. If the two values are different, push the remaining stone into the heap.
+4. Return per condition.
 
 #### Complexity
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n \times \log (n))$: The dominating operation is popping from the heap. The algorithm does that $n$ times, each costs $O(\log(n))$.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$: All operation happens in-place with pointer manipulation.
 
 #### Code
 ```python
@@ -227,4 +234,76 @@ class Solution:
         if len(stones) == 1:
             return - stones[0]
         return 0
+```
+
+### 3. K Closest Points to Origin
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+I know that I will need to calculate the distance from origin of every coordinates. Hence, I decided to push that information into the input array by turning each element from an array of coordinates into a tuple of `(distance, [coordinates])`. Heapify the input array will consider this distance first before the coordinates, which does not matter (I can return equidistant coordinates in any order).
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+1. Modify each element of `points` in-place.
+2. Heapify points.
+3. Construct the result list and return.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n + k\log(n))$: Modify and heapify the array both takes $O(n)$ time. The algorithm pop form the heap $k$ times, each time takes $O(\log(n)$ time. I don't know which one of the terms will dominate, so I include both.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$: Ignoring the return list, it costs $O(n)$ space in modifying the input array.
+
+#### Code
+```python
+import heapq
+from math import sqrt
+
+class Solution:
+    def kClosest(self, points: List[List[int]], k: int) -> List[List[int]]:
+        for i in range(len(points)):
+            x, y = points[i]
+            points[i] = (sqrt(x**2 + y**2), [x, y])
+        heapq.heapify(points)
+
+        return [heapq.heappop(points)[1] for _ in range(k)]        
+```
+
+### 4. Kth Largest Element in an Array
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+Same as above, this problem can solved with a min heap maintaining only the largest $k$ elements in the array.
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+1. Initialize a new heap.
+2. Iterate the array. Push to the heap if the length has not reached $k$, else push-pop.
+3. Return the first element in the heap.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n \log(k))$: Iterate the array of length $n$, each operation takes $O(\log(k))$ time.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(k)$: The size of the new heap.
+
+#### Code
+```py
+import heapq
+
+class Solution:
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        heap = []
+        for num in nums:
+            if len(heap) < k:
+                heapq.heappush(heap, num)
+            else:
+                heapq.heappushpop(heap, num)
+        return heap[0]
 ```
