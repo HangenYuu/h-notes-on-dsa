@@ -150,16 +150,25 @@ In Python, we usually just need to use the built-in `heapq` module to work with 
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
+I got some trouble because Python's `heapq` provides support for Min Heap, but not Max Heap. However, I was then given a clever hint: the $k^{th}$ largest element is the smallest element in the largest $k$ elements (note the singular - plural nouns). Hence, a a min heap can do the job perfectly.
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
+The meat is defining the `.add()` method. To implement this, I need to define `self.heap` and `self.limit` (`k`) beforehand.
+
+`.add()`: There are two case:
+1. If the heap has not reached its limit, use `heapq.heappush()`.
+2. Else, use `heapq.heappushpop()`.
+3. Return the first element i.e., the minimum element.
 
 #### Complexity
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n \times log(k))$: Every call with `heapq.heappush()` or `heapq.heappushpop()` with `.add()` costs $O(log(k))$. In the constructor method, $n$ such calls happen - hence the time complexity.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(k)$: The internal `self.heap` only contains up to $k$ elements at a time.
 
 #### Code
 ```python
@@ -174,13 +183,48 @@ class KthLargest:
             self.add(num)
 
     def add(self, val: int) -> int:
-        heapq.heappush(self.heap, val)
-        if len(self.heap) > self.limit:
-            heapq.heappop(self.heap)
+        if len(self.heap) < self.limit:
+            heapq.heappush(self.heap, val)
+        else:
+            heapq.heappushpop(self.heap, val)
         return self.heap[0]
 
 
 # Your KthLargest object will be instantiated and called as such:
 # obj = KthLargest(k, nums)
 # param_1 = obj.add(val)
+```
+### 2. Last Stone Weight
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+This is a problem that cannot avoid max heap. Well, luckily it can be constructed with a min heap - all I have to do is negating the value of the element.
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+
+#### Code
+```python
+class Solution:
+    def lastStoneWeight(self, stones: List[int]) -> int:        
+        stones = [-i for i in stones]
+        heapq.heapify(stones)
+
+        while len(stones) > 1:
+            stone1 = heapq.heappop(stones)
+            stone2 = heapq.heappop(stones)
+
+            if stone1 != stone2:
+                heapq.heappush(stones, stone1 - stone2)
+
+        if len(stones) == 1:
+            return - stones[0]
+        return 0
 ```
