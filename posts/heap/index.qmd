@@ -200,7 +200,7 @@ class KthLargest:
 <!-- Describe your first thoughts on how to solve this problem. -->
 This is a problem that cannot avoid max heap. Well, luckily it can be constructed with a min heap - all I have to do is negating the value of the element.
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
 1. Negating the value of every element in the inpyt array `stones`.
 2. Heapify `stones` (in-place, linear time complexity).
@@ -242,7 +242,7 @@ class Solution:
 <!-- Describe your first thoughts on how to solve this problem. -->
 I know that I will need to calculate the distance from origin of every coordinates. Hence, I decided to push that information into the input array by turning each element from an array of coordinates into a tuple of `(distance, [coordinates])`. Heapify the input array will consider this distance first before the coordinates, which does not matter (I can return equidistant coordinates in any order).
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
 1. Modify each element of `points` in-place.
 2. Heapify points.
@@ -278,7 +278,7 @@ class Solution:
 <!-- Describe your first thoughts on how to solve this problem. -->
 Same as above, this problem can solved with a min heap maintaining only the largest $k$ elements in the array.
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
 1. Initialize a new heap.
 2. Iterate the array. Push to the heap if the length has not reached $k$, else push-pop.

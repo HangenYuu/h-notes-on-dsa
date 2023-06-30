@@ -6,8 +6,6 @@ date-format: long
 draft: false
 toc: true
 ---
-Firstly, See [About](https://h-notes-on-dsa.netlify.app/about.html) page.
-
 # Stack:
 
 ## Definitions:
