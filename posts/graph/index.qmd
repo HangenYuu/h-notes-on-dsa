@@ -112,3 +112,40 @@ class Solution:
 
         return count
 ```
+
+### 2. Flood Fill
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+
+#### Code
+```python
+class Solution:
+    def floodFill(self, image: List[List[int]], sr: int, sc: int, color: int) -> List[List[int]]:
+        ROWS, COLS = len(image), len(image[0])
+        original_color = image[sr][sc]
+        def dfs(row, col):
+            if min(row, col) < 0 or row >= ROWS or col >= COLS or \
+                image[row][col] != original_color or image[row][col] == color:
+                return
+            
+            image[row][col] = color
+
+            dfs(row - 1, col)
+            dfs(row + 1, col)
+            dfs(row, col - 1)
+            dfs(row, col + 1)
+        
+        dfs(sr, sc)
+        return image
+```
