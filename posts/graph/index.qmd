@@ -228,3 +228,65 @@ class Solution:
 
 ### 4. Rotting Oranges
 
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+The introduction to breadth-first search in matrix. I still need to expand on all 4 directions. The difference here is I need to do so in the context of layer. Simply put, the $n^{th}$ layer from the first node is all nodes that I can reach by walking $n$ steps from the first node (counting the first node as the $0^{th}$ layer). So instead of expand in each direction as far as possible, I expand all 4 nodes for each node in a layer.
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+1. Initialize variables: `minute` to 0, `rotten` queue for the oranges, and `fresh` to count the fresh oranges.
+2. Iterate the matrix, count the number of fresh oranges and append rotten oranges to the queue.
+3. While there is still fresh orange and the queue is not empty, iterate through one layer of the queue.
+   1. For each node, expand to all 4 adjacent nodes.
+   2. If the node is within bound and contains a fresh orange, turn it rotten, add to the queue, and decrement the number of fresh oranges.
+   3. At the end, increment `minute`.
+4. Return per condition.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(m \times n)$: Iterate through all the nodes in matrix roughly twice.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(m \times n)$: The maximum size of the queue.
+
+#### Code
+```python
+from collections import deque
+from typing import List
+
+class Solution:
+    def orangesRotting(self, grid: List[List[int]]) -> int:
+        ROWS, COLS = len(grid), len(grid[0])
+        fresh = 0
+        rotten = deque()
+        minute = 0
+        
+        for row in range(ROWS):
+            for col in range(COLS):
+                if grid[row][col] == 1:
+                    fresh += 1
+                if grid[row][col] == 2:
+                    rotten.append((row, col))
+        
+        neighbors = [[0, 1], [0, -1], [1, 0], [-1, 0]]
+
+        while fresh > 0 and rotten:
+            for _ in range(len(rotten)):
+                row, col = rotten.popleft()
+
+                for dr, dc in neighbors:
+                    new_row, new_col = row + dr, col + dc
+                    if (
+                        0 <= new_row < ROWS
+                        and 0 <= new_col < COLS
+                        and grid[new_row][new_col] == 1
+                    ):
+                        grid[new_row][new_col] = 2
+                        rotten.append((new_row, new_col))
+                        fresh -= 1
+            
+            minute += 1
+        return minute if fresh == 0 else -1
+```
