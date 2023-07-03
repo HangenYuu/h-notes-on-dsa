@@ -117,20 +117,29 @@ class Solution:
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
+This can be called "the easier Number of Islands". Following the same approach, but this time the starting point for depth-first search is given. Afterwards, it is performing search in all 4 directions, replacing the satisfying tiles with the value given.
 
-#### Approach
+#### Algorithm
 <!-- Describe your approach to solving the problem. -->
+For the helper function:
+1. Base case: out of bound, the tile does not have the original value, the tile has already been filled.
+2. Recursive: Replace the tile, then call the function on all 4 directions.
 
 #### Complexity
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(m \times n)$: The work at every pixel is $O(1)$, and the algorithm may visit every pixel.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(m \times n)$: The maximum size of the recursive call stack.
+
+> **Note**: No. of rows is $m$, no. of columns is $n$.
 
 #### Code
 ```python
 class Solution:
+
     def floodFill(self, image: List[List[int]], sr: int, sc: int, color: int) -> List[List[int]]:
         ROWS, COLS = len(image), len(image[0])
         original_color = image[sr][sc]
@@ -149,3 +158,73 @@ class Solution:
         dfs(sr, sc)
         return image
 ```
+
+### 3. Max Area of Island
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+Another variation of Number of Islands. The least memory intensive way is to return the area of each island in the recursive function and modify the input matrix in-place. However, if the input matrix needs to be intact, a set should be used to check whether a node is visited or not.
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+For the helper function:
+1. Base case: out of bound, the tile is water, the tile has already been filled. Return 0
+2. Recursive: Replace the tile value, then call the function on all 4 directions. Return 1 + the value of each direction.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(m \times n)$: The work at each tile is $O(1)$, and the algorithm will visit every tile.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(m \times n)$$ -->
+$O(m \times n)$: The maximum size of the recursive call stack. Also the size of the set to keep track of nodes.
+
+#### Code
+
+- Modify in-place
+```python
+class Solution:
+    def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
+        ROWS, COLS = len(grid), len(grid[0])
+        max_area = 0
+
+        def searchArea(row, col):
+            if min(row, col) < 0 or row >= ROWS or \
+                col >= COLS or grid[row][col] != 1:
+                return 0
+            grid[row][col] = 0
+            return 1 + searchArea(row + 1, col) + searchArea(row - 1, col) + searchArea(row, col + 1) + searchArea(row, col - 1)
+        
+        for row in range(ROWS):
+            for col in range(COLS):
+                if grid[row][col] == 1:
+                    area = searchArea(row, col)
+                    max_area = max(max_area, area)
+        return max_area
+```
+- Another set:
+```python
+class Solution:
+    def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
+        ROWS, COLS = len(grid), len(grid[0])
+        max_area = 0
+        visited = set()
+
+        def searchArea(row, col):
+            if min(row, col) < 0 or row >= ROWS or col >= COLS \
+            or grid[row][col] != 1 or (row, col) in visited:
+                return 0
+            visited.add((row, col))
+            return 1 + searchArea(row + 1, col) + searchArea(row - 1, col) + searchArea(row, col + 1) + searchArea(row, col - 1)
+        
+        for row in range(ROWS):
+            for col in range(COLS):
+                if grid[row][col] == 1:
+                    area = searchArea(row, col)
+                    max_area = max(max_area, area)
+        return max_area
+```
+
+### 4. Rotting Oranges
+
