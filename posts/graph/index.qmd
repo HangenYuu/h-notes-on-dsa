@@ -299,8 +299,9 @@ Another breadth-first search problem. This time, I can move in all 8 directions.
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
+1. Edge cases: 
+1. Initialize variables: 
 For the helper function:
-1. 
 
 #### Complexity
 - Time complexity:
