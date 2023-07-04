@@ -299,16 +299,23 @@ Another breadth-first search problem. This time, I can move in all 8 directions.
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
-1. Edge cases: 
-1. Initialize variables: 
-For the helper function:
+1. Edge cases: The start and destination cannot be reached or the length of the matrix is 1.
+2. Initialize variables: the size of the matrix, the length of the shortest path, the set of visited nodes, the queue for breadth-first search, the possible directions at a node.
+3. For the helper function:
+   1. Expand in 8 adjacent tiles for each nodes in one layer of the queue.
+   2. If encounter the destination, return immediately.
+   3. Else if the tile is within bound, accessible, and yet to visit, add it to the queue and mark it as visisted.
+   4. Increment the length at the end.
+4. Return -1 as no path can be found.
 
 #### Complexity
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n^2)$ - for $n$ the size of the matrix. At worst, the algorithm visits every node and it does $O(1)$ work at each node.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n^2)$ - the size of the visited set in the worst case.
 
 #### Code
 ```python
@@ -349,3 +356,5 @@ class Solution:
         
         return -1
 ```
+
+### 6. 
