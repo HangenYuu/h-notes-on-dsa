@@ -357,4 +357,137 @@ class Solution:
         return -1
 ```
 
-### 6. 
+### 6. Course Schedule
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+As the number of courses I can take and the number of courses offered are the same, the only case when I cannot take the courses is when some form a cycle. You know it: to sign up for driver license, you need identity card and passport; to sign up for identity card you need driver license and passport; to sign up for passport, *of course* you need identity card and driver license...
+
+The problem is thus reduced to the problem of detecting cycle within a directed graph. Kahn's algorithm for topological sorting is the go to answer, unless I have not studied it (I haven't). So let's go to a more familiar solution: depth-first search.
+
+A cycle can be detected when one of a node's (A) neighbors (B) has a back edge connected to it (A). This means that A should already have been visited when the algorithm tries to expand to the neighbors of B. But just encountering a visited node is not complete to detect a cycle - that node must also still be in the recursive call stack (recall that the node is only popped from the recursive call stack once all of its neighbors have been processed). A set can be used to keep up with this.
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+1. Translate the list of prerequisites into a dictionary mapping prerequisite &rarr; course. Initialize the set of visited node.
+2. Helper function to detect cycle:
+   1. If the node is still in the stack, return `True`. Else if the node has been visited, return `False`.
+   2. Add the node to the set of in-stack nodes and visited nodes.
+   3. Expand to its neighbors and return `True` if needed.
+   4. Remove the node from the in-stack set and return `False`.
+3. Call the helper function on each of the course. Return `False` if a cycle is detected.
+4. Return `True` at the end.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n + m)$ - with $n$ the number of courses and $m$ the length of `prerequisites`.
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n + m)$ - the combined size of the visited set and the prerequisite dictionary.
+
+#### Code
+```python
+from collections import defaultdict
+
+class Solution:
+    def canFinish(self, numCourses: int, prerequisites: list[list[int]]) -> bool:
+        coursePreDict = defaultdict(list)
+
+        for course, pre in prerequisites:
+            coursePreDict[pre].append(course)
+        
+        visited = set()
+
+        for course in range(numCourses):
+            if self.checkCycle(course, coursePreDict, visited, set()):
+                return False
+        
+        return True
+    
+    def checkCycle(self, node, coursePreDict, visited, inStack):
+        if node in inStack:
+            return True
+        if node in visited:
+            return False
+        
+        inStack.add(node)
+        visited.add(node)
+        for course in coursePreDict[node]:
+            if self.checkCycle(course, coursePreDict, visited, inStack):
+                return True
+        
+        inStack.remove(node)
+        return False
+```
+
+### 7. Clone Graph
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+This one is breadth-first search. Store the old node and corresponding node inside a dictionary. Perform breadth first search with the adjacency list to copy new node and add node to new adjacency list.
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+1. Edge case: node is `None`.
+2. Initialize the dictionary and the queue with the first node.
+3. While queue is not empty:
+   1. Dequeue the node.
+   2. Iterate through the list of neighbors:
+      1. Copy the new node if not already and add that node to the queue.
+      2. Append the neighbor to the list of neighbors of the copied node.
+4. Return the copied node of the input node.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n + m)$ - with $n$ the number of nodes and $m$ the number of vertices
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$ - the maxmum size of the queue.
+
+#### Code
+```python
+from lintcode import (
+    UndirectedGraphNode,
+)
+
+from collections import (
+    deque
+)
+
+"""
+Definition for a UndirectedGraphNode:
+class UndirectedGraphNode:
+    def __init__(self, label):
+        self.label = label
+        self.neighbors = []
+"""
+
+class Solution:
+    """
+    @param node: A undirected graph node
+    @return: A undirected graph node
+    """
+    def clone_graph(self, node: UndirectedGraphNode) -> UndirectedGraphNode:
+        # write your code here
+        if not node:
+            return
+        copied = {}
+        copied[node.label] = UndirectedGraphNode(node.label)
+        queue = deque()
+        queue.append(node)
+
+        while queue:
+            for _ in range(len(queue)):
+                temp = queue.popleft()
+
+                for neighbor in temp.neighbors:
+                    if neighbor.label not in copied:
+                        copied[neighbor.label] = UndirectedGraphNode(neighbor.label)
+                        queue.append(neighbor)
+                    copied[temp.label].neighbors.append(copied[neighbor.label])
+        
+        return copied[node.label]
+```
