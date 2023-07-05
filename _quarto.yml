@@ -5,6 +5,7 @@ execute:
   freeze: auto
 
 website:
+  favicon: logo.png
   title: "H's notes on Data Structuress and Algorithms"
   navbar:
     right:
