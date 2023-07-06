@@ -1,0 +1,174 @@
+---
+title: "Dynamic programming"
+author: "Pham Nguyen Hung"
+date: last-modified
+date-format: long
+draft: false
+toc: true
+---
+# Dynamic programming
+
+## Definition
+
+A technique for solving complex problems by breaking them down into smaller subproblems and solving each subproblem only once. The results are stored inside a cache, and are reused whenever the same subproblem needs to be solved again.
+
+Dynamic programming is a step forward from recursion, trading memory efficiency for time efficiency. However, with clever caching (and clear thinking), both time and memory complexities can be improved.
+
+Dynamic programming, following recursion, also has two approaches: top-down and bottom-up. In the top-down approach, it seems that all I need is a cache i.e., memoization of values to avoid recomputation while carrying out business as usual from the the top. In the bottom up approach, it is harder and requires knowing the nuances of the problem as the problem is solved iteratively from bottom up.
+
+## Problems
+
+### 0. Sort an Array
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+
+#### Code
+```python
+from typing import List
+
+class Solution:
+    def sortArray(self, nums: List[int]) -> List[int]:
+        self._mergeSort(nums)
+        return nums
+    
+    def _mergeSort(self, nums: List[int]) -> None:
+        if len(nums) > 1:
+            mid = len(nums) // 2
+            left_half = nums[:mid]
+            right_half = nums[mid:]
+
+            self._mergeSort(left_half)
+            self._mergeSort(right_half)
+
+            self._merge(nums, left_half, right_half)
+    
+    def _merge(self, nums: List[int], left_half: List[int], right_half: List[int]) -> None:
+        left_pointer = right_pointer = num_pointer = 0
+
+        while left_pointer < len(left_half) and right_pointer < len(right_half):
+            if left_half[left_pointer] < right_half[right_pointer]:
+                nums[num_pointer] = left_half[left_pointer]
+                left_pointer += 1
+            else:
+                nums[num_pointer] = right_half[right_pointer]
+                right_pointer += 1
+            num_pointer += 1
+        
+        if left_pointer < len(left_half):
+            nums[num_pointer:] = left_half[left_pointer:]
+        elif right_pointer < len(right_half):
+            nums[num_pointer:] = right_half[right_pointer:]
+```
+
+### 1. Fibonacci Number
+
+#### Intuition
+
+From the top, solving for the $n^{th}$ Fibonacci number requires me to calculate the two smaller ones i.e. $(n-1)^{th}$ and $(n-2)^{th}$ and sum them together. However, in calculating the $(n-1)^{th}$ Fibonacci number, I also needs the $(n-2)^{th}$ one, and both of them needs the $(n-3)^{th}$ ones. In the naive approach, I will need to calculate the same value *exponentially*, leading to a $O(2^n)$ time complexity. Worse, the recursion call stack matches the time complexity i.e.
+
+To optimize this, from the recursion solution, memoization can be used. The value that has already been calculated can be cached, and reused upon request. The time and memory complexities reduces from exponential to linear $O(n)$ with this caching.
+
+From a bottom-up perspective, one can do away with recursion and just use iteration. The value of the next number is calculated from just two previous numbers. Hence, only two previous numbers need caching, and used values can be discarded. This leads to $O(1)$ memory while still having the $O(n)$ time complexity.
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+- Top-down
+  1. For the nested helper function, the parameter is `n` and a dictionary.
+  2. Base cases: `n` is smaller than 2, or `n` has already been cached.
+  3. Recursive case: call the memoization function on the two previous numbers with the same parameters.
+  4. Return the result.
+
+- Bottom-up
+  1. Define the base case when n is smaller than 2 and the variables storing two previous numbers.
+  2. Iterate `n-1` times, storing the current number i.e., the second previous to the first previous and storing the sum of them to the second previous.
+  3. Return the result.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$ - as explained above.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$ for top-down, $O(1)$ for bottom-up.
+
+#### Code
+
+Top-down
+```python
+class Solution:
+    def fib(self, n: int) -> int:
+        def memoize(n: int, cache: dict):
+            if n < 2:
+                return n
+            if n in cache:
+                return cache[n]
+        
+            cache[n] = memoize(n - 1, cache) + memoize(n - 2, cache)
+            return cache[n]
+        
+        return memoize(n, {})
+```
+Bottom-up
+```python
+class Solution:
+    def fib(self, n: int) -> int:
+        if n < 2:
+            return n
+        # Bottom-up
+        previousOne = 0
+        previousTwo = 1
+        for _ in range(n - 1):
+            # current = previousTwo
+            # previousTwo = previousOne + previousTwo
+            # previousOne = current
+            previousOne, previousTwo = previousTwo, previousOne + previousTwo
+        
+        return previousTwo
+```
+
+### 2. Climbing Stairs
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+The incredible intuition hits me about the arrangement of the stairs. It is the problem of how many permutations with repetition for some number of 1 steps and some number of 2 steps. The start case is when all steps I take is 1 step i.e., I have $n$ 1-step steps. The number of permutations is 1 - all of them are the same. To get to the next case, I assume that now I can take only $1$ 2-step step, which means I have $n-2$ 1-step steps. I need to calculate the number of permutations for $n-2$ repetitive instances of A and $1$ instance of B. And then it continues until I have only $0$ or $1$ 1-step step to take, depending on the oddity of the number. I can then just sum together the value. A small notice: the value of permutations with repetition in this case is equal to choosing a certain number of 2-step steps out of the total number of 1-step and 2-step steps I can make. However, this is no dynamic programming - only maths.
+
+In the dynamic programming approach
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+
+#### Code
+```python
+from math import factorial
+
+class Solution:
+    def climbStairs(self, n: int) -> int:
+        count = 0
+        num_1 = n
+        num_2 = 0
+        while num_1 >= 0:
+            # count += comb(num_1 + num_2, num_2)
+            count += factorial(num_1 + num_2)//(factorial(num_1)*factorial(num_2))
+            num_2 += 1
+            num_1 -= 2
+        return count
+```
