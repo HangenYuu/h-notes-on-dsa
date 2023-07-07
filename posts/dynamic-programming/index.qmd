@@ -84,7 +84,7 @@ From a bottom-up perspective, one can do away with recursion and just use iterat
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
 - Top-down
-  1. For the nested helper function, the parameter is `n` and a dictionary.
+  1. For the nested rob function, the parameter is `n` and a dictionary.
   2. Base cases: `n` is smaller than 2, or `n` has already been cached.
   3. Recursive case: call the memoization function on the two previous numbers with the same parameters.
   4. Return the result.
@@ -144,31 +144,103 @@ class Solution:
 <!-- Describe your first thoughts on how to solve this problem. -->
 The incredible intuition hits me about the arrangement of the stairs. It is the problem of how many permutations with repetition for some number of 1 steps and some number of 2 steps. The start case is when all steps I take is 1 step i.e., I have $n$ 1-step steps. The number of permutations is 1 - all of them are the same. To get to the next case, I assume that now I can take only $1$ 2-step step, which means I have $n-2$ 1-step steps. I need to calculate the number of permutations for $n-2$ repetitive instances of A and $1$ instance of B. And then it continues until I have only $0$ or $1$ 1-step step to take, depending on the oddity of the number. I can then just sum together the value. A small notice: the value of permutations with repetition in this case is equal to choosing a certain number of 2-step steps out of the total number of 1-step and 2-step steps I can make. However, this is no dynamic programming - only maths.
 
-In the dynamic programming approach
+In the dynamic programming approach, the observation is this: at the last, or the $n^{th}$ step, there is only 1 way to proceed: do nothing. At the $(n-1)^{th}$ step, there is only 1 way: take 1 step to the end. At the $(n-2)^{th}$ step, there are 2 ways: take 1 step to the $(n-1)^{th}$ step, or take 2 steps to the end. At the $(n-3)^{th}$ step, I can take 1 step to the $(n-2)^{th}$ step, which provides me with 2 different choices, or I can take 2 steps to the $(n-1)^{th}$ step, which provides me with 1 choice, yielding 3 in total. The pattern here is that the number of different ways to the end from a step is the sum of numbers of different ways to the end of two steps ahead, which coincides with the Fibanacci number.
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
+1. Base case: return `n` if `n` is smaller than 4
+2. Iterative case: calculate it similar to the Fibonacci number for the remaining tiles and return.
 
 #### Complexity
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$ - True for both approaches.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$ - True for both approaches.
 
 #### Code
+
+- Combinatorics
 ```python
 from math import factorial
 
 class Solution:
     def climbStairs(self, n: int) -> int:
         count = 0
-        num_1 = n
-        num_2 = 0
-        while num_1 >= 0:
-            # count += comb(num_1 + num_2, num_2)
-            count += factorial(num_1 + num_2)//(factorial(num_1)*factorial(num_2))
-            num_2 += 1
-            num_1 -= 2
+        num_ones = n
+        num_twos = 0
+        while num_ones >= 0:
+            # count += comb(num_ones + num_twos, num_twos)
+            count += factorial(num_ones + num_twos)//(factorial(num_ones)*factorial(num_twos))
+            num_twos += 1
+            num_ones -= 2
         return count
+```
+- Dynamic Programming
+```python
+class Solution:
+    def climbStairs(self, n: int) -> int:
+        if n <= 3:
+            return n
+        prevNum, currNum = 2, 3
+
+        for i in range(4, n + 1):
+            temp = prevNum + currNum
+            prevNum = currNum
+            currNum = temp
+        return currNum
+```
+
+### 3. House Robber
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+"To rob or not to rob", that's the question you faced at every house. Together with the rule of not robbing adjacent house, you can form a recursion solution. Of course, maximum recursion depth stack reached. You now remember memoization i.e., the dictionary that you should use to cache the result, adding a base case to the helper function, remember to store result each time before returning the value. Voila, top-down (fake) dynamic programming.
+
+For bottom-up dynamic programming, let's jump to the end i.e., the $n^{th}$ house. Imagine that every position stores the maxium sum up to that position. You can either rob that house plus the maximum sum from the first to the $(n-2)^{th}$ house, or you ignore that house and try the rest, which is the maximum sum stored at the $(n-1)^{th}$ house. You just realized that to calculate the maximum amount "robable" up to a house, you just need the values for two houses immediately before it. Again, Fibonacci number.
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+1. Initialize the variables storing the maximum sum so far to 0.
+2. Iterate the array, push the later value to the former, and set the later to the maximum between the current house plus the former value and current value at the later.
+3. Return the later value.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$ - True for both cases
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$ for top-down, $O(1)$ for bottom-up.
+
+#### Code
+
+- Top-down
+```python
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        best = {}
+        def rob(index):
+            if index >= len(nums):
+                return 0
+            if index in best:
+                return best[index]
+
+            total = max(rob(index+2),rob(index+3))
+            best[index] = total + nums[index]
+            return total + nums[index]
+
+        return max(rob(0),rob(1))
+```
+- Bottom-up
+```python
+class Solution:
+    def rob(self, houses: List[int]) -> int:
+        prev_house, curr_house = 0, 0
+        for house in houses:
+            prev_house, curr_house = curr_house, max(house + prev_house, curr_house)
+        return curr_house
 ```
