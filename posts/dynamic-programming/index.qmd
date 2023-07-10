@@ -244,3 +244,100 @@ class Solution:
             prev_house, curr_house = curr_house, max(house + prev_house, curr_house)
         return curr_house
 ```
+
+### 4. Unique Paths
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+Let's go 2D as if 1D is not irritable enough. Anyway, here I have a robot that wants to go from the top left corner to the bottom right corner, only allowed to move right and down. I need to find the number of unique paths that the robot can move.
+
+The trick of the trade is imagining a 2D matrix, each square storing a piece of information e.g., number of unique paths one can get to the end from the cell. Another trick is filling one square at a time in reverse. Another trick is assumiung an all-zero padding (some use outside convolution). Now I go bottom-up. At the destination, there is one go to reach it: doing nothing. To the tile directly above and directly to the left, there is one way to reach the end: just move. This is actually true along the last column and the last row: in every cell, there is just 1 way to reach the end. By fumbling (with pen and paper) with the matrix, one may realize that the unique paths from a cell is the sum of the unique paths from the tile directly to the right and directly below, which is intuitive given these are the only cells I can go from the current cell. 
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+
+#### Code
+```python
+class Solution:
+    def uniquePaths(self, m: int, n: int) -> int:
+        prevRow = [0] * n
+        for _ in range(m - 1, -1, -1):
+            curRow = [1] * n
+            for col in range(n - 2, -1, -1):
+                curRow[col] = curRow[col + 1] + prevRow[col]
+            prevRow = curRow
+        return curRow[0]
+```
+
+### 5. Unique Paths II
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+
+#### Code
+```python
+class Solution:
+    def uniquePathsWithObstacles(self, obstacleGrid: List[List[int]]) -> int:
+        m, n = len(obstacleGrid), len(obstacleGrid[0])
+        tempRow = [0] * n
+        tempRow[n - 1] = 1
+        for row in range(m - 1, -1, -1):
+            for col in range(n - 1, -1, -1):
+                if obstacleGrid[row][col]:
+                    tempRow[col] = 0
+                elif col + 1 < n:
+                    tempRow[col] = tempRow[col + 1] + tempRow[col]
+        return tempRow[0]
+```
+
+### 6. Longest Common Subsequence
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+
+#### Code
+```python
+class Solution:
+    def longestCommonSubsequence(self, text1: str, text2: str) -> int:
+        dim1, dim2 = len(text1), len(text2)
+        prevRow, currRow = [0] * dim2, [0] * dim2
+        for i in range(dim1):
+            for j in range(dim2):
+                if j > 0:
+                    if text1[i] == text2[j]:
+                        currRow[j] = prevRow[j - 1] + 1
+                    else:
+                        currRow[j] = max(currRow[j - 1], prevRow[j])
+                else:
+                    currRow[j] = 1 if text1[i] == text2[j] else prevRow[j]
+            prevRow = currRow[:]
+            print(prevRow)
+        return currRow[-1]
+```
