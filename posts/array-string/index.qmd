@@ -1,5 +1,5 @@
 ---
-title: "Array"
+title: "Array & String"
 author: "Pham Nguyen Hung"
 date: last-modified
 date-format: long
@@ -510,4 +510,36 @@ class Solution:
                 high -= 1
             else:
                 mid += 1
+```
+
+### 12. Longest Palindrome
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+
+#### Code
+```python
+from collections import Counter
+
+class Solution:
+    def longestPalindrome(self, s: str) -> int:
+        charCount = Counter(s)
+        maxLength, hasOdd = 0, False
+        for count in charCount.values():
+            if count % 2:
+                maxLength += (count - 1)
+                hasOdd = True
+            else:
+                maxLength += count
+        return maxLength + 1 if hasOdd else maxLength
 ```

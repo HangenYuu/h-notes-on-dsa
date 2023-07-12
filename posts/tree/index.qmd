@@ -1437,3 +1437,106 @@ class Solution:
                 return True
         return False
 ```
+
+### 15. Balanced Binary Tree
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+
+#### Code
+
+- Naive solution
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+from typing import Optional
+class Solution:
+    def isBalanced(self, root: Optional[TreeNode]) -> bool:
+        if not root:
+            return True
+        left_balanced = self.isBalanced(root.left)
+        right_balanced = self.isBalanced(root.right)
+        return abs(self.getHeight(root.left) - self.getHeight(root.right)) < 2 and left_balanced and right_balanced
+
+    def getHeight(self, node: Optional[TreeNode]) -> int:
+        if not node:
+            return 0
+        return 1 + max(self.getHeight(node.left), self.getHeight(node.right))
+```
+- Efficient solution
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+from typing import Optional
+class Solution:
+    def isBalanced(self, root: Optional[TreeNode]) -> bool:
+        return self._isBalanced(root) != -1
+
+    def _isBalanced(self, node: Optional[TreeNode]) -> int:
+        if not node:
+            return 0
+        left_height = self._isBalanced(node.left)
+        if left_height == -1:
+            return -1
+        right_height = self._isBalanced(node.right)
+        if right_height == -1:
+            return -1
+        if abs(left_height - right_height) > 1:
+            return -1
+        return 1 + max(left_height, right_height)
+        
+```
+
+### 16. Diameter of Binary Tree
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+
+#### Code
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
+        return self.getDiameterAndHeight(root)[0]
+        
+    def getDiameterAndHeight(self, node: Optional[TreeNode]) -> int:
+        if not node:
+            return (-1, -1)
+        left_diameter, left_height = self.getDiameterAndHeight(node.left)
+        right_diamter, right_height = self.getDiameterAndHeight(node.right)
+        diameter = max(left_diameter, right_diamter, 2 + left_height + right_height)
+        return (diameter, 1 + max(left_height, right_height))
+```
