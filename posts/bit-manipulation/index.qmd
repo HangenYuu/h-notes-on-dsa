@@ -1,0 +1,93 @@
+---
+title: "Bit Manipulation"
+author: "Pham Nguyen Hung"
+date: last-modified
+date-format: long
+draft: false
+toc: true
+---
+# Bit Manipulation
+
+## Definition
+
+## Problems
+
+### 1. Add binary
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+
+#### Approach
+<!-- Describe your approach to solving the problem. -->
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+
+#### Code
+- Dumb way to do it
+```python
+class Solution:
+    def addBinary(self, a: str, b: str) -> str:
+        shorterLength = min(len(a), len(b))
+        a = list(a)
+        b = list(b)
+        remainder = 0
+        result = []
+        
+        for _ in range(shorterLength):
+            num_a, num_b = a.pop(), b.pop()
+            interm = eval(num_a + '+' + num_b) + remainder
+            remainder = self.evaluate(interm, result, remainder)
+        while a:
+            num_a = a.pop()
+            interm = int(num_a) + remainder
+            remainder = self.evaluate(interm, result, remainder)
+        while b:
+            num_b = b.pop()
+            interm = int(num_b) + remainder
+            remainder = self.evaluate(interm, result, remainder)
+        if remainder:
+            result.append('1')
+        return ''.join(result[::-1])
+    
+    def evaluate(self, interm, result, remainder):
+        if interm == 0:
+            result.append('0')
+            remainder = 0
+        elif interm == 1:
+            result.append('1')
+            remainder = 0
+        elif interm == 2:
+            result.append('0')
+            remainder = 1
+        else:
+            result.append('1')
+        return remainder
+```
+- Smart way to do it
+```python
+class Solution:
+    def addBinary(self, a: str, b: str) -> str:
+        result = ''
+        remainder = 0
+
+        a, b = a[::-1], b[::-1]
+        
+        for i in range(max(len(a), len(b))):
+            digitA = int(a[i]) if i < len(a) else 0
+            digitB = int(b[i]) if i < len(b) else 0
+
+            interm = digitA + digitB + remainder
+            char = str(interm % 2)
+            result = char + result
+            remainder = interm // 2
+        
+        if remainder:
+            result = '1' + result
+
+        return result
+```
