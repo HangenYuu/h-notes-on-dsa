@@ -1,0 +1,77 @@
+---
+title: "Trie (Prefix Tree)"
+author: "Pham Nguyen Hung"
+date: last-modified
+date-format: long
+draft: false
+toc: true
+---
+# Trie
+
+## Definitions
+
+## Problems
+
+### 1. Implement Trie (Prefix Tree)
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+
+#### Code
+```python
+class _TrieNode:
+    def __init__(self) -> None:
+        self.children = {}
+        self.isEndWord = False
+
+class Trie:
+    def __init__(self):
+        self.root = _TrieNode()
+
+    def insert(self, word: str) -> None:
+        curr = self.root
+        
+        for char in word:
+            if char not in curr.children:
+                curr.children[char] = _TrieNode()
+            curr = curr.children[char]
+        
+        curr.isEndWord = True
+
+    def search(self, word: str) -> bool:
+        curr = self.root
+
+        for char in word:
+            if char not in curr.children:
+                return False
+            curr = curr.children[char]
+        
+        return curr.isEndWord
+
+    def startsWith(self, prefix: str) -> bool:
+        curr = self.root
+
+        for char in prefix:
+            if char not in curr.children:
+                return False
+            curr = curr.children[char]
+        
+        return True
+
+
+# Your Trie object will be instantiated and called as such:
+# obj = Trie()
+# obj.insert(word)
+# param_2 = obj.search(word)
+# param_3 = obj.startsWith(prefix)
+```

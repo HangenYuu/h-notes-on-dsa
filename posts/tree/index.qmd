@@ -1540,3 +1540,42 @@ class Solution:
         diameter = max(left_diameter, right_diamter, 2 + left_height + right_height)
         return (diameter, 1 + max(left_height, right_height))
 ```
+
+### 17. Validate Binary Search Tree
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+
+#### Code
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+# Instead of just comparing child to parent,
+# see if the child is in an interval constrained
+# by parent and another value
+class Solution:
+    def isValidBST(self, root: Optional[TreeNode]) -> bool:
+        def valid(node, left, right):
+            if not node:
+                return True
+            if not (left < node.val < right):
+                return False
+            
+            return (valid(node.left, left, node.val) and
+                    valid(node.right, node.val, right))
+        return valid(root, float('-inf'), float('inf'))
+```

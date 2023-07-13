@@ -341,3 +341,59 @@ class Solution:
             print(prevRow)
         return currRow[-1]
 ```
+
+### 7. Coin Change
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+
+#### Code
+BFS
+```python
+class Solution:
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        if amount == 0:
+            return amount
+        seen = set()
+        remainders = [amount]
+        count = 0
+        
+        while remainders:
+            count += 1
+            temp = []
+            for val in remainders:
+                for coin in coins:
+                    rem = val - coin
+                    if rem == 0:
+                        return count
+                    elif rem > 0 and rem not in seen:
+                        seen.add(rem)
+                        temp.append(rem)
+            remainders = temp
+
+        return -1
+```
+Dynamic programming
+```python
+class Solution:
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        dp = [float("inf")] * (amount + 1)
+        dp[0] = 0
+
+        for a in range(1, amount + 1):
+            for coin in coins:
+                if a - coin >= 0:
+                    dp[a] = min(dp[a], 1 + dp[a - coin])
+        
+        return dp[amount] if dp[amount] != float("inf") else -1
+```
