@@ -16,17 +16,24 @@ toc: true
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
-The first thing I think of is a linked list. Each node containing a character and a pointer to the next node. 
+The first thing I think of is a linked list. Each node containing a character and a pointer to the next node. It was insufficient - I also need to know if the node is the end of a word or not. Okay, I can add a variable. But then there are words sharing the same prefix such as "app" and "apple". The second "p" is the end, but it also needs to contain a pointer to "l". And one pointer may not be enough as there may be another word such as "append". So it is best if I have a dictionary of next nodes. Tada!
 
-#### Algorithm
-<!-- Describe your approach to solving the problem. -->
+And the dictionary can serve another purpose: it can be used to store the value at the node. Explaining in words will be clunky, so here's a (wrong) illustration.
+
+![](trie.png)
+
+Each level now holds a dictionary, containing up to 26 lowercase English letters per the problem description. Each letter is the key to a node in the next level, which stores if it is the end of a word and a dictionary connected to the next level. And so on.
+
+All methods in the class share the same crux: iterate the input string and iterate the level.
 
 #### Complexity
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$ - for all operations, as the algorithms iterate the input string.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$ - ignoring the information stored in each node, each method takes $O(1)$ space as only pointers are stored.
 
 #### Code
 ```python

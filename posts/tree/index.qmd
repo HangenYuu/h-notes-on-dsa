@@ -1421,8 +1421,6 @@ class Solution:
         window_size = len(target)
         source_hash = self.computeHash(source[:window_size])
         target_hash = self.computeHash(target)
-        print('Initial source hash:', source_hash)
-        print('Target hash:', target_hash)
         if source_hash == target_hash:
             return True
         
@@ -1432,7 +1430,6 @@ class Solution:
             source_hash = (source_hash - highest_value * removed_val) % prime_factor
             element_val = source[i] if source[i] != '#' else (10**4 + 1)
             source_hash = (base * source_hash + element_val) % prime_factor
-            print('Source hash:',source_hash)
             if source_hash == target_hash:
                 return True
         return False
@@ -1442,16 +1439,28 @@ class Solution:
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
+A balanced binary tree has no node with difference in height larger than 1. This means that I can get the height at each node, calculate the difference between children at a node, check and return. But my first attempt is a naive approach. Constructing the height of each node is bottom-up while checking for balancedness is top-down. The result is repetitive computation at $O(n^2)$ time complexity.
+
+To solve this efficiently, I need to check for balancedness right after calculating the height of children. The trick is to do so only if the tree is still balanced. Else, return a dummy value (-1 in this case) to end recursion. The result is $O(n)$ time complexity.
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
+For the helper method
+1. If node is `None`, return 0 as the height (base case).
+2. Call the helper method on the left and then right child. For the case:
+   1. If the left child is not balanced i.e. has a height of -1, return -1 immediately.
+   2. If the left child is balanced but the right child is not, also return -1.
+   3. If both children have non-minus-1 height but the absolute difference exceeds 1, return -1.
+3. Return the maximum child height plus + 1 to account for the node.
 
 #### Complexity
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$ - Iterate through every node.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$ - The size of the recursion call stack.
 
 #### Code
 
@@ -1509,16 +1518,24 @@ class Solution:
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
+In the easy case, the diameter can be calculated as the sum of heights of the children plus 2. That will make a nice recursive call to the root. But life is not like that - there may be a child with a larger diameter than the root.
+
+To account for this, well, I will just make it a return value for the recursive method as well.
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
+For the helper recursive function
+1. Base case: if a node is `None`, its height and diameter will both be -1.
+2. Recursive case: the height is calculated as before, but the diameter will be the maximum between the diameter of the left child, the diameter of the right child, and the local diameter i.e., 2 plus sum of the children heights.
 
 #### Complexity
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$ - bottom-up recursion, iterate through each node once.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$ - the size of the recursive call stack.
 
 #### Code
 ```python
