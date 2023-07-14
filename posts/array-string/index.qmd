@@ -516,16 +516,24 @@ class Solution:
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
+A palindrome can have one character that has an odd number of occurrences while all other characters must have an even number of occurrences. This means that I will need to count the frequency of each character, add the largest even number that is smaller or equal that frequency, and add 1 if there exists odd frequency in the phrase.
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
+1. Count the number of each character in the string, with `collections.Counter` or manually with a dictionary.
+2. Iterate through the frequencies:
+   1. If the count is odd, add `count - 1` to the maximum length.
+   2. If the count is even, add it to the maximum length.
+3. Return maximum length, plus 1 if there exists odd count in the dictionary.
 
 #### Complexity
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$ - Iterate through the array.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(k)$ - with $k$ the number of distinct charactesr in the string.
 
 #### Code
 ```python
@@ -548,16 +556,25 @@ class Solution:
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
+An interesting problem. For some reason NeetCode does not do this? Anyway, back to it. After some tinkering, I discovered some rules for the inputs:
 
-#### Approach
-<!-- Describe your approach to solving the problem. -->
+| Rules | Solutions |
+|-------|-----------|
+| Containing leading and trailing spaces | Use `.strip()` to, well, strip them |
+| The first character after needs to be a sign or a number | Check and return 0 immediately for `None` input and input with inappropriate first character (use `ord()` to check) |
+| The sign is `'+'` by default but can be changed | Have a variable to keep the sign. I used `1` and `-1` and multiply with the later to create the sign |
+| Two signs cannot appear in one string | Have a variable to check if the sign has already been set. If so, on encountering next sign, return 0  immediately |
+| A period ends reading immediately | So be it in the reading loop |
+| Containing leading zeros | Check for this after the reading loop |
 
 #### Complexity
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$: Iterate through the input string.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$: I use variables that are essentially integers. However, in stripping the string at the beginning, I create a new copy of the string, possibly with the same length.
 
 #### Code
 ```python
