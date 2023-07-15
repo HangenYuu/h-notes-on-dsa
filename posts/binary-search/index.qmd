@@ -590,27 +590,28 @@ class Solution:
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
-This is level 3 binary search: the input array is not sorted, but there exists a rule to bisect the array each time. The intuition is as if you are on a mountain: at a position, if the value is smaller than the next one, there must be a peak to the right of it; if the value is larger than the enxt one, there must be a peak to the left of it. Hence, by checking the middle value one at a time, 
+This is level 3 binary search: the input array is not sorted, but there exists a rule to bisect the array each time. The intuition is as if you are on a mountain: at a position, if the value is smaller than the next one, there must be a peak to the right of it; if the value is larger than the next one, there must be a peak to the left of it. Hence, by checking the middle value one at a time, you will know the direction that you should move to find a peak. One note here is that if the `mid` value is smaller than the next one, the algorithm can safely eliminate it as a possible peak during update i.e., `left = mid + 1`. But if it is larger than the next one, the next possible peak could be itself, so `right = mid` in update.
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
+1. Perform binary search on the array with two pointers: `mid = (left + right) // 2`.
+2. If `nums[mid] < nums[mid + 1]`, the value at `mid` can be eliminated as a possible peak `left = mid + 1`.
+3. Else, the value at `mid` is one possible peak, so update `right = mid`.
+4. At the end, `left` will be equal to `right` and both pointing at the peak.
 
 #### Complexity
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(\log n)$ - Usual binary search time complexity.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$
 
 #### Code
 ```python
 class Solution:
     def findPeakElement(self, nums: List[int]) -> int:
-        # Edge case
-        if len(nums) < 2:
-            return 0
-        
-        # General case
         left, right = 0, len(nums) - 1
         while left < right:
             mid = (left + right) // 2
@@ -625,7 +626,7 @@ class Solution:
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
-
+This is level 4 binary search.
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
@@ -707,4 +708,35 @@ class Solution:
                 right = mid - 1
         
         return min(curr_min, nums[left])
+```
+
+### 14. Maximum Profit in Job Scheduling
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+
+#### Code
+```python
+from typing import List
+import bisect
+
+class Solution:
+    def jobScheduling(self, startTime: List[int], endTime: List[int], profit: List[int]) -> int:
+        jobs = sorted(zip(startTime, endTime, profit))
+        startTime.sort()
+        dp = [0] * (len(startTime) + 1)
+        for i in range(len(startTime) - 1, -1, -1):
+            j = bisect.bisect_left(startTime, jobs[i][1])
+            dp[i] = max(dp[i + 1], dp[j] + jobs[i][2])
+        return dp[0]
 ```
