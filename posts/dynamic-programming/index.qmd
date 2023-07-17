@@ -255,24 +255,28 @@ The trick of the trade is imagining a 2D matrix, each square storing a piece of 
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
+1. Initialize a row of all 1s at the bottom.
+2. Iterate through every other row in the matrix backwardly.
+   1. For each row, iterate the columns backward from the second to last position. The value of each row will be the number of routes from that to the bottom right position, calculated by summing the position right after and the node itself (the last position will always be initialized as 1, because there is only 1 way: all the way down).
+3. Return the value stored in the top left corner.
 
 #### Complexity
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(m \times n)$ - iterate through every position in the matrix.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$ - maintaining the values in 1 row at a time.
 
 #### Code
 ```python
 class Solution:
     def uniquePaths(self, m: int, n: int) -> int:
-        prevRow = [0] * n
-        for _ in range(m - 1, -1, -1):
-            curRow = [1] * n
+        curRow = [1] * n
+        for _ in range(m - 2, -1, -1):
             for col in range(n - 2, -1, -1):
-                curRow[col] = curRow[col + 1] + prevRow[col]
-            prevRow = curRow
+                curRow[col] += curRow[col + 1]
         return curRow[0]
 ```
 
@@ -280,16 +284,26 @@ class Solution:
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
+This time, there can be obstacle(s) lying around the matrix. The good news is that the algorithm stays the same, except 1. I cannot skip the last row in case there are obstacles there and 2. the obstacle position needs setting to 0 possible way and carrying to the next row.
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
+1. Initialize the bottom row as 0s except 1 in the bottom right corner.
+2. Iterate the rows backward:
+   1. Iterate the columns backward:
+      1. If the position is an obstacle, set the value in the row to 0.
+      2. Else, if it is not the last position, add the value of the position right after to it.
+3. Return the value stored at the top left corner.
 
 #### Complexity
+
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(m \times n)$ - iterate through every position in the matrix.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$ - maintaining the values in 1 row at a time.
 
 #### Code
 ```python
