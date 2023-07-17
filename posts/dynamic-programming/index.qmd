@@ -397,3 +397,52 @@ class Solution:
         
         return dp[amount] if dp[amount] != float("inf") else -1
 ```
+
+### 8. Partition Equal Subset Sum
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+This is somewhat similar to the Subset problem. Basically, the answer is `False` if the sum of whole array is odd, and `True` if there exists a subset sum equal to half of the total sum. Hence, the problem can be reduced to constructing the sum for all subsets in of the array, return `True` if a subset sum satisfies the condition.
+
+To construct the solution it is better to use a set to prune duplicated results.
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+1. Check that total sum is even.
+2. Initialize the current subset sum with 0 and the target as `total // 2`.
+3. Iterate through the array.
+   1. Initialize the next subset sum set with a copy of the current one.
+   2. Add the current element in the array to each sum in the current subset sum set. If the new value is equal to the target, return `True`, else add the value to the set.
+   3. If reach the end, update the current subset sum set.
+4. Return False by default.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n \times \sum \text{nums})$ - Iterate through the array, for each iteration iterate through the set which has a maximum size as below.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(\sum \text{nums})$ - The maximum size of the set. Theoretically, it can contain all numbers from 0 to the total sum of the array.
+
+#### Code
+```python
+class Solution:
+    def canPartition(self, nums: List[int]) -> bool:
+        total = sum(nums)
+        if total % 2:
+            return False
+        
+        currSubsetSum = set()
+        currSubsetSum.add(0)
+        target = total // 2
+
+        for i in range(len(nums)):
+            nextSubsetSum = currSubsetSum.copy()
+            for subset_sum in currSubsetSum:
+                if subset_sum + nums[i] == target:
+                    return True
+                nextSubsetSum.add(subset_sum + nums[i])
+            currSubsetSum = nextSubsetSum
+        return False
+```
