@@ -1562,16 +1562,23 @@ class Solution:
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
+The value of a node in a binary search tree has to be smaller or larger than the value of its parent based on the subtree it's on and has to be larger or smaller than its child based on the child's substree. The trick is realizing that for the leftmost node it has to be larger than minus infinity and for the rightmost node it has to be smaller than infinity. This means that the two infinities need adopting as the first limits.
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
+Define a recursive function that basically performs depth-first search
+1. Parameters are `node` to check, `left` constraint, and `right` constraint.
+2. Base case: if `node` is `None`, return `True`. If node lies outside the constraint, return `False`.
+3. Call the recursive helper function on the left child and the right child.
 
 #### Complexity
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$ - iterate through every node in the tree
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$ - possible size of the recursion stack. This is essentially depth-first search. The average case is $O(\log n)$
 
 #### Code
 ```python
@@ -1596,7 +1603,33 @@ class Solution:
                     valid(node.right, node.val, right))
         return valid(root, float('-inf'), float('inf'))
 ```
+### 18. Lowest Common Ancestor of a Binary Tree
 
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+At a node, there are three cases:
+1. It is `p` and it is the ancestor of `q`.
+2. It is `q` and it is the ancestor of `p`.
+3. It is the ancestor of both `p` and `q`, each belonging to a different subtree.
+
+Recursion is your friend here. The return value would be the node itself if it is `None`, `p`, or `q`. Calling the recursive function on its children in a bottom-up manner, if it is case 3, both left and right subtrees will return a non-null node, otherwise one of the subtree will return `None`.
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+1. Base case: return `root` itself if it is `None`, `p`, or `q`.
+2. Recursion: call the method on the left and right children.
+3. If both left and right results are non-null, return `root`. Else, return the non-null one. (The two nodes are guaranteed to be in the tree).
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$ - iterate through every node in the tree.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$ - average $O(\log n)$ - the height of the recursion call stack.
+
+#### Code
 ```python
 # Definition for a binary tree node.
 # class TreeNode:
@@ -1617,4 +1650,101 @@ class Solution:
             return root
         
         return left_ancestor or right_ancestor
+```
+### 19. Binary Tree Right Side View
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+This is essentially breadth-first traversal, with a twist:
+1. Travel each level from right to left.
+2. Only record the first value encountered.
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+1. Base case: return `None` for `root` is `None`.
+2. Breadth-first traversal: initialize a queue with the `root` and a result list.
+3. While the queue is not empty:
+   1. For the current level in the queue, `popleft` each element.
+   2. If it is part of the right side view, append it to the result list. Else, do nothing
+   3. Add the children, prioritize the right child.
+4. Return the result list.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$ - iterate through every node in the tree.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$ - maximum size of the queue.
+
+#### Code
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+from collections import deque
+
+class Solution:
+    def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
+        if not root:
+            return
+        
+        right_side = deque([root])
+        result = []
+        
+        while right_side:
+            for i in range(len(right_side)):
+                node = right_side.popleft()
+                if i == 0:
+                    result.append(node.val)
+                if node.right:
+                    right_side.append(node.right)
+                if node.left:
+                    right_side.append(node.left)
+        return result
+```
+### 20. Kth Smallest Element in a BST
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+The algorithm preorderly traverses the binary search tree, which is essentially flattening it out into a sorted array. However, I do not need to wait until the tree has been fully flattened but can iterate through the values as they are generated. Preorder traversal.
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+1. Perform preorder traversal on the BST. For each element generated, decrement `k` until it hits 0, when I need to return the value.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$ - Iterate through every node in the tree.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(\log n)$ to $O(n)$ - The size of the recursion call stack.
+
+#### Code
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
+        stack = []
+
+        while True:
+            while root:
+                stack.append(root)
+                root = root.left
+            root = stack.pop()
+            k -= 1
+            if not k:
+                return root.val
+            root = root.right
 ```
