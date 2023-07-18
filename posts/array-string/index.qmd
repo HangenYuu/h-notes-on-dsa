@@ -621,3 +621,141 @@ class Solution:
 
         return max(-2**31, result) * (result < 0) + min(result, 2**31 - 1) * (result > 0)
 ```
+
+### 14. Longest Palindromic Substring
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+I could not solve the problem in time.
+
+First, the brute-force solution of checking every substring. Looping over all substrings take $O(n^2)$ time, and checking for palindrome of each one takes up to $O(n)$ time. The final solution is $O(n^3)$. However, you can 1 optimization: instead of iterating from small to large substrings, you can iterate from large to small. This way, you can immediately return at the first substring you find, and start with the checking that likely takes up the least iteration to terminate if wrong. Implement it with best coding practice and you can still pass the interview.
+
+For a step up from this, I can move from considering the bounds to considering the centers. Each letter is a palindrome on its own. A longer palindrome can be constructed if the two letters surrounding it are the same, and the next pair, next pair, so on for the odd-length palindrome case. For the even-length palindrome, the algorithm will expand from a pair of letters as a center. A general recursive helper function can be defined to use in both cases. Some math is required to manipulate the pointers, but that part is okay.
+
+Dynamic programming can be used, but it will be included in the correct post.
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n^3)$ to $O(n^2)$
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$ - both ways only manipulate pointers.
+
+#### Code
+
+Naive
+```python
+class Solution:
+    def longestPalindrome(self, string: str) -> str:
+        def checkPalindrome(i, j):
+            left = i
+            right = j - 1
+            
+            while left < right:
+                if string[left] != string[right]:
+                    return False
+                
+                left += 1
+                right -= 1
+            
+            return True
+        
+        for length in range(len(string), 0, -1):
+            for start in range(len(string) - length + 1):
+                if checkPalindrome(start, start + length):
+                    return string[start:start + length]
+
+        return ""
+```
+Optimized
+```python
+class Solution:
+    def longestPalindrome(self, s: str) -> str:
+        def expand(i, j):
+            left = i
+            right = j
+            while left >= 0 and right < len(s) and s[left] == s[right]:
+                left -= 1
+                right += 1
+            
+            return right - left - 1
+        
+        ans = [0, 0]
+
+        for i in range(len(s)):
+            odd_length = expand(i,i)
+            if odd_length > ans[1] - ans[0] + 1:
+                dist = odd_length // 2
+                ans = [i - dist, i + dist]
+            
+            even_length = expand(i, i + 1)
+            if even_length > ans[1] - ans[0] + 1:
+                dist = (even_length // 2) - 1
+                ans = [i - dist, i + dist + 1]
+        
+        i, j = ans
+        return s[i:j+1]
+```
+
+### 15. Find All Anagrams in a String
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+Hashing is your friend when you need to check the similarity between 2 strings, whether it is exact match or character-frequency match. This is again true for this problem.
+
+The question asks for a list of first indices of substrings that are anagrams i.e., have the same character frequency as another string. This is asking for sliding window character count.
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+1. Check that the length of `s` is larger than `p`.
+2. Get the dictionary with character count for `p`. This can be done succintly with `Counter` or the same way as below.
+3. Initialize the first window character count of `s` and check if it is an anagram of `p`.
+4. Iterate through all other windows of string `p`, check for anagram, and add to the `result` list if necessary.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n + m)$ - with $n$ the length of `s` and $m$ the length of `p`
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(m)$ - the size of each character count dictionary.
+
+#### Code
+```python
+from collections import Counter, defaultdict
+from typing import List
+
+class Solution:
+    def findAnagrams(self, s: str, p: str) -> List[int]:
+        if len(s) < len(p):
+            return []
+
+        p_char_count, p_length = Counter(p), len(p)
+        window_char_count, s_length = defaultdict(int), len(s)
+        result = []
+
+        for ind in range(p_length):
+            window_char_count[s[ind]] += 1
+
+        if window_char_count == p_char_count:
+            result.append(0)
+
+        for ind in range(s_length - p_length):
+
+            if window_char_count[s[ind]] > 1:
+                window_char_count[s[ind]] -= 1
+            else:
+                window_char_count.pop(s[ind])
+            
+            window_char_count[s[ind + p_length]] += 1
+            if window_char_count == p_char_count:
+                result.append(ind + 1)
+        
+        return result
+```
