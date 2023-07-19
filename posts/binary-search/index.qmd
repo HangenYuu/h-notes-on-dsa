@@ -476,8 +476,6 @@ I know immediately I can do better: efficiently search for the closest element t
 
 One thing that requires a bit of thinking to realize is the left pointer returned by binary search is always more than or equal to `x` (the reverse is the case if the right pointer is returned). Working immediately with this returned pointer is a bit awkward - it's better to use the one right before (or right after) that is the closest and smaller (or larger) to `x`. You can see it in the implementation below.
 
-(I actually may be wrong, and the above is just nonsensical rationalization that I may spout during an interview.)
-
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
 1. Use binary search to assign the position of the largest element that is smaller than `x` to `left` and `right` to `left+1`. The objective slice to return is `arr[left+1:right]`.
@@ -626,17 +624,24 @@ class Solution:
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
-This is level 4 binary search.
+This is level 4 binary search, where you need to search for the answer within a continuous range of integers. The range for this problem is the range of the length of each piece of wood, going from 1 to total length divided by `k`, the required minimum number of pieces.
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
+1. Initialize the two limits `left` and `right` as `1` and `sum(l) // k` and `max_length` as `0`.
+2. Perform binary search on the range between `left` and `right`.
+   1. For each `mid_length`, iterate through the array to calculate the total number of wood pieces.
+   2. If the total number of wood pieces is larger than or equal `k`, update `max_length` if needed and increase `left`.
+   3. Else, decrease `right`.
 
 #### Complexity
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n \log n)$ - Iterate over the array for every iteration of binary search.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$ - Only store some integers.
 
 #### Code
 ```python
@@ -676,16 +681,25 @@ class Solution:
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
+This is level 2 i.e., the (OOXX) pattern. The array is sorted in ascending order but rotated i.e., the last number is guaranteed to be smaller than the first number. The answer asked for is the first number of the right portion. For binary search, I can check the portion of the array the middle number is in by comparing it to the right limit. If it is larger, it means that I am on the left portion, and I need to increase left limit. Else, I am on the right portion, and I need to decrease the right limit. There is no harm in going past the answer as there will be another variable to keep track of the current minimum. In the end, the minimum will either be recorded or stored in the left limit, so I return the smaller of the two.
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
+1. Initialize two limits and current min (to infinity).
+2. Perform binary search on the array.
+   1. Update the current min with the middle number.
+   2. If the middle number is larger than the right limit, increase the left limit.
+   3. Else, decrease the right limit.
+3. Return the smaller betwene current min and left limit.
 
 #### Complexity
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(\log n)$
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(1)$
 
 #### Code
 ```python
@@ -714,6 +728,9 @@ class Solution:
 
 #### Intuition
 <!-- Describe your first thoughts on how to solve this problem. -->
+For this problem, the Python library `bisect` is brough in to reduce the code written. Of course, another method can be written to handle the case. In any case, first, the three arrays of `startTime`, `endTime`, `profit` need `zip`ping and sorted based on `startTime`. `startTime` also needs sorting as it is required to perform binary search on.
+
+This is an instance of a dynamic programming problem. In an array, each cell will stored the maximum profit considering jobs from the suffix subarray from that index. This array will be filled in reversely. At each iteration, `bisect.bisect_left` will be called on `startTime`, looking for an insertion that is farthest left possible for a value passed in (in this case the end time of the job at the current cell). The return value will be an index, which could be larger than the last index of the current array (indicating the value needs appending to the array). That's why the array needs initializing with an extra cell of 0. The value of the current cell can be updated with the larger between the value of the cell right after (do not take the job found by binary search) and sum of the profit of the job found and the cell value at the index found by binary search.
 
 #### Algorithm
 <!-- Describe your approach to solving the problem. -->
@@ -721,9 +738,11 @@ class Solution:
 #### Complexity
 - Time complexity:
 <!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n \log n)$ - the cost to sort the `startTime` array.
 
 - Space complexity:
 <!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$ - the cost to create the new combined array.
 
 #### Code
 ```python

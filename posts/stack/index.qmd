@@ -337,3 +337,69 @@ class MyQueue:
 # param_3 = obj.peek()
 # param_4 = obj.empty()
 ```
+
+### 8. Basic Calculator
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+There are two ways to do this:
+1. Turn the infix expression into postfix expression i.e., reverse Polish notation and use the solution for that problem to solve, which also makes use of stack.
+2. Because this calculator only uses `'+'` and `'-'`, only 1 stack is enough to deal with it.
+
+The calculation will be evaluated from left to right. When you encounter a `'('`, that is a new expression. The current result will be pushed into the stack.
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+1. Initialize variables: an empty `stack`, `result` to store the calculated result so far, `sign` to store the sign, and `number` to store the current number read from the string.
+2. Iterate the characters in the string. For each character, go into the corresponding case:
+   1. If `char` is a digit, add it to current `number` (multiply `number` with 10 for correction).
+   2. If `char` is a sign, this means a new calculation. Add `sign * number` to `result` and reset `number` to 0. `sign` is set to the correct sign encountered (via 1 or -1).
+   3. If `char` is `'('`, this means a new prioritized calculation. Cache `result` and `sign` to `stack` (in that order) and reset `sign` and `result`.
+   4. If `char` is `')'`, this means the end of prioritized calculation. Set `result = sign * number` as above, reset the number. Pop from the stack and add the results together with correct sign.
+3. Return `result + sign * number` i.e., also add the current unevaluated `sign * number`.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+$O(n)$ - iterate through the string.
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$ - the size of the stack.
+
+#### Code
+```python
+class Solution:
+    """
+    @param s: the given expression
+    @return: the result of expression
+    """
+    def calculate(self, s: str) -> int:
+        # Write your code here
+        stack = []
+        result = 0
+        number = 0
+        sign = 1
+        for char in s:
+            if char.isdigit():
+                number = number * 10 + int(char)
+            elif char == "+":
+                result += sign * number
+                number = 0
+                sign = 1
+            elif char == '-':
+                result += sign * number
+                number = 0
+                sign = -1
+            elif char == '(':
+                stack.append(result)
+                stack.append(sign)
+                sign = 1
+                result = 0
+            elif char == ')':
+                result += sign * number
+                number = 0
+                result *= stack.pop()
+                result += stack.pop()
+        return result + sign * number
+```
