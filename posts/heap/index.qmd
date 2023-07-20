@@ -294,7 +294,7 @@ $O(n \log(k))$: Iterate the array of length $n$, each operation takes $O(\log(k)
 $O(k)$: The size of the new heap.
 
 #### Code
-```py
+```python
 import heapq
 
 class Solution:
@@ -306,4 +306,223 @@ class Solution:
             else:
                 heapq.heappushpop(heap, num)
         return heap[0]
+```
+
+### 5. Find Median from Data Stream
+
+#### Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+The trick is having two heaps: one Max Heap and one Min Heap for each half of the sorted array. Afterwards, the median is just a calculation with the top of the second heap i.e., the smallest of the second sorted half and the top of the first heap i.e., the largest of the first sorted half.
+
+#### Algorithm
+<!-- Describe your approach to solving the problem. -->
+- `__init__`:
+  - Initialize two heaps.
+
+- `addNum`:
+  - If the two heaps are currently of the same size, push the number to one of them. I chose the Min Heap. To ensure that the each heap contains only one half of the sorted array, `heappushpop` is called with the number on the other half first.
+  - Else, perform the operation to the other heap.
+- `findMedian`:
+  - If the two heaps are of different length, just return the top of the Min Heap as it is designed to have the larger length i.e., contain the median in this case.
+  - If the two heaps are of equal length, the median is calculated as the average of the two tops. Some math is required as the Max Heap stores the negative values.
+
+#### Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+
+  - `addNum` - $O(\log n)$
+  - `findMedian` - $O(1)$
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+$O(n)$ - only needs to store the data stream itself as every method is in-place.
+
+#### Code
+```python
+from heapq import heappush, heappushpop
+
+class MedianFinder:
+    """
+    Keeping two heaps: a Max Heap for the first part of the array, and a
+    Min Heap for the second part of the array. The median can be quickly
+    calculated from the top of the two heaps
+    """
+
+    def __init__(self):
+        self.first_half = []
+        self.second_half = []
+
+    def addNum(self, num: int) -> None:
+        if len(self.first_half) == len(self.second_half):
+            heappush(self.second_half, -heappushpop(self.first_half, -num))
+        else:
+            heappush(self.first_half, -heappushpop(self.second_half, num))
+
+    def findMedian(self) -> float:
+        if len(self.first_half) == len(self.second_half):
+            return (self.second_half[0] - self.first_half[0]) / 2
+        else:
+            return float(self.second_half[0])
+
+
+# Your MedianFinder object will be instantiated and called as such:
+# obj = MedianFinder()
+# obj.addNum(num)
+# param_2 = obj.findMedian()
+```
+
+### 6. Task Scheduling
+
+#### Intuition
+
+I misunderstood the problem. So the `n` cooldown period is actually the slots between 2 occurrences of the same task such as this for `n == 3` and only task `"A"`:
+```python
+A _ _ A _ _ A
+0 1 2 3 4 5 6
+```
+In the idle time between, different tasks e.g., `"B"` or `"C"` can be slotted in
+```python
+A B _ A C _ A
+0 1 2 3 4 5 6
+```
+The main constraint is the most frequent task. Hence, the solution can be constructed by first adding all the most frequent tasks in first, and then slotting the other in between. This will lead to 3 cases:
+
+1. The leftover tasks do not take up all the slots in the middle. This means that there will be idle slots. The time needed will be the length of the skeleton.
+2. The leftover tasks take up more than the slots in the middle. In that case, there will be no idle slots, and the result slots when put into an array will be same as the input array. Hence, the time required is the length of the input array.
+3. The leftover tasks do not take up all the slots in the middle but still spill over. This happens when there are more than 1 task with the same max number of occurrences. Slotting them in will lead to one more unit time taken at the end. To account for this, increment the time measured so far whenever encountered.
+
+This is the best approach, but not the heap approach. For the heap approach, it is essentially constructing each part of the skeleton iteratively by greedily adding in elements in the descending order (a Max Heap is used to store the number of occurrences)
+```python
+A B C | A D E | A F G | A i  i  | A  i  i  | A
+0 1 2 | 3 4 5 | 6 7 8 | 9 10 11 | 12 13 14 | 15
+```
+
+#### Algorithm
+
+- Optimal
+  1. Initialize variables `time` to 0, `task_to_times` with `Counter` to count the occurrences of each task.
+  2. Get the maximum number of occurrences `longest` with `Counter.most_common`.
+  3. Construct the skeleton `answer` with `(longest - 1) * (n + 1)`. `longest - 1` is the number of gaps between the tasks, and `n + 1` to account for the task it self. By right, I do not include the last occurrence, which will be counted later.
+  4. Loop over the `times` a task occurs in `task_to_times`, on encountering the `longest` time again, add 1 to `answer`. This also deals with the third case above.
+  5. Return the maximum between `answer` and the length of the input array.
+
+- Heap
+  1. Initialize a Max Heap of number of occurrences of a task.
+  2. While `heap` is not empty:
+     1. Create a `temp`orary list.
+     2. Iterate for `n` times:
+        1. Increment `time`.
+        2. Pop from `heap`.
+        3. If the value is larger than 1, decrement it and add it to `temp`.
+        4. If `heap` and `temp` are both empty after the step, break as the algorithm has reached the end.
+     3. Push back the items in `temp` into `heap`.
+
+#### Complexity
+
+- Time complexity: $O(n \log n)$ in both cases, for $n$ the length of the input array. For the first case, this is the cost of constructing `Counter` and getting the maximum frequency. For the second case, the loop is executed equal or very close to $n$ times, each iteration costs $O(\log n)$ time.
+
+- Space complexity: $O(n)$ - the cost of constructing the `Counter` and/or the `heap`.
+
+#### Code
+
+- Math
+```python
+from collections import Counter
+from typing import List
+
+class Solution:
+    def leastInterval(self, tasks: List[str], n: int) -> int:
+        time = 0
+        task_to_times = Counter(tasks)
+        longest = task_to_times.most_common(1)[0][-1] # List[Tuple[str, int]]
+        answer = (longest - 1) * (n + 1)
+
+        for times in task_to_times.values():
+            if times == longest:
+                answer += 1    
+        return max(len(tasks), answer)
+```
+- Heap
+```python
+from collections import Counter
+from typing import List
+from heapq import heappush, heappop
+
+class Solution:
+    def leastInterval(self, tasks: List[str], n: int) -> int:
+        task_to_times = Counter(tasks)
+        heap = []
+
+        for times in task_to_times.values():
+            heappush(heap, -times)
+        
+        time = 0
+        while heap:
+            temp = []
+            for _ in range(n + 1):
+                time += 1
+                if heap:
+                    most_frequent_task = heappop(heap)
+                    if most_frequent_task < -1:
+                        temp.append(most_frequent_task + 1)
+                        
+                if not (heap or temp):
+                    break
+
+            for item in temp:
+                heappush(heap, item)
+        
+        return time
+```
+
+### 7. Merge k Sorted Lists
+
+#### Intuition
+
+> Heap merge, the combination of heap sort and merge sort.
+
+Joking aside, the problem can be solved trivially with a heap. Just iterate through each lists, add the node value to the heap, and then construct the combined list. Easy.
+
+You can also do this in-place, but I don't want to mess up with the input values.
+
+#### Algorithm
+
+1. Iterate through every linked list in the list, push the value to the heap.
+2. Pop from the heap until empty, construct a new `ListNode`, and connect the node to the new linked list. For implementation, it is always great to create a sentinel head.
+3. Return.
+
+#### Complexity
+
+- Time complexity: $O(n \log n)$ for $n$ the total number of nodes in all linked lists.
+
+- Space complexity: $O(n)$ for the new merged linked list.
+
+#### Code
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+from heapq import heappush, heappop
+from typing import List, Optional
+
+class Solution:
+    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+        no_of_lists = len(lists)
+        sentinel_head = ListNode()
+        current = sentinel_head
+        heap = []
+        
+        for list_index in range(no_of_lists):
+            while lists[list_index] is not None:
+                heappush(heap, lists[list_index].val)
+                lists[list_index] = lists[list_index].next
+        
+        for _ in range(len(heap)):
+            val = heappop(heap)
+            current.next = ListNode(val)
+            current = current.next
+        
+        return sentinel_head.next
 ```
