@@ -491,3 +491,209 @@ class Solution:
         
         return copied[node.label]
 ```
+
+### 8. Word Search
+
+#### Intuition
+
+Depth-first search in matrix. This is similar to other problems. There are interesting follow-up questions about search pruning. Basically, I can store the character frequencies for both `board` and `word`, and then return `False` immediately when I a character does not appear enough in `board`. This will consume more memory and run longer for small `board` but reduce the need for running DFS at all for invalid cases, which can cauce a lot for large `board`. This is also reflected in the runtime at the end.
+
+#### Algorithm
+
+1. Prune: return `False` where
+   1. `board` has less characters than `word`.
+   2. Some character in `word` does not appear enough times in `board`.
+2. DFS nested function:
+   1. Parameters: `row`, `col`, `current_char` in `word` (pointer, not the value), and a `visited` set for each search.
+   2. Base case:
+      1. `current_char` pointer has moved pass the length of `word`. This returns `True` i.e., the word has been found.
+      2. `row` or `col` moves past the limits, the cell has already been visited, or the character does not match. This returns `False`.
+   3. Add the current position to `visited`.
+   4. Perform DFS on 4 adjacent cells (change `row` or `col`, and increment `current_cahr`). The result (found or not) is stored in `found`.
+   5. Remove the position from `visited`.
+   6. Return `found`.
+3. Call the helper function on every cell in the matrix. Once the word has been found, return `True` immediately.
+4. If the loop finishes executing, return `False`.
+#### Complexity
+
+- Time complexity: $O(4^{m \times n})$ with $m$ rows, $n$ columns. This is the number of helper function calls in the worst-case.
+
+- Memory complexity: $O(k)$ for $k$ the size of the recursion call stack.
+  
+#### Code
+```python
+from collections import Counter
+
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        NUM_ROWS, NUM_COLS = len(board), len(board[0])
+        if len(word) > NUM_ROWS * NUM_COLS:
+            return False
+        
+        count = Counter(sum(board, []))
+        
+        for c, countWord in Counter(word).items():
+            if count[c] < countWord:
+                return False
+        
+        def searchWord(row, col, current_char, visited):
+            if current_char >= len(word):
+                return True
+            if (not (-1 < row < NUM_ROWS and -1 < col < NUM_COLS)) or \
+               (row, col) in visited or board[row][col] != word[current_char]:
+                return False
+
+            visited.add((row, col))
+            # print("Visited so far", visited)
+            # print("Current progress", current_char)
+            found = (searchWord(row + 1, col, current_char + 1, visited) or
+                     searchWord(row - 1, col, current_char + 1, visited) or
+                     searchWord(row, col + 1, current_char + 1, visited) or
+                     searchWord(row, col - 1, current_char + 1, visited))
+            visited.discard((row, col))
+            return found
+            
+        for row in range(NUM_ROWS):
+            for col in range(NUM_COLS):
+                if searchWord(row, col, 0, set()):
+                    return True
+        return False
+```
+
+### 9. Minimum Height Trees
+
+#### Intuition
+
+This is an instance of topological sorting. I was livid to learn that this is a oft-tested algorithm but I have not learnt. The algorithm gives me the impression that I will go about removing the leaf nodes i.e., nodes with only 1 edge of the graph. This is logically done in this case *layer-by-layer* i.e., with BFS.
+
+One insight to solve the problem is that at the end, there can be at most 2 nodes that satisfy the requirement. 
+
+#### Algorithm
+
+1. Construct the adjacency list from the inputs.
+2. Initialize the queue with nodes with only 1 edge.
+3. Perform BFS while there are more than 2 untrimmed nodes:
+   1. An array `leaves` will contain the nodes to be trimmed at the level. Hence, the number of remaining leaves can be calculated by subtracting the length of this array.
+   2. Prepare a new array `new_leaves` to store the leaves at the next level.
+   3. Iterate `leaves` by popping from it:
+      1. Get the node sole neighbor and use that to remove the node itself from the adjacency list of the neighbor.
+      2. If the neighbor becomes a leaf, add it to `new_leaves`.
+   4. Reassign `new_leaves` to `leaves`. 
+4. At the end, return `leaves`.
+
+#### Complexity
+
+- Time complexity: $O(n)$ with $n$ the number of nodes. Almost all nodes will be trimmed, which takes $O(n)$. $O(n)$ is also the cost to construct the adjacency list.
+
+- Memory complexity: $O(n)$ is the size of the adjacency list and also the worst-case for the queue.
+
+#### Code
+```python
+from collections import defaultdict
+
+class Solution:
+    def findMinHeightTrees(self, n: int, edges: List[List[int]]) -> List[int]:
+        # Edge case
+        if n < 3:
+            return list(range(n))
+
+        neighbors = defaultdict(set)
+        depthToNode = defaultdict(list)
+
+        for node1, node2 in edges:
+            neighbors[node1].add(node2)
+            neighbors[node2].add(node1)
+
+        # Initialize the first layer of leaves
+        leaves = []
+        for i in range(n):
+            if len(neighbors[i]) == 1:
+                leaves.append(i)
+        
+        # Trim the leaves until reaching the centroids
+        remaining_nodes = n
+        while remaining_nodes > 2:
+            remaining_nodes -= len(leaves)
+            new_leaves = []
+
+            while leaves:
+                leaf = leaves.pop()
+                neighbor = neighbors[leaf].pop()
+                neighbors[neighbor].discard(leaf)
+                if len(neighbors[neighbor]) == 1:
+                    new_leaves.append(neighbor)
+            
+            leaves = new_leaves
+        
+        return leaves
+```
+### 10. Accounts Merge
+
+#### Intuition
+
+Another algorithm/data structure, less frequently featured in interviews but featured nonetheless - Union Find, which allows for quick querying and joining of disjoint sets. The key operations it supports are:
+
+- Find: Determine which set a particular element is in.
+- Union: Join two disjoint sets into a single set. 
+
+I should go through the Leetcode Explore for this section.
+
+#### Algorithm
+
+1. Define the Union Find data structure, completed with *union by rank* and *path compression*.
+2. 
+
+#### Complexity
+
+With $n$ the number of accounts and $k$ the maximum length of an account.
+
+- Time complexity: $O(n \times k \times \log(n \times k))$ - there is a sorting step, and if all emails belong to one person, sorting will cost this much.
+
+- Memory complexity: $O(n \times k)$ - the size of the intermediate `result`.
+
+#### Code
+```python
+from collections import defaultdict
+
+class UnionFind:
+    def __init__(self, size):
+        self.root = list(range(size))
+        self.rank = [1] * size
+    
+    # Union by rank
+    def union(self, x, y):
+        rootX, rootY = self.find(x), self.find(y)
+        if rootX != rootY:
+            if self.rank[rootX] > self.rank[rootY]:
+                self.root[rootY] = rootX
+            if self.rank[rootX] < self.rank[rootY]:
+                self.root[rootX] = rootY
+            else:
+                self.root[rootY] = rootX
+                self.rank[rootX] += 1
+    
+    # Path compression
+    def find(self, child):
+        if child != self.root[child]:
+            self.root[child] = self.find(self.root[child])
+        return self.root[child]
+
+class Solution:
+    def accountsMerge(self, accounts: List[List[str]]) -> List[List[str]]:
+        union_find = UnionFind(len(accounts))
+
+        # Create connections betwene indices
+        email_to_index = {}
+        for i, (_, *emails) in enumerate(accounts):
+            for email in emails:
+                if email in email_to_index:
+                    union_find.union(i, email_to_index[email])
+                email_to_index[email] = i
+        
+        # Append emails to correct indices
+        result = defaultdict(list)
+        for email, index in email_to_index.items():
+            result[union_find.find(index)].append(email)
+        
+        return [[accounts[i][0]] + sorted(emails) for i, emails in result.items()]
+```
